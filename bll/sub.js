@@ -2,20 +2,26 @@
  * @Description:
  * @Autor: fage
  * @Date: 2022-07-11 20:07:29
- * @LastEditors: Jack Chen
- * @LastEditTime: 2022-07-11 20:37:01
+ * @LastEditors: chenbinfa
+ * @LastEditTime: 2022-07-12 19:46:50
  * @description: 描述信息
- * @author: Jack Chen @懒人码农
+ * @author: chenbinfa
  */
 async function main() {
-  const api = global.webconfig.dotApi;
+  const api = global.dotApi;
   await api.isReady;
   api.query.timestamp.now((now) => {
     // console.log(`now of ${now}`);
     send("timestamp", "ok", now.toString());
   });
   api.rpc.chain.subscribeNewHeads((header) => {
-    send("header.number", "ok", header.number.toString());
+    // console.log("blockHeight", header.number.toString());
+    send("blockHeight", "ok", header.number.toString());
+  });
+  api.derive.chain.subscribeNewHeads((header) => {
+    // console.log("subscribeNewHeads", header.toHuman());
+    let json = header.toHuman();
+    console.log(json.digest.logs);
   });
 }
 function send(apiName, msg, data) {
