@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-15 18:06:03
+ * @LastEditTime: 2022-07-19 15:10:21
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -26,10 +26,15 @@ const dalTransaction = new Dal("tb_block_transaction");
 const dalEvent = new Dal("tb_block_event");
 
 async function initAPI() {
-  if (api) return;
-  const wsProvider = new WsProvider("ws://106.15.44.155:9948/");
-  api = new ApiPromise({ provider: wsProvider });
-  await api.isReady;
+  if (api) return true;
+  try {
+    const wsProvider = new WsProvider("ws://106.15.44.155:9948");
+    api = new ApiPromise({ provider: wsProvider });
+    await api.isReady;
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 async function getBlock(value) {
   let hash = "";
@@ -41,7 +46,6 @@ async function getBlock(value) {
   }
   const blockInfo = await api.rpc.chain.getBlock(hash);
   const blockHeight = blockInfo.block.header.number.toNumber();
-  console.log("blockHeight", blockHeight);
   const tmp = await dalBlock.findWithQuery({ blockHeight });
   if (tmp.length > 0) {
     return console.log("Item is exists");
@@ -49,6 +53,7 @@ async function getBlock(value) {
   const events = await api.query.system.events.at(hash);
   const timestamp = await saveTx(hash, blockHeight, blockInfo, events);
   await saveBlock(hash, blockHeight, blockInfo, timestamp);
+  console.log("block sync sccuess", blockHeight);
 }
 async function saveBlock(hash, blockHeight, src, timestamp) {
   let blockInfo = src.toHuman();
@@ -184,7 +189,10 @@ async function saveEvent(blockHeight, src, txId, txIndex, events, timestamp) {
   return status;
 }
 async function main() {
-  await initAPI();
+  let isConnection = await initAPI();
+  if (!isConnection) {
+    return console.log("Connection failed");
+  }
   let blockHeight = 100;
   api.rpc.chain.subscribeNewHeads((header) => {
     blockHeight = header.number.toNumber();
@@ -205,7 +213,6 @@ async function main() {
   console.log("lastBlockHeight", lastBlockHeight);
   // return;
   while (true) {
-    console.log("lastBlockHeight", lastBlockHeight);
     lastBlockHeight = await startDo(lastBlockHeight, blockHeight);
     if (lastBlockHeight >= blockHeight) {
       await util.sleep(2000);

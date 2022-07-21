@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-11 20:07:29
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-12 19:46:50
+ * @LastEditTime: 2022-07-19 15:33:57
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -21,7 +21,7 @@ async function main() {
   api.derive.chain.subscribeNewHeads((header) => {
     // console.log("subscribeNewHeads", header.toHuman());
     let json = header.toHuman();
-    console.log(json.digest.logs);
+    // console.log(json.digest.logs);
   });
 }
 function send(apiName, msg, data) {

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-11 15:11:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-12 17:54:26
+ * @LastEditTime: 2022-07-21 16:11:34
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -26,12 +26,24 @@ let obj = {
     actions: "*",
     needsecret: false,
   },
+  dbcommon: {
+    func: require("../queryDB/common"),
+    actions: ["list", "detail", "column"],
+    needsecret: false,
+  },
+  dics: {
+    func: require("../queryDB/dics"),
+    actions: ["list"],
+    needsecret: false,
+  },
 };
 
 module.exports = async function (req, res, next) {
   try {
     let way = req.body.way || req.params.way;
     let action = req.body.action || req.params.action;
+    req.body.way = way;
+    req.body.action = action;
     paramHelper(req);
     let o = obj[way];
     if (!o) {
@@ -85,6 +97,7 @@ module.exports = async function (req, res, next) {
     }
     o.func(req, res, next);
   } catch (e) {
+    console.log(e);
     next(e);
   }
 };

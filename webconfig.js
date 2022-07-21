@@ -2,16 +2,16 @@
  * @Description:
  * @Autor: fage
  * @Date: 2022-07-11 15:11:36
- * @LastEditors: fage
- * @LastEditTime: 2022-07-11 17:30:32
+ * @LastEditors: chenbinfa
+ * @LastEditTime: 2022-07-20 14:04:16
  */
 "use strict";
 const path = require("path");
 const mysql = require("./mysql-config");
 module.exports = {
   sitename: "集成管理后台",
-  wsnode:{
-    nodeURL: "ws://106.15.44.155:9948/",
+  wsnode: {
+    nodeURL: "ws://106.15.44.155:9949/",
     keyringOption: { type: "sr25519", ss58Format: 42 },
   },
   host: "localhost",

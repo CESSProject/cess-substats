@@ -2,77 +2,113 @@
  * @Description:
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
- * @LastEditors: fage
- * @LastEditTime: 2022-07-07 17:22:22
+ * @LastEditors: chenbinfa
+ * @LastEditTime: 2022-07-21 17:59:23
  */
-import React, { useRef, useState } from "react";
-import { DatePicker, Input, Menu, Modal, Button, Dropdown,Descriptions,Select, Space, Table, message, Tabs, Popconfirm,Checkbox, Card, Form } from "antd";
-import { UserOutlined, DownOutlined, DeleteOutlined } from "@ant-design/icons";
+import React, { useRef, useState, useEffect } from "react";
+import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
+import { UserOutlined, DownOutlined, DeleteOutlined, SwapRightOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
 import "./index.less";
+import queryDB from "@services/queryDB";
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
+let runCount = 0;
+let dics = [];
 
-const ThTable = ({ ...props }) => {
+const ThTable = ({ props }) => {
+	runCount++;
+	console.log("runCount", runCount);
+	// console.log("props", props);
+	const hasBorder = props.border;
 	const navigate = useNavigate();
 	const [modalVisible, setModalVisible] = useState(0);
-	const hasBorder = true;
+	const [dataSource, setDataSource] = useState([]);
 
-	const dataSource = [
-		{
-			key: "1",
-			name: "胡彦斌",
-			age: 32,
-			address: "西湖区湖底公园1号"
-		},
-		{
-			key: "2",
-			name: "胡彦祖",
-			age: 42,
-			address: "西湖区湖底公园1号"
-		}
-	];
+	const [total, setTotal] = useState(0);
+	const [pageindex, setPageindex] = useState(1);
+	const [pagesize, setPagesize] = useState(props.pagesize);
+	const [reload, setReload] = useState(false);
 
-	const columns = [
-		{
-			title: "姓名",
-			dataIndex: "name",
-			key: "name"
+	const [sorter, setSorter] = useState(null);
+
+	const [form] = Form.useForm();
+
+	const pagination = {
+		total,
+		current: pageindex,
+		pageSize: pagesize,
+		showSizeChanger: true,
+		showQuickJumper: true,
+		onChange: (i, size) => {
+			console.log("i, size", i, size);
+			setPageindex(i);
+			setPagesize(size);
+			setReload(!reload);
 		},
-		{
-			title: "年龄",
-			dataIndex: "age",
-			key: "age",
-			sorter: (a, b) => a.name.length - b.name.length
-		},
-		{
-			title: "住址",
-			dataIndex: "address",
-			key: "address"
-		},
-		{
-			title: "操作",
-			key: "operation",
-			fixed: "right",
-			width: 120,
-			render: () => (
-				<div>
-					<a onClick={e => setModalVisible(2)}>详情</a> &nbsp;&nbsp;
-					<a onClick={e => setModalVisible(1)}>编辑</a>&nbsp;&nbsp;
-					<Dropdown overlay={menu}>
-						<a onClick={e => e.preventDefault()}>
-							<DownOutlined />
-						</a>
-					</Dropdown>
-				</div>
-			)
+		showTotal: total => `Total ${total}`
+	};
+
+	//load dics
+	useEffect(async () => {
+		console.log("load dics");
+		let result = await queryDB.dics();
+		if (result.msg != "ok") {
+			return;
 		}
-	];
+		dics = result.data;
+		console.log("dics", dics);
+	}, []);
+
+	//ajax post
+	useEffect(async () => {
+		let params = {};
+		if (props.loadList.params) {
+			params = _.cloneDeep(props.loadList.params);
+		}
+		params.pageindex = pageindex;
+		params.pagesize = pagesize;
+		if (sorter) {
+			params.sorter = [
+				{
+					column: sorter.column,
+					order: sorter.order
+				}
+			];
+		}
+		let result = await props.loadList.method(params);
+		if (result.msg != "ok") {
+			return;
+		}
+		result.data.forEach((t, i) => {
+			if (!t.key) {
+				t.key = t.id || i;
+			}
+		});
+		setDataSource(result.data);
+		setTotal(result.total);
+	}, [reload]);
+
+	const onTableChange = (paginationObj, filters, sorter, extra) => {
+		// console.log("pagination", pagination);
+		// console.log("filters", filters);
+		// console.log("sorter", sorter);
+		// console.log("extra", extra);
+		if (sorter && sorter.order) {
+			setSorter({
+				column: sorter.columnKey || sorter.field,
+				order: sorter.order.replace("end", "")
+			});
+		} else {
+			setSorter(null);
+		}
+		setReload(!reload);
+	};
 
 	const menu = (
 		<Menu
@@ -107,13 +143,6 @@ const ThTable = ({ ...props }) => {
 		})
 	};
 
-	const pagination = {
-		total: 85,
-		showSizeChanger: true,
-		showQuickJumper: true,
-		showTotal: total => `共 ${total} 条记录`
-	};
-
 	const handleOk = () => {
 		setModalVisible(0);
 	};
@@ -128,99 +157,80 @@ const ThTable = ({ ...props }) => {
 		console.log("Failed:", errorInfo);
 	};
 
+	const renderFilterItem = item => {
+		if (!item.arr && item.dicId) {
+			const dic = dics.find(d => d.id == item.dicId);
+			if (dic && dic.items) {
+				item.arr = dic.items;
+			}
+			if (!item.arr || item.arr.length == 0) {
+				return "";
+			}
+		}
+		if (item.type === "select") {
+			return (
+				<Form.Item label={item.label} name={item.cloumn} key={item.cloumn} initialValue={item.defaultValue || 0}>
+					<Select
+						style={{
+							width: 120
+						}}
+						bordered={hasBorder}
+						{...item.props}>
+						<Option value={0}>--All--</Option>
+						{item.arr.map((a, i) => (
+							<Option key={a.value} value={a.value}>
+								{a.label}
+							</Option>
+						))}
+					</Select>
+				</Form.Item>
+			);
+		} else if (item.type === "datetime") {
+			return (
+				<Form.Item label={item.label} key={item.cloumn + "_1"} name={item.cloumn + "_1"} initialvalues={item.defaultValue}>
+					<RangePicker
+						showTime={{
+							format: "HH:mm"
+						}}
+						format="YYYY-MM-DD HH:mm"
+						allowEmpty={[true, true]}
+						{...item.props}
+					/>
+				</Form.Item>
+			);
+		}
+	};
+	const onFilterSumbit = values => {
+		console.log("values", values);
+	};
+	const onFilterReset = () => {
+		console.log("reset");
+		form.resetFields();
+	};
+
 	return (
 		<div className="containner">
-			<div className="filter-box">
-				<Form name="horizontal_login" layout="inline">
-					<Form.Item name="username" label="状态">
-						<Select
-							style={{
-								width: 120
-							}}
-							bordered={hasBorder}>
-							<Option value="jack">已完成</Option>
-							<Option value="lucy">进行中</Option>
-							<Option value="Yiminghe">yiminghe</Option>
-						</Select>
-					</Form.Item>
-					<Form.Item name="username" label="状态">
-						<Select
-							style={{
-								width: 120
-							}}
-							bordered={hasBorder}>
-							<Option value="jack">已完成</Option>
-							<Option value="lucy">进行中</Option>
-							<Option value="Yiminghe">yiminghe</Option>
-						</Select>
-					</Form.Item>
-					<Form.Item name="username" label="状态">
-						<Select
-							style={{
-								width: 120
-							}}
-							bordered={hasBorder}>
-							<Option value="jack">已完成</Option>
-							<Option value="lucy">进行中</Option>
-							<Option value="Yiminghe">yiminghe</Option>
-						</Select>
-					</Form.Item>
-					<Form.Item name="username" label="状态">
-						<Select
-							style={{
-								width: 120
-							}}
-							bordered={hasBorder}>
-							<Option value="jack">已完成</Option>
-							<Option value="lucy">进行中</Option>
-							<Option value="Yiminghe">yiminghe</Option>
-						</Select>
-					</Form.Item>
-					<Form.Item name="username" label="状态">
-						<Select
-							style={{
-								width: 120
-							}}
-							bordered={hasBorder}>
-							<Option value="jack">已完成</Option>
-							<Option value="lucy">进行中</Option>
-							<Option value="Yiminghe">yiminghe</Option>
-						</Select>
-					</Form.Item>
-					<Form.Item label="时间">
-						<DatePicker
-							showTime
-							bordered={hasBorder}
-							placeholder="开始时间"
-							style={{
-								width: 180
-							}}
-						/>
-						至
-						<DatePicker
-							showTime
-							bordered={hasBorder}
-							placeholder="结束时间"
-							style={{
-								width: 180
-							}}
-						/>
-					</Form.Item>
-
-					<Form.Item className="right-btn-box">
-						<Button type="default" htmlType="reset">
-							重置
-						</Button>
-						&nbsp;
-						<Button type="primary" htmlType="submit">
-							查询
-						</Button>
-					</Form.Item>
-				</Form>
-			</div>
+			{props.filterBar ? (
+				<div className="filter-box">
+					<Form name="horizontal_filter" form={form} layout="inline" onFinish={onFilterSumbit}>
+						{props.filterBar.map(f => renderFilterItem(f))}
+						<Form.Item className="right-btn-box">
+							<Button type="default" htmlType="button" onClick={onFilterReset}>
+								重置
+							</Button>
+							&nbsp;
+							<Button type="primary" htmlType="submit">
+								查询
+							</Button>
+						</Form.Item>
+					</Form>
+				</div>
+			) : (
+				""
+			)}
 			<div className="content-box block">
 				<div className="table-header block">
-					<div className="table-title block">这是标题哦</div>
+					<div className="table-title block">{props.titleBar?.title}</div>
 					<div className="right-btn-box block">
 						<Space>
 							<Input.Group compact style={{ width: 300 }}>
@@ -259,11 +269,14 @@ const ThTable = ({ ...props }) => {
 							...rowSelection
 						}}
 						dataSource={dataSource}
-						columns={columns}
+						{...props.table}
 						pagination={pagination}
+						onChange={onTableChange}
 					/>
 					<div className="batch-btn-box">
-						<Button type="default" danger icon={<DeleteOutlined />}>删除选中</Button>
+						<Button type="default" danger icon={<DeleteOutlined />}>
+							删除选中
+						</Button>
 					</div>
 				</div>
 			</div>

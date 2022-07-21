@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-11 15:11:35
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-12 19:12:25
+ * @LastEditTime: 2022-07-20 14:06:53
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -12,12 +12,25 @@ const _ = require("lodash");
 
 module.exports = async function (req, res, next) {
   const api = global.dotApi;
-  //   console.log("req.body storage", req.body);
+  // console.log("req.body storage", req.body);
   //   return res.json({ msg: "ok", data: "11" });
   const { ac1, ac2 } = req.body;
+  if (!ac1) {
+    return res.json({ msg: "ac1 not found." });
+  }
+  if (!ac2) {
+    return res.json({ msg: "ac2 not found." });
+  }
   await api.isReady;
   const param = req.body;
-
+  if (!api.query[ac1]) {
+    return res.json({ msg: "api.query." + ac1 + " not a function" });
+  }
+  if (!api.query[ac1][ac2]) {
+    return res.json({
+      msg: "api.query." + ac1 + "." + ac1 + " not a function",
+    });
+  }
   let retsult;
   let fun = api.query[ac1][ac2];
   if (fun.entries && typeof fun.entries == "function") {

@@ -18,8 +18,9 @@ const port = webconfig.port.http || 80;
 const routes = require("./routes/index");
 const api = require("./routes/api");
 const ws = require("./routes/ws");
-const dot = require("./bll/init-polkadot-api");
+const initDotChain = require("./bll/init-polkadot-api");
 const sub = require("./bll/sub");
+const init = require("./bll/init");
 
 const app = express();
 expressWs(app);
@@ -100,8 +101,9 @@ app.use(function (err, req, res, next) {
   });
 });
 global.wsClientList = [];
-dot();
+initDotChain();
 sub();
+init();
 
 app.listen(port);
 console.log("listening on ", port);

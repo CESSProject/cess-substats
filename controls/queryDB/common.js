@@ -3,21 +3,21 @@
  * @Autor: fage
  * @Date: 2022-07-11 15:11:35
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-12 11:02:37
+ * @LastEditTime: 2022-07-20 17:38:43
  * @description: 描述信息
  * @author: chenbinfa
  */
 "use strict";
-const Dal = require("../dal/dal-common");
-const listPage = require("./action_helper/list_page");
-const detail = require("./action_helper/detail");
-const column = require("./action_helper/column");
-const del = require("./action_helper/del");
-const create = require("./action_helper/create");
-const update = require("./action_helper/update");
-const exportHelper = require("./action_helper/export");
-const batchUpdate = require("./action_helper/batch_update");
-const copy = require("./action_helper/copy");
+const Dal = require("../../dal/dal-common");
+const listPage = require("../action-helper/list-page");
+const detail = require("../action-helper/detail");
+const column = require("../action-helper/column");
+const del = require("../action-helper/del");
+const create = require("../action-helper/create");
+const update = require("../action-helper/update");
+const exportHelper = require("../action-helper/export");
+const batchUpdate = require("../action-helper/batch-update");
+const copy = require("../action-helper/copy");
 
 module.exports = function (req, res, next) {
   let funs = {
@@ -37,8 +37,8 @@ module.exports = function (req, res, next) {
     msg: "ok",
     data: [],
   };
-  let way = req.body.way;
-  let dal = new Dal("tb_" + way);
+  let tableName = req.body.tableName;
+  let dal = new Dal("tb_" + tableName);
   let f = funs[req.body.action];
   if (f) {
     f(ret, dal, req, res);

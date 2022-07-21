@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-14 15:08:02
+ * @LastEditTime: 2022-07-20 14:03:46
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -19,9 +19,12 @@ const {
 
 async function main() {
   // initialise via static create
-  const wsProvider = new WsProvider("ws://106.15.44.155:9948/");
+  const wsProvider = new WsProvider("ws://106.15.44.155:9949/");
   const api = new ApiPromise({ provider: wsProvider });
   await api.isReady;
+
+  let a = await api.query.timestamp.now();
+  console.log(a);
   // make a call to retrieve the current network head
   //   api.rpc.chain.subscribeNewHeads((header) => {
   //     console.log(header.toHuman());
@@ -45,18 +48,18 @@ async function main() {
   //   console.log(json.digest.logs);
   // });
 
-  let value = 2351;
-  let hash = "";
-  if (typeof value != "number") {
-    hash = value;
-  } else {
-    let result = await api.rpc.chain.getBlockHash(value);
-    hash = result.toHex();
-  }
+  // let value = 2351;
+  // let hash = "";
+  // if (typeof value != "number") {
+  //   hash = value;
+  // } else {
+  //   let result = await api.rpc.chain.getBlockHash(value);
+  //   hash = result.toHex();
+  // }
 
-  let events = await api.query.system.events.at(hash);
-  let result2 = await api.rpc.chain.getBlock(hash); //subscribe
-  let result3 = await api.derive.chain.getHeader(hash); //subscribe
+  // let events = await api.query.system.events.at(hash);
+  // let result2 = await api.rpc.chain.getBlock(hash); //subscribe
+  // let result3 = await api.derive.chain.getHeader(hash); //subscribe
 
   // events = events.map((record, index) => ({
   //   // build entity
@@ -65,13 +68,13 @@ async function main() {
   //   record,
   // }));
   // events = events.toHuman();
-  console.log(JSON.stringify(events));
+  // console.log(JSON.stringify(events));
 
-  let index = 0;
-  const filtered = events.filter(
-    ({ phase }) => phase.isApplyExtrinsic && phase.asApplyExtrinsic.eq(index)
-  );
-  console.log(JSON.stringify(filtered));
+  // let index = 0;
+  // const filtered = events.filter(
+  //   ({ phase }) => phase.isApplyExtrinsic && phase.asApplyExtrinsic.eq(index)
+  // );
+  // console.log(JSON.stringify(filtered));
 
   // console.log("hash", hash);
   // console.log("result1", JSON.stringify(result1));
@@ -90,6 +93,5 @@ async function main() {
   // console.log("*******************************************");
   // console.log(JSON.stringify(result2.block.extrinsics));
 }
-function jsonFormat(o) {}
 
 main();

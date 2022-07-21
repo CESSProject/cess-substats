@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2022-04-24 10:01:40
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-12 17:25:45
+ * @LastEditTime: 2022-07-21 14:06:55
  */
 
 import qs from "qs";
@@ -45,7 +45,7 @@ const request = {
 		if (localStorage.getItem("token")) {
 			options.headers["token"] = localStorage.getItem("token");
 		}
-		console.log("options", options);
+		// console.log("options", options);
 		return ajax(url, options);
 	}
 };
