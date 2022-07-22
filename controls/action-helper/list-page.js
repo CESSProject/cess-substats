@@ -12,11 +12,12 @@ async function list(fieldStr, fromStr, dal, req, res) {
   };
   try {
     const pre = req.body.pre || "a.";
-    const { whereStr, sortStr } = formatParams(pre, req);
+    const { whereStr, sortStr, dangerous } = formatParams(pre, req);
 
     if (req.body.groupby) {
       sortStr = " GROUP BY " + req.body.groupby + " " + sortStr;
     }
+    ret.dangerous = dangerous;
     ret.pageindex = req.body.pageindex;
     ret.pagesize = req.body.pagesize;
     ret.total = await dal.findCount(fromStr, whereStr);
@@ -24,6 +25,8 @@ async function list(fieldStr, fromStr, dal, req, res) {
       // console.log(fromStr, whereStr);
       ret.data = [];
     } else {
+      console.log("whereStr", whereStr);
+      console.log("sortStr", sortStr);
       ret.data = await dal.findByPage(
         fieldStr,
         fromStr,
@@ -55,14 +58,14 @@ function formatParams(pre = "", req) {
     console.log("filter", filter);
     const filterArr = [];
     filter.forEach((t) => {
-      let column = "`" + pre + t.column + "`";
+      let column = pre + "`" + t.column + "`";
       let v = t.values.join(",");
       if (!sqlSafe.checkSafe(v)) {
-        result.dangerous.push(orderby);
+        result.dangerous.push(v);
         return;
       }
-      if ("=,!=,<,>".split(",").includes(t.sign)) {
-        filterArr.push(column + t.sign + v);
+      if ("=,!=,<,<=,>,>=".split(",").includes(t.sign)) {
+        filterArr.push(column + t.sign + "'" + v + "'");
       } else if (t.sign == "like") {
         filterArr.push(column + " like '%" + v + "%'");
       } else if (t.sign == "notlike") {
@@ -106,7 +109,7 @@ let postParamsDemo = {
   filter: [
     {
       column: "title",
-      sign: "=,!=,<,>,between,betweenTime,like,notlike,in,notin",
+      sign: "=,!=,<,<=,>,>=,between,betweenTime,like,notlike,in,notin",
       values: [1, 2],
     },
   ],

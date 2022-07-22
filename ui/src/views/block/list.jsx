@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-21 17:45:29
+ * @LastEditTime: 2022-07-22 14:38:50
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -46,6 +46,7 @@ const Main = () => {
 
 	const props = {
 		border: true,
+		size: "middle",
 		pagesize: 5,
 		filterBar: [
 			{
@@ -68,16 +69,74 @@ const Main = () => {
 				dicId: 1
 			},
 			{
-				label: "时间",
-				cloumn: "time",
+				label: "Timestamp",
+				cloumn: "timestamp",
 				type: "datetime",
 				props: {
 					showTime: true
 				}
+			},
+			{
+				label: "Block Height",
+				cloumn: "blockHeight",
+				type: "numberRange",
+				props: {
+					keyboard: true
+				}
 			}
 		],
 		titleBar: {
-			title: "表格标题"
+			title: "表格标题",
+			filter: [
+				{
+					label: "状态",
+					cloumn: "status",
+					type: "select",
+					defaultValue: 0,
+					dicId: 1
+				},
+				{
+					label: "Block Height",
+					cloumn: "blockHeight",
+					type: "numberRange",
+					props: {
+						keyboard: true
+					}
+				}
+			],
+			btns: [
+				{
+					label: "AJAX请求",
+					type: "ajax",
+					key: "2",
+					props: {
+						type: "default"
+					}
+				},
+				{
+					label: "",
+					type: "add",
+					key: "1"
+				}
+			]
+		},
+		btnBar: {
+			float: "left",
+			btns: [
+				{
+					label: "AJAX请求",
+					type: "ajax",
+					key: "2",
+					props: {
+						type: "default"
+					}
+				},
+				{
+					label: "",
+					type: "add",
+					key: "1"
+				}
+			]
 		},
 		loadList: {
 			params: {
