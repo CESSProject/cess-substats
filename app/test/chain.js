@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-20 14:03:46
+ * @LastEditTime: 2022-07-25 16:52:08
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -19,7 +19,7 @@ const {
 
 async function main() {
   // initialise via static create
-  const wsProvider = new WsProvider("ws://106.15.44.155:9949/");
+  const wsProvider = new WsProvider("wss://testnet-rpc0.cess.cloud/ws/");
   const api = new ApiPromise({ provider: wsProvider });
   await api.isReady;
 

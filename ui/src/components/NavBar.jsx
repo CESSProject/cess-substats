@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-21 11:33:12
+ * @LastEditTime: 2022-07-25 13:42:52
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -24,7 +24,19 @@ const navBtn = [
 	},
 	{
 		path: "/block/list",
-		name: "Block List"
+		name: "Blocks"
+	},
+	{
+		path: "/transfer/list",
+		name: "Transfers"
+	},
+	{
+		path: "/miners/list",
+		name: "Miners"
+	},
+	{
+		path: "/account/query",
+		name: "Account"
 	}
 ];
 
@@ -76,7 +88,7 @@ export default styled(Header)`
 			font-size: 17px;
 		}
 		.header-content {
-			width: 1440px;
+			padding: 0 40px;
 			display: block;
 			overflow: hidden;
 			margin: 0 auto;

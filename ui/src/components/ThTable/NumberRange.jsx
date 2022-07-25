@@ -3,14 +3,14 @@
  * @Autor: fage
  * @Date: 2022-07-22 11:01:42
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-22 11:47:57
+ * @LastEditTime: 2022-07-25 15:11:02
  * @description: 描述信息
  * @author: chenbinfa
  */
 import styled from "styled-components";
 import _ from "lodash";
 import React, { useRef, useState, useEffect } from "react";
-import { UserOutlined, DownOutlined, DeleteOutlined, SwapRightOutlined } from "@ant-design/icons";
+import { SwapRightOutlined } from "@ant-design/icons";
 import { DatePicker, Input, InputNumber, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
 
 function CellAction({ value = [null, null], onChange }) {
@@ -37,9 +37,9 @@ function CellAction({ value = [null, null], onChange }) {
 	};
 	return (
 		<>
-			<InputNumber value={value[0]} onChange={onNumberChange1} />
+			<InputNumber style={{ width: 50 }} value={value[0]} onChange={onNumberChange1} />
 			<SwapRightOutlined />
-			<InputNumber value={value[1]} onChange={onNumberChange2} />
+			<InputNumber style={{ width: 50 }} value={value[1]} onChange={onNumberChange2} />
 		</>
 	);
 }

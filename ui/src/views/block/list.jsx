@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-22 14:38:50
+ * @LastEditTime: 2022-07-25 17:51:54
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -110,7 +110,10 @@ const Main = () => {
 					type: "ajax",
 					key: "2",
 					props: {
-						type: "default"
+						type: "default",
+						onClick: () => {
+							alert("nnn");
+						}
 					}
 				},
 				{
@@ -128,7 +131,10 @@ const Main = () => {
 					type: "ajax",
 					key: "2",
 					props: {
-						type: "default"
+						type: "default",
+						onClick: () => {
+							alert("333");
+						}
 					}
 				},
 				{
@@ -209,7 +215,77 @@ const Main = () => {
 				}
 			]
 		},
-		batchAction: {}
+		create: {
+			title: "添加记录",
+			params: {
+				tableName: "block_info"
+			},
+			method: queryDB.list,
+			columns: [
+				{
+					title: "blockHeight",
+					dataIndex: "blockHeight",
+					key: "blockHeight",
+					sorter: true
+				},
+				{
+					title: "hash",
+					dataIndex: "hash",
+					key: "hash",
+					width: "15%",
+					textWrap: "word-break",
+					ellipsis: true
+				},
+				{
+					title: "parentHash",
+					dataIndex: "parentHash",
+					key: "parentHash",
+					width: "15%",
+					textWrap: "word-break",
+					ellipsis: true
+				},
+				{
+					title: "stateRoot",
+					dataIndex: "stateRoot",
+					key: "stateRoot",
+					width: "15%",
+					textWrap: "word-break",
+					ellipsis: true
+				},
+				{
+					title: "extrinsicsRoot",
+					dataIndex: "extrinsicsRoot",
+					key: "extrinsicsRoot",
+					width: "15%",
+					textWrap: "word-break",
+					ellipsis: true
+				},
+				{
+					title: "timestamp",
+					dataIndex: "timestamp",
+					key: "timestamp",
+					sorter: true
+				}
+			]
+		},
+		batchAction: [
+			{
+				label: "",
+				type: "del",
+				key: "1"
+			},
+			{
+				label: "AJAX请求",
+				type: "ajax",
+				key: "2",
+				props: {
+					type: "default",
+					onClick: items => {
+						alert("select count:" + items.length);
+					}
+				}
+			}
+		]
 	};
 
 	return (
