@@ -3,294 +3,106 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-25 17:51:54
+ * @LastEditTime: 2022-07-26 17:48:10
  */
 import React, { useRef, useState, useEffect } from "react";
-import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
+import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
 import { UserOutlined, DownOutlined, DeleteOutlined } from "@ant-design/icons";
 import _ from "lodash";
+import { useNavigate } from "react-router-dom";
 import "./list.less";
+import subData from "@services/subdata";
 import constantsAJAX from "@services/chain-state/constants";
 import storageAJAX from "@services/storage";
-import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
-import ThTable from "@/components/ThTable";
 import queryDB from "@services/queryDB";
 import moment from "moment";
+import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
+import copy from "copy-to-clipboard";
+import { NavLink } from "react-router-dom";
 
 const { Option } = Select;
+const { Column, ColumnGroup } = Table;
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
-const Main = () => {
-	const menu = (
-		<Menu
-			items={[
-				{
-					label: "1st menu item",
-					key: "1",
-					icon: <UserOutlined />
-				},
-				{
-					label: "2nd menu item",
-					key: "2",
-					icon: <UserOutlined />
-				},
-				{
-					label: "3rd menu item",
-					key: "3",
-					icon: <UserOutlined />
-				}
-			]}
-		/>
-	);
 
-	const props = {
-		border: true,
-		size: "middle",
-		pagesize: 5,
-		filterBar: [
-			{
-				label: "ARR状态",
-				cloumn: "status2",
-				type: "select",
-				defaultValue: 0,
-				arr: [
-					{ value: 1, label: "进行中" },
-					{ value: 2, label: "已完成" },
-					{ value: 3, label: "开始中" },
-					{ value: 4, label: "进行中2" }
-				]
-			},
-			{
-				label: "状态",
-				cloumn: "status",
-				type: "select",
-				defaultValue: 0,
-				dicId: 1
-			},
-			{
-				label: "Timestamp",
-				cloumn: "timestamp",
-				type: "datetime",
-				props: {
-					showTime: true
-				}
-			},
-			{
-				label: "Block Height",
-				cloumn: "blockHeight",
-				type: "numberRange",
-				props: {
-					keyboard: true
-				}
-			}
-		],
-		titleBar: {
-			title: "表格标题",
-			filter: [
-				{
-					label: "状态",
-					cloumn: "status",
-					type: "select",
-					defaultValue: 0,
-					dicId: 1
-				},
-				{
-					label: "Block Height",
-					cloumn: "blockHeight",
-					type: "numberRange",
-					props: {
-						keyboard: true
-					}
-				}
-			],
-			btns: [
-				{
-					label: "AJAX请求",
-					type: "ajax",
-					key: "2",
-					props: {
-						type: "default",
-						onClick: () => {
-							alert("nnn");
-						}
-					}
-				},
-				{
-					label: "",
-					type: "add",
-					key: "1"
-				}
-			]
+const Main = ({ ...props }) => {
+	const navigate = useNavigate();
+	const [dataSource, setDataSource] = useState([]);
+	useEffect(async () => {
+		let result = await queryDB.list({
+			tableName: "block_info",
+			pageindex: 1,
+			pagesize: 10
+		});
+		console.log("result", result);
+		if (result.msg != "ok") {
+			return;
+		}
+		result.data.forEach(m => (m.key = m.id));
+		setDataSource(result.data);
+	}, []);
+
+	const columns = [
+		{
+			title: "Block Height",
+			dataIndex: "blockHeight",
+			key: "blockHeight",
+			width: "10%",
+			render: blockHeight => <NavLink to={"/block/detail/" + blockHeight}>{blockHeight}</NavLink>
 		},
-		btnBar: {
-			float: "left",
-			btns: [
-				{
-					label: "AJAX请求",
-					type: "ajax",
-					key: "2",
-					props: {
-						type: "default",
-						onClick: () => {
-							alert("333");
-						}
-					}
-				},
-				{
-					label: "",
-					type: "add",
-					key: "1"
-				}
-			]
+		{
+			title: "Hash",
+			dataIndex: "hash",
+			key: "hash",
+			width: "35%",
+			textWrap: "word-break",
+			ellipsis: true,
+			render: hash => (
+				<Tooltip placement="topLeft" title="click copy">
+					<span
+						onClick={() => {
+							copy(hash);
+							message.success("Copy successful !");
+						}}>
+						{hash}
+					</span>
+				</Tooltip>
+			)
 		},
-		loadList: {
-			params: {
-				tableName: "block_info"
-			},
-			method: queryDB.list
+		{
+			title: "Prent Hash",
+			dataIndex: "parentHash",
+			key: "parentHash",
+			width: "35%",
+			textWrap: "word-break",
+			ellipsis: true,
+			render: hash => (
+				<Tooltip placement="topLeft" title="click copy">
+					<span
+						onClick={() => {
+							copy(hash);
+							message.success("Copy successful !");
+						}}>
+						{hash}
+					</span>
+				</Tooltip>
+			)
 		},
-		table: {
-			columns: [
-				{
-					title: "blockHeight",
-					dataIndex: "blockHeight",
-					key: "blockHeight",
-					sorter: true
-				},
-				{
-					title: "hash",
-					dataIndex: "hash",
-					key: "hash",
-					width: "15%",
-					textWrap: "word-break",
-					ellipsis: true
-				},
-				{
-					title: "parentHash",
-					dataIndex: "parentHash",
-					key: "parentHash",
-					width: "15%",
-					textWrap: "word-break",
-					ellipsis: true
-				},
-				{
-					title: "stateRoot",
-					dataIndex: "stateRoot",
-					key: "stateRoot",
-					width: "15%",
-					textWrap: "word-break",
-					ellipsis: true
-				},
-				{
-					title: "extrinsicsRoot",
-					dataIndex: "extrinsicsRoot",
-					key: "extrinsicsRoot",
-					width: "15%",
-					textWrap: "word-break",
-					ellipsis: true
-				},
-				{
-					title: "timestamp",
-					dataIndex: "timestamp",
-					key: "timestamp",
-					sorter: true
-				},
-				{
-					title: "操作",
-					key: "operation",
-					fixed: "right",
-					width: 120,
-					render: () => (
-						<div>
-							<a onClick={e => setModalVisible(2)}>详情</a> &nbsp;&nbsp;
-							<a onClick={e => setModalVisible(1)}>编辑</a>&nbsp;&nbsp;
-							<Dropdown overlay={menu}>
-								<a onClick={e => e.preventDefault()}>
-									<DownOutlined />
-								</a>
-							</Dropdown>
-						</div>
-					)
-				}
-			]
-		},
-		create: {
-			title: "添加记录",
-			params: {
-				tableName: "block_info"
-			},
-			method: queryDB.list,
-			columns: [
-				{
-					title: "blockHeight",
-					dataIndex: "blockHeight",
-					key: "blockHeight",
-					sorter: true
-				},
-				{
-					title: "hash",
-					dataIndex: "hash",
-					key: "hash",
-					width: "15%",
-					textWrap: "word-break",
-					ellipsis: true
-				},
-				{
-					title: "parentHash",
-					dataIndex: "parentHash",
-					key: "parentHash",
-					width: "15%",
-					textWrap: "word-break",
-					ellipsis: true
-				},
-				{
-					title: "stateRoot",
-					dataIndex: "stateRoot",
-					key: "stateRoot",
-					width: "15%",
-					textWrap: "word-break",
-					ellipsis: true
-				},
-				{
-					title: "extrinsicsRoot",
-					dataIndex: "extrinsicsRoot",
-					key: "extrinsicsRoot",
-					width: "15%",
-					textWrap: "word-break",
-					ellipsis: true
-				},
-				{
-					title: "timestamp",
-					dataIndex: "timestamp",
-					key: "timestamp",
-					sorter: true
-				}
-			]
-		},
-		batchAction: [
-			{
-				label: "",
-				type: "del",
-				key: "1"
-			},
-			{
-				label: "AJAX请求",
-				type: "ajax",
-				key: "2",
-				props: {
-					type: "default",
-					onClick: items => {
-						alert("select count:" + items.length);
-					}
-				}
-			}
-		]
-	};
+		{
+			title: "Time",
+			dataIndex: "timestamp",
+			key: "timestamp",
+			width: "20%",
+			render: timestamp => moment(timestamp).format("YYYY-MM-DD HH:mm:ss")
+		}
+	];
 
 	return (
-		<div className="containner">
-			<ThTable props={props} />
+		<div className="containner-in">
+			<div className="list">
+				<Table dataSource={dataSource} columns={columns} />
+			</div>
 		</div>
 	);
 };

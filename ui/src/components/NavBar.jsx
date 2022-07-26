@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-25 13:42:52
+ * @LastEditTime: 2022-07-26 16:45:49
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -16,6 +16,7 @@
 import styled from "styled-components";
 import _ from "lodash";
 import { NavLink } from "react-router-dom";
+import React, { useRef, useState, useEffect } from "react";
 
 const navBtn = [
 	{
@@ -41,28 +42,34 @@ const navBtn = [
 ];
 
 function Header({ className }) {
-	/**
-	 * 操作项
-	 * @param className
-	 */
-
+	const winHeight = document.body.clientHeight;
 	return (
 		<div className={className}>
-			<div className="abs-header">
+			<div className="abs-header" style={{ height: winHeight }}>
 				<div className="header-content">
 					<span className="logo-txt">
-						<NavLink to="/">CESS</NavLink>
+						<NavLink to="/">
+							<img src={process.env.PUBLIC_URL + "/logo.svg"} />
+						</NavLink>
 					</span>
 					<span>
 						{navBtn.map(t => (
-							<NavLink key={t.name} to={t.path} style={({ isActive }) => ({ color: isActive ? "#3D7EFF" : "" })}>
+							<NavLink key={t.name} to={t.path} style={({ isActive }) => ({ color: isActive ? "#ffc107" : "" })}>
 								{t.name}
 							</NavLink>
 						))}
 					</span>
 				</div>
+				<div className="nav-bottom-link">
+					<a href="https://cess.cloud/" target="_blank">
+						CESS LAB Product
+					</a>
+					<span></span>
+					<a href="http://121.46.19.38:53002/" target="_blank">
+						UTOKIA NFT
+					</a>
+				</div>
 			</div>
-			<div className="hold"></div>
 		</div>
 	);
 }
@@ -75,35 +82,65 @@ export default styled(Header)`
 	.abs-header {
 		display: block;
 		overflow: hidden;
-		width: 100%;
-		height: 65px;
-		line-height: 65px;
-		background-color: #404c66;
+		width: 150px;
+		height: 100%;
+		line-height: 30px;
+		background-color: #3187fa;
 		position: fixed;
+		left: 0;
+		top: 0;
 		z-index: 999;
-		a {
-			color: #fff;
-			text-decoration: none;
-			padding-right: 30px;
-			font-size: 17px;
-		}
 		.header-content {
-			padding: 0 40px;
+			a {
+				color: #fff;
+				text-decoration: none;
+				padding-right: 0px;
+				font-size: 17px;
+			}
+			padding: 0 0px;
 			display: block;
 			overflow: hidden;
-			margin: 0 auto;
 			text-align: left;
 			color: #fff;
+			span a {
+				display: block;
+				overflow: hidden;
+				clear: both;
+				padding: 0 20px;
+				line-height: 56px;
+			}
 		}
-		.logo-txt a {
-			font-size: 24px;
+		.logo-txt {
+			background-color: #54b3ff;
+			display: block;
+			padding: 10px 0;
+			a {
+				font-size: 24px;
+			}
 		}
-	}
-	.hold {
-		width: 100%;
-		height: 65px;
-		display: block;
-		overflow: hidden;
-		clear: both;
+		.nav-bottom-link {
+			width: 100%;
+			display: block;
+			overflow: hidden;
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			span {
+				width: 80%;
+				border-top: 1px solid #0464b1;
+				display: block;
+				overflow: hidden;
+				clear: both;
+				margin: 0 auto;
+			}
+			a {
+				line-height: 45px;
+				font-size: 13px;
+				color: #fff;
+				width: 100%;
+				text-align: center;
+				display: block;
+			}
+		}
 	}
 `;

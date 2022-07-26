@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-25 18:02:42
+ * @LastEditTime: 2022-07-26 14:42:38
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, InputNumber, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -303,7 +303,7 @@ const ThTable = ({ props }) => {
 	};
 
 	return (
-		<div className="containner">
+		<div className="containner-in">
 			{props.filterBar ? (
 				<div className="filter-box">
 					<Form size={props.size} name="horizontal_filter" form={form} layout="inline" onFinish={onFilterFormFinish}>

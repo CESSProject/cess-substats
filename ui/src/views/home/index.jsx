@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-20 16:30:14
+ * @LastEditTime: 2022-07-26 17:01:09
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -97,7 +97,7 @@ const Home = ({ ...props }) => {
 		};
 	}, []);
 	useEffect(async () => {
-		let result = await constantsAJAX("babe", "expectedBlockTime");
+		let result = await constantsAJAX("rrsc", "expectedBlockTime");
 		if (result.msg != "ok") {
 			return setAvgBlockTime(result.msg);
 		}
@@ -121,7 +121,7 @@ const Home = ({ ...props }) => {
 	}, []);
 
 	return (
-		<div className="containner">
+		<div className="containner-in">
 			<div className="state-line">
 				<div className="state-box">
 					<span>block height</span>
@@ -163,7 +163,7 @@ const Home = ({ ...props }) => {
 				</div>
 			</div>
 			<div className="miner-list">
-				<Table dataSource={miners} columns={columns} />;
+				<Table dataSource={miners} columns={columns} />
 			</div>
 		</div>
 	);
