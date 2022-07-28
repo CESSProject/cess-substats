@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-11 20:07:29
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-25 17:00:11
+ * @LastEditTime: 2022-07-27 15:39:07
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -16,12 +16,13 @@ async function main() {
       send("timestamp", "ok", now.toString());
     });
     api.rpc.chain.subscribeNewHeads((header) => {
-      // console.log("blockHeight", header.number.toString());
+      console.log("blockHeight", header.number.toString());
       send("blockHeight", "ok", header.number.toString());
     });
     api.derive.chain.subscribeNewHeads((header) => {
       // console.log("subscribeNewHeads", header.toHuman());
-      let json = header.toHuman();
+      console.log("blockHeight", header.number.toString());
+      // let json = header.toHuman();
       // console.log(json.digest.logs);
     });
   } catch (e) {

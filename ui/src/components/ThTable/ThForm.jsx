@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-25 17:41:49
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-25 18:02:43
+ * @LastEditTime: 2022-07-27 16:31:47
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -12,7 +12,7 @@ import { DatePicker, Input, InputNumber, Menu, Modal, Button, Dropdown, Descript
 import { UserOutlined, DownOutlined, DeleteOutlined, SwapRightOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
-import "./index.less";
+import "./ThTable.less";
 import queryDB from "@services/queryDB";
 
 const { Option } = Select;
@@ -23,7 +23,7 @@ const { TextArea } = Input;
 let runCount = 0;
 let dics = [];
 
-const App = ({ props }) => {
+export function ThForm({ props }) {
 	const onFinish = values => {
 		console.log("Success:", values);
 	};
@@ -92,6 +92,4 @@ const App = ({ props }) => {
 			</Form.Item>
 		</Form>
 	);
-};
-
-export default App;
+}

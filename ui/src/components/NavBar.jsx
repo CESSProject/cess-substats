@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-26 16:45:49
+ * @LastEditTime: 2022-07-27 11:45:09
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -24,15 +24,15 @@ const navBtn = [
 		name: "Home"
 	},
 	{
-		path: "/block/list",
+		path: "/block/",
 		name: "Blocks"
 	},
 	{
-		path: "/transfer/list",
+		path: "/transfer/",
 		name: "Transfers"
 	},
 	{
-		path: "/miners/list",
+		path: "/miners/",
 		name: "Miners"
 	},
 	{

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-25 16:52:08
+ * @LastEditTime: 2022-07-27 15:42:09
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -19,17 +19,28 @@ const {
 
 async function main() {
   // initialise via static create
-  const wsProvider = new WsProvider("wss://testnet-rpc0.cess.cloud/ws/");
+  const wsProvider = new WsProvider("ws://192.168.14.145:9944");
   const api = new ApiPromise({ provider: wsProvider });
   await api.isReady;
 
   let a = await api.query.timestamp.now();
   console.log(a);
+
   // make a call to retrieve the current network head
-  //   api.rpc.chain.subscribeNewHeads((header) => {
-  //     console.log(header.toHuman());
-  //     console.log(`Chain is at #${header.number}`);
-  //   });
+  api.rpc.chain.subscribeNewHeads((header) => {
+    console.log("header.author", header.author);
+    console.log(header.toHuman());
+    console.log(`Chain is at #${header.number}`);
+  });
+
+  // let value =
+  //   "0x2c79ad0419bfeaf70d4517a366094486717b01520f435a53216f90bc560ae3df";
+  // let tmp = await api.derive.chain.getHeader(value);
+  // console.log(tmp);
+  // console.log("+++++++++++++++++++++++++++++++++++");
+  // tmp = tmp.authorFromMapping || tmp.author;
+  // console.log("+++++++++++++++++++++++++++++++++++");
+  // console.log(tmp.toHuman());
 
   //   const unsub = await api.query.timestamp.now(now => {
   //     console.log(`now of ${now}`);

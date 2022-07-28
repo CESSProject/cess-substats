@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-19 15:10:21
+ * @LastEditTime: 2022-07-27 15:47:00
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -58,8 +58,11 @@ async function getBlock(value) {
 async function saveBlock(hash, blockHeight, src, timestamp) {
   let blockInfo = src.toHuman();
   blockInfo = blockInfo.block;
+  let signerAccount = src.header.author || src.header.authorFromMapping;
+  signerAccount = signerAccount.toHuman();
   let result = await dalBlock.insert({
     hash,
+    signerAccount,
     parentHash: blockInfo.header.parentHash,
     blockHeight,
     stateRoot: blockInfo.header.stateRoot,

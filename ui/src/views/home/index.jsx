@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-26 17:01:09
+ * @LastEditTime: 2022-07-28 15:03:26
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -15,6 +15,7 @@ import subData from "@services/subdata";
 import constantsAJAX from "@services/chain-state/constants";
 import storageAJAX from "@services/storage";
 import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
+import { ThTable } from "@/components/ThTable";
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -24,29 +25,33 @@ const { TextArea } = Input;
 let lastBlockTime = 0;
 const columns = [
 	{
-		title: "miner ID",
+		title: "ID",
 		dataIndex: "peerid",
-		key: "peerid"
+		width: "5%"
 	},
 	{
-		title: "address1",
+		title: "Address1",
 		dataIndex: "key",
-		key: "key"
+		width: "30%",
+		textWrap: "word-break",
+		ellipsis: true
 	},
 	{
-		title: "address2",
+		title: "Address2",
 		dataIndex: "beneficiary",
-		key: "beneficiary"
+		width: "30%",
+		textWrap: "word-break",
+		ellipsis: true
 	},
 	{
-		title: "total storage",
+		title: "Power",
 		dataIndex: "power",
-		key: "power"
+		width: "15%"
 	},
 	{
-		title: "mining reward",
+		title: "Mining reward",
 		dataIndex: "totalReward",
-		key: "totalReward"
+		width: "20%"
 	}
 ];
 
@@ -97,7 +102,7 @@ const Home = ({ ...props }) => {
 		};
 	}, []);
 	useEffect(async () => {
-		let result = await constantsAJAX("rrsc", "expectedBlockTime");
+		let result = await constantsAJAX("babe", "expectedBlockTime"); // ac1=babe/rrsc
 		if (result.msg != "ok") {
 			return setAvgBlockTime(result.msg);
 		}
@@ -106,7 +111,7 @@ const Home = ({ ...props }) => {
 		t = parseInt(t.replace(",", "")) / 1000;
 		setAvgBlockTime(t);
 	}, []);
-	useEffect(async () => {
+	const loadMiners = async () => {
 		let result = await storageAJAX({ ac1: "sminer", ac2: "minerItems" });
 		console.log("result", result);
 		if (result.msg != "ok") {
@@ -118,7 +123,23 @@ const Home = ({ ...props }) => {
 			m.totalReward = _.toNumber(m.rewardInfo.totalReward);
 		});
 		setMiners(result.data);
-	}, []);
+		return result;
+	};
+
+	const propsTable = {
+		border: true,
+		size: "middle",
+		pagesize: 10,
+		loadList: {
+			method: loadMiners
+		},
+		titleBar: {
+			title: "Miners"
+		},
+		table: {
+			columns
+		}
+	};
 
 	return (
 		<div className="containner-in">
@@ -163,7 +184,7 @@ const Home = ({ ...props }) => {
 				</div>
 			</div>
 			<div className="miner-list">
-				<Table dataSource={miners} columns={columns} />
+				<ThTable props={propsTable} />
 			</div>
 		</div>
 	);

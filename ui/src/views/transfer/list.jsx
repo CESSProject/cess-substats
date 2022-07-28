@@ -3,14 +3,13 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-28 17:58:10
+ * @LastEditTime: 2022-07-28 17:52:59
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
 import { UserOutlined, DownOutlined, DeleteOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
-import "./list.less";
 import subData from "@services/subdata";
 import constantsAJAX from "@services/chain-state/constants";
 import storageAJAX from "@services/storage";
@@ -18,7 +17,7 @@ import queryDB from "@services/queryDB";
 import moment from "moment";
 import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
 import copy from "copy-to-clipboard";
-import { NavLink, Outlet, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { ThTable } from "@/components/ThTable";
 
 const { Option } = Select;
@@ -28,7 +27,6 @@ const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const Main = ({ ...propsS }) => {
-	let params = useParams();
 	const columns = [
 		{
 			title: "Block Height",
@@ -71,7 +69,7 @@ const Main = ({ ...propsS }) => {
 		pagesize: 10,
 		loadList: {
 			params: {
-				tableName: "block_info"
+				tableName: "block_transaction"
 			},
 			method: queryDB.list
 		},
@@ -85,13 +83,9 @@ const Main = ({ ...propsS }) => {
 
 	return (
 		<div className="containner-in">
-			{params && params.q ? (
-				<Outlet />
-			) : (
-				<div className="list">
-					<ThTable props={props} />
-				</div>
-			)}
+			<div className="list">
+				<ThTable props={props} />
+			</div>
 		</div>
 	);
 };
