@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-27 11:45:09
+ * @LastEditTime: 2022-07-29 16:01:24
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -32,17 +32,30 @@ const navBtn = [
 		name: "Transfers"
 	},
 	{
-		path: "/miners/",
+		path: "/miner/",
 		name: "Miners"
 	},
 	{
-		path: "/account/query",
+		path: "/account/",
 		name: "Account"
 	}
 ];
 
 function Header({ className }) {
 	const winHeight = document.body.clientHeight;
+	const getPath = (u, isActive) => {
+		if (isActive) return true;
+		let p = window.location.pathname;
+		if (u == p) {
+			return true;
+		}
+		const pArr = p.split("/");
+		const uArr = u.split("/");
+		if (pArr[1] == uArr[1]) {
+			return true;
+		}
+		return false;
+	};
 	return (
 		<div className={className}>
 			<div className="abs-header" style={{ height: winHeight }}>
@@ -54,7 +67,7 @@ function Header({ className }) {
 					</span>
 					<span>
 						{navBtn.map(t => (
-							<NavLink key={t.name} to={t.path} style={({ isActive }) => ({ color: isActive ? "#ffc107" : "" })}>
+							<NavLink key={t.name} to={t.path} style={({ isActive }) => ({ color: getPath(t.path, isActive) ? "#ffc107" : "" })}>
 								{t.name}
 							</NavLink>
 						))}

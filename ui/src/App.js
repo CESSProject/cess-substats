@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 11:21:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-28 17:59:06
+ * @LastEditTime: 2022-07-29 16:01:26
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -16,13 +16,16 @@
  * @description: 描述信息
  * @author: chenbinfa
  */
-import { BrowserRouter } from "react-router-dom";
-import { HashRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "./App.less";
 import Home from "./views/home";
 import BlockList from "./views/block/list";
 import BlockDetail from "./views/block/detail";
 import TransferList from "./views/transfer/list";
+import TransferDetail from "./views/transfer/detail";
+import MinerList from "./views/miner/list";
+import MinerDetail from "./views/miner/detail";
+import AccountList from "./views/account/list";
 import NavBar from "./components/NavBar";
 import SearchBar from "./components/SearchBar";
 
@@ -35,10 +38,13 @@ function App() {
 					<SearchBar />
 					<Routes>
 						<Route path="/" element={<Home />} />
-						<Route path="/block/" element={<BlockList />}>
-							<Route path="/block/:q" element={<BlockDetail />} />
-						</Route>
-						<Route path="/transfer/" element={<TransferList />} />
+						<Route path="/block" element={<BlockList />} />
+						<Route path="/block/:q" element={<BlockDetail />} />
+						<Route path="/transfer" element={<TransferList />} />
+						<Route path="/transfer/:q" element={<TransferDetail />} />
+						<Route path="/miner/" element={<MinerList />} />
+						<Route path="/miner/:q" element={<MinerDetail />} />
+						<Route path="/account/" element={<AccountList />} />
 					</Routes>
 				</div>
 			</BrowserRouter>

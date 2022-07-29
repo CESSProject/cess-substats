@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-11 15:11:35
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-20 14:06:53
+ * @LastEditTime: 2022-07-29 16:02:27
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -28,7 +28,7 @@ module.exports = async function (req, res, next) {
   }
   if (!api.query[ac1][ac2]) {
     return res.json({
-      msg: "api.query." + ac1 + "." + ac1 + " not a function",
+      msg: "api.query." + ac1 + "." + ac2 + " not a function",
     });
   }
   let retsult;

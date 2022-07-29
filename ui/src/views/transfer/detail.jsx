@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-29 11:39:53
+ * @LastEditTime: 2022-07-29 11:34:04
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -52,45 +52,31 @@ let dics = [];
 function Main({ className }) {
 	const { q } = useParams();
 	const [loading, setLoading] = useState(false);
-	const [blockHeight, setBlockHeight] = useState(q);
-	const [blockDetail, setBlockDetail] = useState({});
-	const [columns, setColumns] = useState([]);
+	const [txHash, setTxHash] = useState(q);
 	const [transactions, setTransactions] = useState([]);
 	const [transactionColumns, setTransactionColumns] = useState([]);
 
 	if (!q) {
-		return message.error("blockHeight is not found");
+		return message.error("transfer hash not found.");
 	} else {
-		if (q != blockHeight) {
-			setBlockHeight(q);
+		if (q != txHash) {
+			setTxHash(q);
 		}
 	}
 	if (document.getElementById("searchInput")) {
-		document.getElementById("searchInput").value = blockHeight;
+		document.getElementById("searchInput").value = txHash;
 	}
-	console.log("blockHeight", blockHeight);
-	useEffect(async () => {
-		const params = {
-			tableName: "block_info",
-			id: blockHeight
-		};
-		let result = await queryDB.detail(params);
-		if (result.msg != "ok") {
-			return message.info(result.err || result.msg);
-		}
-		setBlockDetail(result.data);
-	}, [blockHeight]);
 	useEffect(async () => {
 		setLoading(true);
 		let params = {
-			tableName: "block_event",
+			tableName: "block_transaction",
 			pageindex: 1,
-			pagesize: 10000,
+			pagesize: 1,
 			filter: [
 				{
-					column: "blockHeight",
+					column: "hash",
 					sign: "=",
-					values: [blockHeight]
+					values: [txHash]
 				}
 			]
 		};
@@ -99,16 +85,21 @@ function Main({ className }) {
 			setLoading(false);
 			return message.info(result.err || result.msg);
 		}
-		const events = result.data;
+		const transfers = result.data;
+		if (!transfers || transfers.length == 0) {
+			setLoading(false);
+			return message.info("transfer not found");
+		}
+		// load events
 		params = {
-			tableName: "block_transaction",
+			tableName: "block_event",
 			pageindex: 1,
 			pagesize: 10000,
 			filter: [
 				{
-					column: "blockHeight",
+					column: "txId",
 					sign: "=",
-					values: [blockHeight]
+					values: [transfers[0].id]
 				}
 			]
 		};
@@ -117,51 +108,11 @@ function Main({ className }) {
 			setLoading(false);
 			return message.info(result.err || result.msg);
 		}
-		result.data.forEach(tx => {
-			tx.events = events.filter(ev => ev.txId == tx.id);
-		});
-		setTransactions(result.data);
+		const events = result.data;
+		transfers[0].events = events;
+		setTransactions(transfers);
 		setLoading(false);
-	}, [blockHeight]);
-	useEffect(async () => {
-		const columnsArr = [
-			{
-				title: "Block Height",
-				dataIndex: "blockHeight",
-				key: "blockHeight",
-				width: "10%",
-				showType: "link",
-				tpl: "/block/{blockHeight}"
-			},
-			{
-				title: "Hash",
-				dataIndex: "hash",
-				key: "hash",
-				width: "35%",
-				textWrap: "word-break",
-				ellipsis: true,
-				showType: "copy"
-			},
-			{
-				title: "Prent Hash",
-				dataIndex: "parentHash",
-				key: "parentHash",
-				width: "35%",
-				textWrap: "word-break",
-				ellipsis: true,
-				showType: "copy"
-			},
-			{
-				title: "Time",
-				dataIndex: "timestamp",
-				key: "timestamp",
-				width: "20%",
-				showType: "datetime"
-			}
-		];
-		formatShowType.formatArr(columnsArr);
-		setColumns(columnsArr);
-	}, []);
+	}, [txHash]);
 	useEffect(async () => {
 		const columnsArr = [
 			{
@@ -249,21 +200,6 @@ function Main({ className }) {
 	}, []);
 	return (
 		<div className={className}>
-			<Spin spinning={loading}>
-				<Card title="Block Overview">
-					<div className="table-content">
-						<Descriptions bordered column={1}>
-							{columns.map((t, index) => {
-								return (
-									<Descriptions.Item label={t.title} key={t.key}>
-										{t.render ? t.render(blockDetail[t.key], blockDetail, index) : blockDetail[t.key]}
-									</Descriptions.Item>
-								);
-							})}
-						</Descriptions>
-					</div>
-				</Card>
-			</Spin>
 			<Spin spinning={loading}>
 				<Card title={"Extrinsics(" + transactions.length + ")"} style={{ marginTop: 10 }}>
 					{transactions.length == 0 ? (

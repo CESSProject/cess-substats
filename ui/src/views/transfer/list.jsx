@@ -3,11 +3,32 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-28 17:52:59
+ * @LastEditTime: 2022-07-29 10:16:34
  */
 import React, { useRef, useState, useEffect } from "react";
-import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
-import { UserOutlined, DownOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+	DatePicker,
+	Input,
+	InputNumber,
+	Menu,
+	Modal,
+	Button,
+	Tooltip,
+	Dropdown,
+	Descriptions,
+	Select,
+	Space,
+	Table,
+	message,
+	Tabs,
+	Popconfirm,
+	Checkbox,
+	Card,
+	Form,
+	Collapse,
+	Empty
+} from "antd";
+import { UserOutlined, DownOutlined, DeleteOutlined, SwapRightOutlined, CheckCircleOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
 import subData from "@services/subdata";
@@ -17,7 +38,7 @@ import queryDB from "@services/queryDB";
 import moment from "moment";
 import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
 import copy from "copy-to-clipboard";
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet, useParams } from "react-router-dom";
 import { ThTable } from "@/components/ThTable";
 
 const { Option } = Select;
@@ -27,39 +48,68 @@ const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const Main = ({ ...propsS }) => {
+	let params = useParams();
 	const columns = [
 		{
 			title: "Block Height",
 			dataIndex: "blockHeight",
 			key: "blockHeight",
-			width: "10%",
+			width: "6%",
 			showType: "link",
-			tpl: "/block/{blockHeight}"
+			tpl: "/transfer/{hash}"
 		},
 		{
 			title: "Hash",
 			dataIndex: "hash",
 			key: "hash",
-			width: "35%",
+			width: "20%",
 			textWrap: "word-break",
 			ellipsis: true,
 			showType: "copy"
 		},
 		{
-			title: "Prent Hash",
-			dataIndex: "parentHash",
-			key: "parentHash",
-			width: "35%",
+			title: "Method",
+			dataIndex: "method",
+			width: "10%",
+			render: (text, record, index) => {
+				return record.section + "." + text;
+			}
+		},
+		{
+			title: "Status",
+			dataIndex: "status",
+			width: "8%",
+			render: (text, record, index) => {
+				return text === "success" ? (
+					<span className="green">
+						<CheckCircleOutlined /> {text}
+					</span>
+				) : (
+					<span className="red">
+						<ExclamationCircleOutlined /> {text}
+					</span>
+				);
+			}
+		},
+		{
+			title: "DestAccount",
+			dataIndex: "destAccount",
+			width: "15%",
 			textWrap: "word-break",
 			ellipsis: true,
 			showType: "copy"
+		},
+		{
+			title: "Amount",
+			dataIndex: "amount",
+			width: "5%"
 		},
 		{
 			title: "Time",
 			dataIndex: "timestamp",
-			key: "timestamp",
-			width: "20%",
-			showType: "datetime"
+			width: "10%",
+			showType: "datetime",
+			tpl: "YYYY-MM-DD HH:mm:ss"
 		}
 	];
 

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-28 16:02:16
+ * @LastEditTime: 2022-07-29 11:37:23
  */
 import React, { useRef, useState, useEffect } from "react";
 import {
@@ -52,6 +52,7 @@ export function ThTable({ props }) {
 	// console.log("props", props);
 	const hasBorder = props.border;
 	const navigate = useNavigate();
+	const [loading, setLoading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(0);
 	const [dataSource, setDataSource] = useState([]);
 	const [selectRows, setSelectRows] = useState([]);
@@ -95,6 +96,7 @@ export function ThTable({ props }) {
 
 	//ajax post
 	useEffect(async () => {
+		setLoading(true);
 		let params = {};
 		if (props.loadList?.params) {
 			params = _.cloneDeep(props.loadList.params);
@@ -115,6 +117,7 @@ export function ThTable({ props }) {
 		}
 		let result = await props.loadList?.method(params);
 		if (!result || result.msg != "ok") {
+			setLoading(false);
 			return;
 		}
 		result.data.forEach((t, i) => {
@@ -124,6 +127,7 @@ export function ThTable({ props }) {
 		});
 		setDataSource(result.data);
 		setTotal(result.total);
+		setLoading(false);
 	}, [reload]);
 
 	const onTableChange = (paginationObj, filters, sorter, extra) => {
@@ -389,7 +393,7 @@ export function ThTable({ props }) {
 					""
 				)}
 				<div className="table-box block">
-					<Table size={props.size} dataSource={dataSource} {...props.table} pagination={pagination} onChange={onTableChange} />
+					<Table loading={loading} size={props.size} dataSource={dataSource} {...props.table} pagination={pagination} onChange={onTableChange} />
 					<div className="batch-btn-box">
 						{props.batchAction && props.batchAction.length > 0 ? <Space>{props.batchAction?.map((f, i) => renderBatchActionBtn(f, i))}</Space> : ""}
 					</div>

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-28 14:15:58
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-28 17:27:07
+ * @LastEditTime: 2022-07-29 17:48:21
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -48,6 +48,15 @@ function formatOne(column) {
 		return;
 	}
 	switch (t.showType) {
+		case "tpl":
+			t.render = (text, record, index) => {
+				let tpl = t.tpl;
+				Object.keys(record).forEach(k => {
+					tpl = tpl.replace("{" + k + "}", record[k]);
+				});
+				return tpl;
+			};
+			break;
 		case "date":
 			t.render = (text, record, index) => moment(text).format("YYYY-MM-DD");
 			break;
@@ -72,20 +81,23 @@ function formatOne(column) {
 			t.render = (text, record, index) => moment(text).format("MM-DD HH:mm");
 			break;
 		case "copy":
-			t.render = (text, record, index) => (
-				<Tooltip placement="topLeft" title="click copy">
-					<span
-						onClick={() => {
-							copy(text);
-							message.success("Copy successful !");
-						}}
-						className="enable-copy-txt-box">
-						{text}
-						&nbsp;
-						<CopyOutlined />
-					</span>
-				</Tooltip>
-			);
+			t.render = (text, record, index) =>
+				text ? (
+					<Tooltip placement="topLeft" title="click copy">
+						<span
+							onClick={() => {
+								copy(text);
+								message.success("Copy successful !");
+							}}
+							className="enable-copy-txt-box">
+							{text}
+							&nbsp;
+							<CopyOutlined />
+						</span>
+					</Tooltip>
+				) : (
+					""
+				);
 			break;
 		case "link":
 			if (!t.tpl) {
@@ -97,6 +109,16 @@ function formatOne(column) {
 					tpl = tpl.replace("{" + k + "}", record[k]);
 				});
 				return <NavLink to={tpl}>{text}</NavLink>;
+			};
+			break;
+		case "currency":
+			t.render = (text, record, index) => {
+				return (
+					<>
+						<span className="money">{text && text.money}</span>
+						<span className="suffix">{text && text.suffix}</span>
+					</>
+				);
 			};
 			break;
 	}

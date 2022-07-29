@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-28 17:58:10
+ * @LastEditTime: 2022-07-29 10:16:45
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -85,13 +85,9 @@ const Main = ({ ...propsS }) => {
 
 	return (
 		<div className="containner-in">
-			{params && params.q ? (
-				<Outlet />
-			) : (
-				<div className="list">
-					<ThTable props={props} />
-				</div>
-			)}
+			<div className="list">
+				<ThTable props={props} />
+			</div>
 		</div>
 	);
 };
