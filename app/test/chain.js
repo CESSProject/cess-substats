@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-29 16:06:09
+ * @LastEditTime: 2022-08-01 15:14:45
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -26,8 +26,12 @@ async function main() {
   let a = await api.query.timestamp.now();
   console.log(a);
 
-  a = await api.query.fileBank.purchasedPackage();
-  console.log(a.toJSON());
+  a = await api.query.balances.totalIssuance();
+  console.log(a.toHuman());
+
+  a = parseInt("0x000000000000001e365f0de1900011a9", 16);
+  a = a / 1048576000000000000;
+  console.log(a);
 
   // make a call to retrieve the current network head
   // api.rpc.chain.subscribeNewHeads((header) => {

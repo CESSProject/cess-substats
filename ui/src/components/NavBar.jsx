@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-29 16:01:24
+ * @LastEditTime: 2022-08-01 15:31:07
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -17,27 +17,44 @@ import styled from "styled-components";
 import _ from "lodash";
 import { NavLink } from "react-router-dom";
 import React, { useRef, useState, useEffect } from "react";
+import {
+	HomeOutlined,
+	UserOutlined,
+	DownOutlined,
+	DeleteOutlined,
+	LoginOutlined,
+	ApartmentOutlined,
+	AppstoreAddOutlined,
+	SwapOutlined,
+	DatabaseOutlined,
+	WalletOutlined
+} from "@ant-design/icons";
 
 const navBtn = [
 	{
 		path: "/",
-		name: "Home"
+		name: "Home",
+		icon: <HomeOutlined />
 	},
 	{
 		path: "/block/",
-		name: "Blocks"
+		name: "Blocks",
+		icon: <AppstoreAddOutlined />
 	},
 	{
 		path: "/transfer/",
-		name: "Transfers"
+		name: "Transfers",
+		icon: <SwapOutlined />
 	},
 	{
 		path: "/miner/",
-		name: "Miners"
+		name: "Miners",
+		icon: <DatabaseOutlined />
 	},
 	{
 		path: "/account/",
-		name: "Account"
+		name: "Account",
+		icon: <WalletOutlined />
 	}
 ];
 
@@ -68,6 +85,7 @@ function Header({ className }) {
 					<span>
 						{navBtn.map(t => (
 							<NavLink key={t.name} to={t.path} style={({ isActive }) => ({ color: getPath(t.path, isActive) ? "#ffc107" : "" })}>
+								{t.icon}&nbsp;
 								{t.name}
 							</NavLink>
 						))}

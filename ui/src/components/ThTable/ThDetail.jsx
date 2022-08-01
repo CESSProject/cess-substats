@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-25 17:41:49
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-27 16:31:54
+ * @LastEditTime: 2022-08-01 09:51:03
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -24,6 +24,8 @@ let runCount = 0;
 let dics = [];
 
 export function ThDetail({ props }) {
+	runCount++;
+	console.log("ThDetail render count", runCount);
 	return (
 		<Descriptions bordered column={1}>
 			<Descriptions.Item label="消息类型">系统通知</Descriptions.Item>

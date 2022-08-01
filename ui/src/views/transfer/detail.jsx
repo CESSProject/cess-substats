@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-29 11:34:04
+ * @LastEditTime: 2022-08-01 16:13:04
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -212,10 +212,12 @@ function Main({ className }) {
 										<div className="table-content">
 											<Descriptions bordered column={1}>
 												{transactionColumns.map((t, index) => {
-													return (
+													return trx[t.key] ? (
 														<Descriptions.Item label={t.title} key={t.key}>
 															{t.render ? t.render(trx[t.key], trx, index) : trx[t.key]}
 														</Descriptions.Item>
+													) : (
+														""
 													);
 												})}
 											</Descriptions>

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-29 11:37:23
+ * @LastEditTime: 2022-08-01 14:00:22
  */
 import React, { useRef, useState, useEffect } from "react";
 import {
@@ -48,7 +48,7 @@ let dics = [];
 
 export function ThTable({ props }) {
 	runCount++;
-	console.log("runCount", runCount);
+	console.log("ThTable render count", runCount);
 	// console.log("props", props);
 	const hasBorder = props.border;
 	const navigate = useNavigate();
@@ -58,7 +58,7 @@ export function ThTable({ props }) {
 	const [selectRows, setSelectRows] = useState([]);
 
 	const [total, setTotal] = useState(0);
-	const [pageindex, setPageindex] = useState(1);
+	const [pageindex, setPageindex] = useState(props.pageindex || 1);
 	const [pagesize, setPagesize] = useState(props.pagesize);
 	const [reload, setReload] = useState(false);
 
@@ -393,7 +393,7 @@ export function ThTable({ props }) {
 					""
 				)}
 				<div className="table-box block">
-					<Table loading={loading} size={props.size} dataSource={dataSource} {...props.table} pagination={pagination} onChange={onTableChange} />
+					<Table loading={loading} size={props.size} dataSource={dataSource} {...props.table} pagination={props.hidePager ? false : pagination} onChange={onTableChange} />
 					<div className="batch-btn-box">
 						{props.batchAction && props.batchAction.length > 0 ? <Space>{props.batchAction?.map((f, i) => renderBatchActionBtn(f, i))}</Space> : ""}
 					</div>

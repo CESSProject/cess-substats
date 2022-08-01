@@ -1,16 +1,44 @@
-.state-line {
-	display: flex;
-	.state-box {
-		width: 20%;
-		background-color: #fff;
-		margin-right: 1%;
-		margin-bottom: 1%;
-		padding: 1%;
+.containner-in {
+	display: block;
+	overflow: hidden;
+	padding-bottom: 20px;
+	.btn-more {
+		background-color: #3187fa;
+		padding: 2px 16px;
 		border-radius: 4px;
-		span {
-			display: block;
-			clear: both;
-			overflow: hidden;
+		color: #fff;
+	}
+	.btn-more:hover {
+		background-color: #73a8ec;
+	}
+	.chart-box {
+		display: block;
+		overflow: hidden;
+		clear: both;
+		margin: 10px 0;
+		.chart-left {
+			width: 30%;
+			float: left;
+		}
+		.chart-right {
+			width: 69%;
+			float: left;
+			margin-left: 1%;
+		}
+	}
+	.list-box {
+		display: block;
+		overflow: hidden;
+		clear: both;
+		margin: 10px 0;
+		margin-top: 20px;
+		.chart-left {
+			width: 49.5%;
+			float: left;
+		}
+		.chart-right {
+			width: 49.5%;
+			float: right;
 		}
 	}
 }

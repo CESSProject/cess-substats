@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-25 17:41:49
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-27 16:31:47
+ * @LastEditTime: 2022-08-01 09:50:52
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -24,6 +24,8 @@ let runCount = 0;
 let dics = [];
 
 export function ThForm({ props }) {
+	runCount++;
+	console.log("ThForm render count", runCount);
 	const onFinish = values => {
 		console.log("Success:", values);
 	};

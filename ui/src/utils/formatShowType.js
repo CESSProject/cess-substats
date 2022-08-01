@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-28 14:15:58
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-29 17:48:21
+ * @LastEditTime: 2022-08-01 18:01:09
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -32,6 +32,7 @@ import { NavLink } from "react-router-dom";
 import _ from "lodash";
 import moment from "moment";
 import copy from "copy-to-clipboard";
+import AccountIcon from "@/components/AccountIcon";
 
 function formatArr(columns) {
 	columns.forEach(t => formatOne(t));
@@ -74,6 +75,9 @@ function formatOne(column) {
 				t.tpl = "YYYY-MM-DD HH:mm:ss";
 			}
 			t.render = (text, record, index) => {
+				if (t.tpl == "fromNow") {
+					return moment(text).fromNow();
+				}
 				return moment(text).format(t.tpl);
 			};
 			break;
@@ -90,6 +94,27 @@ function formatOne(column) {
 								message.success("Copy successful !");
 							}}
 							className="enable-copy-txt-box">
+							{text}
+							&nbsp;
+							<CopyOutlined />
+						</span>
+					</Tooltip>
+				) : (
+					""
+				);
+			break;
+		case "accountIcon":
+			t.render = (text, record, index) =>
+				text ? (
+					<Tooltip placement="topLeft" title="click copy">
+						<span
+							onClick={() => {
+								copy(text);
+								message.success("Copy successful !");
+							}}
+							className="enable-copy-icon-box">
+							<AccountIcon props={{ hash: text }} />
+							&nbsp;
 							{text}
 							&nbsp;
 							<CopyOutlined />

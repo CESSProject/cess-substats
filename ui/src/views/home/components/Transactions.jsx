@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-01 16:07:18
+ * @LastEditTime: 2022-08-01 16:25:58
  */
 import React, { useRef, useState, useEffect } from "react";
 import {
@@ -40,6 +40,7 @@ import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFr
 import copy from "copy-to-clipboard";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import { ThTable } from "@/components/ThTable";
+import styled from "styled-components";
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -48,31 +49,13 @@ const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const Main = ({ ...propsS }) => {
-	let params = useParams();
 	const columns = [
-		{
-			title: "Block Height",
-			dataIndex: "blockHeight",
-			key: "blockHeight",
-			width: "6%",
-			showType: "link",
-			tpl: "/transfer/{hash}"
-		},
-		{
-			title: "Hash",
-			dataIndex: "hash",
-			key: "hash",
-			width: "20%",
-			textWrap: "word-break",
-			ellipsis: true,
-			showType: "copy"
-		},
 		{
 			title: "Method",
 			dataIndex: "method",
 			width: "10%",
 			render: (text, record, index) => {
-				return record.section + "." + text;
+				return <NavLink to={"/transfer/" + record.hash}>{record.section + "." + text}</NavLink>;
 			}
 		},
 		{
@@ -92,39 +75,23 @@ const Main = ({ ...propsS }) => {
 			}
 		},
 		{
-			title: "DestAccount",
-			dataIndex: "destAccount",
-			width: "15%",
-			textWrap: "word-break",
-			ellipsis: true,
-			showType: "copy"
-		},
-		{
-			title: "Amount",
-			dataIndex: "amount",
-			width: "5%"
-		},
-		{
 			title: "Time",
 			dataIndex: "timestamp",
 			width: "10%",
 			showType: "datetime",
-			tpl: "YYYY-MM-DD HH:mm:ss"
+			tpl: "fromNow"
 		}
 	];
 
 	const props = {
-		border: true,
 		size: "middle",
+		hidePager: true,
 		pagesize: 10,
 		loadList: {
 			params: {
 				tableName: "block_transaction"
 			},
 			method: queryDB.list
-		},
-		titleBar: {
-			title: "Transactions"
 		},
 		table: {
 			columns

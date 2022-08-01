@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-28 16:36:18
+ * @LastEditTime: 2022-08-01 16:16:14
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -30,10 +30,10 @@ const SearchBar = ({ className }) => {
 			let v = pathArr[2];
 			if (type == "block") {
 				type = "Block";
-			} else if (type == "transaction") {
-				type = "Transaction";
-			} else if (type == "address") {
-				type = "Address";
+			} else if (type == "transfer") {
+				type = "Transfer";
+			} else if (type == "account") {
+				type = "Account";
 			} else {
 				type = "All";
 			}
@@ -46,19 +46,16 @@ const SearchBar = ({ className }) => {
 		if (e.code && e.code == "Enter" && e.target.value) {
 			setKeyword(e.target.value);
 		}
-		let type = searchType;
-		if (searchType == "All") {
-			type = getSearchType();
-		}
+		let type = getSearchType();
 		setSearchType(type);
 		let url = "/" + type.toLowerCase() + "/" + keyword;
 		navigate(url);
 	};
 	const getSearchType = () => {
-		let type = "Transaction";
+		let type = "Transfer";
 		if (keyword.indexOf("cX") == 0) {
-			type = "Address";
-		} else if (!isNaN(keyword)) {
+			type = "Account";
+		} else if (keyword.length < 15 && !isNaN(keyword)) {
 			type = "Block";
 		}
 		return type;
@@ -76,7 +73,7 @@ const SearchBar = ({ className }) => {
 					<Option value="All">All</Option>
 					<Option value="Block">Block</Option>
 					<Option value="Transaction">Transaction</Option>
-					<Option value="Address">Address</Option>
+					<Option value="Account">Account</Option>
 				</Select>
 				<Input
 					style={{
