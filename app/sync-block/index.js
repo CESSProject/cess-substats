@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-27 15:47:00
+ * @LastEditTime: 2022-08-02 16:45:41
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -24,18 +24,8 @@ const Dal = require("../../dal/dal-common");
 const dalBlock = new Dal("tb_block_info");
 const dalTransaction = new Dal("tb_block_transaction");
 const dalEvent = new Dal("tb_block_event");
+const init = require("../init");
 
-async function initAPI() {
-  if (api) return true;
-  try {
-    const wsProvider = new WsProvider("ws://106.15.44.155:9948");
-    api = new ApiPromise({ provider: wsProvider });
-    await api.isReady;
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
 async function getBlock(value) {
   let hash = "";
   if (typeof value != "number") {
@@ -58,11 +48,12 @@ async function getBlock(value) {
 async function saveBlock(hash, blockHeight, src, timestamp) {
   let blockInfo = src.toHuman();
   blockInfo = blockInfo.block;
-  let signerAccount = src.header.author || src.header.authorFromMapping;
-  signerAccount = signerAccount.toHuman();
+  // console.log("blockInfo", blockInfo);
+  // let signerAccount = src.header.author || src.header.authorFromMapping;
+  // signerAccount = signerAccount.toHuman();
   let result = await dalBlock.insert({
     hash,
-    signerAccount,
+    // signerAccount,
     parentHash: blockInfo.header.parentHash,
     blockHeight,
     stateRoot: blockInfo.header.stateRoot,
@@ -192,16 +183,13 @@ async function saveEvent(blockHeight, src, txId, txIndex, events, timestamp) {
   return status;
 }
 async function main() {
-  let isConnection = await initAPI();
-  if (!isConnection) {
-    return console.log("Connection failed");
-  }
-  let blockHeight = 100;
+  api = await init();
+  let blockHeight = 1;
   api.rpc.chain.subscribeNewHeads((header) => {
     blockHeight = header.number.toNumber();
     console.log(`Chain is at #${header.number}`);
   });
-  let lastBlockHeight = 1;
+  let lastBlockHeight = 0;
   let sql = "select blockHeight from ?? order by blockHeight desc limit 1";
   let param = [dalBlock.tableName];
   let tmp = await dalBlock.query(sql, param);

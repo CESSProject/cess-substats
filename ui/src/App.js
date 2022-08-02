@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 11:21:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-29 16:01:26
+ * @LastEditTime: 2022-08-02 16:56:15
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -26,6 +26,7 @@ import TransferDetail from "./views/transfer/detail";
 import MinerList from "./views/miner/list";
 import MinerDetail from "./views/miner/detail";
 import AccountList from "./views/account/list";
+import AccountDetail from "./views/account/detail";
 import NavBar from "./components/NavBar";
 import SearchBar from "./components/SearchBar";
 
@@ -45,6 +46,7 @@ function App() {
 						<Route path="/miner/" element={<MinerList />} />
 						<Route path="/miner/:q" element={<MinerDetail />} />
 						<Route path="/account/" element={<AccountList />} />
+						<Route path="/account/:q" element={<AccountDetail />} />
 					</Routes>
 				</div>
 			</BrowserRouter>

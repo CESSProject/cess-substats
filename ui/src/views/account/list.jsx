@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-29 17:52:14
+ * @LastEditTime: 2022-08-01 18:06:46
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -28,7 +28,7 @@ const columns = [
 		title: "AccountId",
 		dataIndex: "accountId",
 		width: "45%",
-		showType: "link",
+		showType: "accountIcon",
 		textWrap: "word-break",
 		ellipsis: true,
 		tpl: "{accountId}"

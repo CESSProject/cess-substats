@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-29 14:38:42
+ * @LastEditTime: 2022-08-02 15:07:30
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -28,20 +28,22 @@ const columns = [
 		dataIndex: "peerid",
 		width: "5%",
 		showType: "link",
-		tpl: "{peerid}"
+		tpl: "/miner/{key}"
 	},
 	{
 		title: "Address1",
 		dataIndex: "key",
 		width: "30%",
 		textWrap: "word-break",
-		ellipsis: true
+		ellipsis: true,
+		showType: "accountIcon"
 	},
 	{
 		title: "Address2",
 		dataIndex: "beneficiary",
 		width: "30%",
 		textWrap: "word-break",
+		showType: "accountIcon",
 		ellipsis: true
 	},
 	{
@@ -66,7 +68,11 @@ const Home = ({ ...props }) => {
 		if (result.msg != "ok") {
 			return;
 		}
-		result.data.sort((t1, t2) => t1.peerid - t2.peerid);
+		result.data.sort((t1, t2) => t2.power - t1.power);
+		result.data.forEach((t, i) => {
+			t.peerid = i + 1;
+		});
+		// result.data.sort((t1, t2) => t1.peerid - t2.peerid);
 		result.data.forEach(m => {
 			m.power = formatterSizeFromMB(m.power);
 			m.totalReward = _.toNumber(m.rewardInfo.totalReward);

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-01 16:38:00
+ * @LastEditTime: 2022-08-02 17:45:24
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -59,6 +59,7 @@ const Main = ({ className, miners }) => {
 		hidePager: true,
 		pagesize: 10,
 		loadList: {
+			autoRefresh: 3000,
 			params: {
 				tableName: "block_info"
 			},
@@ -75,7 +76,8 @@ const Main = ({ className, miners }) => {
 			id: "home-blockHeight",
 			name: "blockHeight",
 			e: data => {
-				setBlockHeight(data);
+				// setBlockHeight(data);
+				// TODO
 			}
 		};
 		subData.addEvent(e);

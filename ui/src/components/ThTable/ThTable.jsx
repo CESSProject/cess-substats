@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-01 14:00:22
+ * @LastEditTime: 2022-08-02 17:49:46
  */
 import React, { useRef, useState, useEffect } from "react";
 import {
@@ -37,6 +37,7 @@ import { ThDetail } from "./ThDetail";
 import moment from "moment";
 import copy from "copy-to-clipboard";
 import formatShowType from "@/utils/formatShowType";
+let ignore = false;
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -129,6 +130,22 @@ export function ThTable({ props }) {
 		setTotal(result.total);
 		setLoading(false);
 	}, [reload]);
+
+	//autoRefresh
+	useEffect(async () => {
+		ignore = false;
+		if (!props.loadList || !props.loadList.autoRefresh) {
+			return;
+		}
+		setInterval(() => {
+			if (ignore) return;
+			console.log("autoRefresh", props.loadList.autoRefresh);
+			setReload(new Date());
+		}, props.loadList.autoRefresh);
+		return () => {
+			ignore = true;
+		};
+	}, []);
 
 	const onTableChange = (paginationObj, filters, sorter, extra) => {
 		// console.log("pagination", pagination);

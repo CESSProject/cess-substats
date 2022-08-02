@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-01 12:03:28
+ * @LastEditTime: 2022-08-02 11:38:47
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -24,21 +24,24 @@ const SearchBar = ({ className }) => {
 
 	useEffect(async () => {
 		setLoading(true);
-		let result = await storageAJAX({ ac1: "sminer", ac2: "totalSpace" });
+		let result = await storageAJAX({ ac1: "sminer", ac2: "totalServiceSpace" });
 		console.log("sminer totalSpace result", result);
 		if (result.msg != "ok") {
 			setLoading(false);
 			return;
 		}
 		let totalSpace = result.data;
-		result = await storageAJAX({ ac1: "sminer", ac2: "totalPower" });
+		result = await storageAJAX({ ac1: "sminer", ac2: "totalIdleSpace" });
 		console.log("sminer totalPower result", result);
 		let totalPower = result.data;
 		if (result.msg != "ok") {
 			setLoading(false);
 			return;
 		}
-		let usePer = ((totalSpace * 100) / totalPower).toFixed(0);
+		let usePer = "100";
+		if (totalPower > 0) {
+			usePer = ((totalSpace * 100) / totalPower).toFixed(0);
+		}
 		const config = {
 			height: 225,
 			data: [

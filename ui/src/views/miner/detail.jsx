@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-29 15:52:47
+ * @LastEditTime: 2022-08-02 15:06:20
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -74,7 +74,7 @@ function Main({ className }) {
 			setLoading(false);
 			return message.error(result.msg);
 		}
-		let mainer = result.data.find(t => t.peerid == id);
+		let mainer = result.data.find(t => t.key == id);
 		if (!mainer) {
 			setLoading(false);
 			return message.error("miner not found");

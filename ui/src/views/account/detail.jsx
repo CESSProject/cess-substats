@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-29 17:56:11
+ * @LastEditTime: 2022-08-02 17:47:27
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -39,6 +39,8 @@ import queryDB from "@services/queryDB";
 import formatShowType from "@/utils/formatShowType";
 import moment from "moment";
 import copy from "copy-to-clipboard";
+import storageAJAX from "@services/storage";
+import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -48,79 +50,102 @@ const { TextArea } = Input;
 const { Panel } = Collapse;
 let runCount = 0;
 let dics = [];
+let ignore = false;
+
+//test account
+//cXffK7BmstE5rXcK8pxKLufkffp9iASMntxUm6ctpR6xS3icV
 
 function Main({ className }) {
 	const { q } = useParams();
 	const [loading, setLoading] = useState(false);
-	const [blockHeight, setBlockHeight] = useState(q);
-	const [blockDetail, setBlockDetail] = useState({});
+	const [account, setAccount] = useState(q);
+	const [balances, setBalances] = useState(0);
 	const [columns, setColumns] = useState([]);
-	const [transactions, setTransactions] = useState([]);
+	const [transactionsOut, setTransactionsOut] = useState([]);
+	const [transactionsIn, setTransactionsIn] = useState([]);
 	const [transactionColumns, setTransactionColumns] = useState([]);
 
 	if (!q) {
-		return message.error("blockHeight is not found");
+		return message.error("accountId is not found");
 	} else {
-		if (q != blockHeight) {
-			setBlockHeight(q);
+		if (q != account) {
+			setAccount(q);
 		}
 	}
 	if (document.getElementById("searchInput")) {
-		document.getElementById("searchInput").value = blockHeight;
+		document.getElementById("searchInput").value = account;
 	}
-	console.log("blockHeight", blockHeight);
+	console.log("account", account);
+
+	//query Balances
 	useEffect(async () => {
-		const params = {
-			tableName: "block_info",
-			id: blockHeight
-		};
-		let result = await queryDB.detail(params);
+		ignore = false;
+		setLoading(true);
+		let result = await storageAJAX({ ac1: "system", ac2: "account", id: account });
 		if (result.msg != "ok") {
-			return message.info(result.err || result.msg);
+			setLoading(false);
+			return;
 		}
-		setBlockDetail(result.data);
-	}, [blockHeight]);
+		// setBalances(parseInt(result.data.data.free, 16) / 1000000000000)
+		setBalances(formatterCurrencyStr(parseInt(result.data.data.free, 16)));
+		console.log(result);
+		setLoading(false);
+		return () => {
+			ignore = true;
+		};
+	}, [account]);
+
+	// query trans
 	useEffect(async () => {
 		setLoading(true);
 		let params = {
-			tableName: "block_event",
+			tableName: "block_transaction",
 			pageindex: 1,
 			pagesize: 10000,
 			filter: [
 				{
-					column: "blockHeight",
+					column: "signer",
 					sign: "=",
-					values: [blockHeight]
+					values: [account]
+				},
+				{
+					column: "amount",
+					sign: ">",
+					values: [0]
 				}
-			]
+			],
+			filterType: "and"
 		};
 		let result = await queryDB.list(params);
 		if (result.msg != "ok") {
 			setLoading(false);
 			return message.info(result.err || result.msg);
 		}
-		const events = result.data;
+		setTransactionsOut(result.data);
 		params = {
 			tableName: "block_transaction",
 			pageindex: 1,
 			pagesize: 10000,
 			filter: [
 				{
-					column: "blockHeight",
+					column: "signer",
 					sign: "=",
-					values: [blockHeight]
+					values: [account]
+				},
+				{
+					column: "amount",
+					sign: ">",
+					values: [0]
 				}
-			]
+			],
+			filterType: "and"
 		};
 		result = await queryDB.list(params);
 		if (result.msg != "ok") {
 			setLoading(false);
 			return message.info(result.err || result.msg);
 		}
-		result.data.forEach(tx => {
-			tx.events = events.filter(ev => ev.txId == tx.id);
-		});
-		setTransactions(result.data);
+		setTransactionsOut(result.data);
 		setLoading(false);
 	}, [blockHeight]);
 	useEffect(async () => {
@@ -250,21 +275,16 @@ function Main({ className }) {
 	return (
 		<div className={className}>
 			<Spin spinning={loading}>
-				<Card title="Block Overview">
+				<Card title="Account Overview">
 					<div className="table-content">
 						<Descriptions bordered column={1}>
-							{columns.map((t, index) => {
-								return (
-									<Descriptions.Item label={t.title} key={t.key}>
-										{t.render ? t.render(blockDetail[t.key], blockDetail, index) : blockDetail[t.key]}
-									</Descriptions.Item>
-								);
-							})}
+							<Descriptions.Item label="AccountID">{account}</Descriptions.Item>
+							<Descriptions.Item label="Balances">{balances}</Descriptions.Item>
 						</Descriptions>
 					</div>
 				</Card>
 			</Spin>
-			<Spin spinning={loading}>
+			{/* <Spin spinning={loading}>
 				<Card title={"Extrinsics(" + transactions.length + ")"} style={{ marginTop: 10 }}>
 					{transactions.length == 0 ? (
 						<Empty />
@@ -290,7 +310,7 @@ function Main({ className }) {
 						</div>
 					)}
 				</Card>
-			</Spin>
+			</Spin> */}
 		</div>
 	);
 }

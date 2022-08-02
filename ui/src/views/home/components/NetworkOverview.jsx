@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-01 16:37:42
+ * @LastEditTime: 2022-08-02 14:52:30
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -19,6 +19,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Pie, Line } from "@ant-design/plots";
 import storageAJAX from "@services/storage";
+import queryDB from "@services/queryDB";
 import { formatterCount } from "@utils/formatterCount";
 import "@ant-design/flowchart/dist/index.css";
 let lastBlockTime = 0;
@@ -32,6 +33,7 @@ const SearchBar = ({ className, miners }) => {
 	const [totalPower, setTotalPower] = useState(0);
 	const [totalIssuance, setTotalIssuance] = useState(0);
 	const [avgBlockTime, setAvgBlockTime] = useState("--");
+	const [list, setList] = useState([]);
 
 	useEffect(() => {
 		ignore = false;
@@ -67,13 +69,23 @@ const SearchBar = ({ className, miners }) => {
 	}, []);
 
 	useEffect(async () => {
-		setLoading(true);
-		let result = await storageAJAX({ ac1: "sminer", ac2: "totalPower" });
-		if (result.msg != "ok") {
+		ignore = false;
+		async function run() {
+			if (ignore) return;
+			setLoading(true);
+			let result = await storageAJAX({ ac1: "sminer", ac2: "totalIdleSpace" });
+			if (result.msg != "ok") {
+				setLoading(false);
+				return;
+			}
+			setTotalPower(formatterSizeFromMB(result.data));
 			setLoading(false);
-			return;
 		}
-		setTotalPower(formatterSizeFromMB(result.data));
+		setInterval(run, 10000);
+		run();
+		return () => {
+			ignore = true;
+		};
 	}, []);
 
 	useEffect(async () => {
@@ -91,130 +103,25 @@ const SearchBar = ({ className, miners }) => {
 
 	useEffect(async () => {
 		setLoading(true);
-		let data = [
-			{
-				Date: "2010-01",
-				scales: 1998
-			},
-			{
-				Date: "2010-02",
-				scales: 1850
-			},
-			{
-				Date: "2010-03",
-				scales: 1720
-			},
-			{
-				Date: "2010-04",
-				scales: 1818
-			},
-			{
-				Date: "2010-05",
-				scales: 1920
-			},
-			{
-				Date: "2010-06",
-				scales: 1802
-			},
-			{
-				Date: "2010-07",
-				scales: 1945
-			},
-			{
-				Date: "2010-08",
-				scales: 1856
-			},
-			{
-				Date: "2010-09",
-				scales: 2107
-			},
-			{
-				Date: "2010-10",
-				scales: 2140
-			},
-			{
-				Date: "2010-11",
-				scales: 2311
-			},
-			{
-				Date: "2010-12",
-				scales: 1972
-			},
-			{
-				Date: "2011-01",
-				scales: 1760
-			},
-			{
-				Date: "2011-02",
-				scales: 1824
-			},
-			{
-				Date: "2011-03",
-				scales: 1801
-			},
-			{
-				Date: "2011-04",
-				scales: 2001
-			},
-			{
-				Date: "2011-05",
-				scales: 1640
-			},
-			{
-				Date: "2011-06",
-				scales: 1502
-			},
-			{
-				Date: "2011-07",
-				scales: 1621
-			},
-			{
-				Date: "2011-08",
-				scales: 1480
-			},
-			{
-				Date: "2011-09",
-				scales: 1549
-			},
-			{
-				Date: "2011-10",
-				scales: 1390
-			},
-			{
-				Date: "2011-11",
-				scales: 1325
-			},
-			{
-				Date: "2011-12",
-				scales: 1250
-			},
-			{
-				Date: "2012-01",
-				scales: 1394
-			},
-			{
-				Date: "2012-02",
-				scales: 1406
-			},
-			{
-				Date: "2012-03",
-				scales: 1578
-			},
-			{
-				Date: "2012-04",
-				scales: 1465
-			},
-			{
-				Date: "2012-05",
-				scales: 1689
-			}
-		];
+		const params = {
+			tableName: "storage_power_trend",
+			pageindex: 1,
+			pagesize: 100
+		};
+		let result = await queryDB.list(params);
+		if (result.msg != "ok") {
+			setLoading(false);
+			return;
+		}
+		const list = result.data.sort((t1, t2) => t1.id - t2.id);
+		list.forEach(t => (t["Storage Power(GB)"] = parseFloat((t.power / 1073741824).toFixed(2))));
 		const config = {
 			height: 175,
-			data,
+			data: list,
 			padding: "auto",
-			xField: "Date",
-			yField: "scales",
+			xField: "dateStr",
+			yField: "Storage Power(GB)",
+			smooth: true,
 			xAxis: {
 				// type: 'timeCat',
 				tickCount: 5
@@ -238,17 +145,18 @@ const SearchBar = ({ className, miners }) => {
 						<span>Storage Power</span>
 						<span>{totalPower}</span>
 					</div>
-					<div className="state-box">
+					<div className="state-box" style={{ marginBottom: 0 }}>
 						<span>Total Issuance</span>
 						<span>{totalIssuance} TCESS</span>
 					</div>
-					<div className="state-box">
+					<div className="state-box" style={{ marginBottom: 0 }}>
 						<span>Storage Miners</span>
 						<span>{miners.length} Nodes</span>
 					</div>
 				</div>
 			</div>
 			<div className="right-line-box">
+				<div className="right-line-box-title">Storage Power Trends</div>
 				<Spin spinning={loading}>{chartConfig ? <Line {...chartConfig} /> : ""}</Spin>
 			</div>
 		</div>
@@ -270,11 +178,15 @@ export default React.memo(styled(SearchBar)`
 				float: left;
 				width: 46%;
 				background-color: #fff;
-				margin-bottom: 4%;
+				margin-bottom: 24px;
 				margin-right: 4%;
-				padding: 4% 4%;
+				padding: 19px 4%;
 				border-radius: 4px;
 				border: 1px solid #ddd;
+				transition: background-color 2s;
+				-moz-transition: background-color 2s; /* Firefox 4 */
+				-webkit-transition: background-color 2s; /* Safari 和 Chrome */
+				-o-transition: background-color 2s; /* Opera */
 				.trs {
 					background-color: #fff;
 					transition: background-color 1s;
@@ -290,6 +202,9 @@ export default React.memo(styled(SearchBar)`
 					line-height: 30px;
 				}
 			}
+			.state-box:hover {
+				background-color: #e2f6ff;
+			}
 		}
 	}
 	.right-line-box {
@@ -297,6 +212,15 @@ export default React.memo(styled(SearchBar)`
 		width: 45%;
 		border: 1px solid #ddd;
 		border-radius: 5px;
-		padding: 2%;
+		padding: 9px 2%;
+		position: relative;
+		padding-top: 37px;
+		.right-line-box-title {
+			position: absolute;
+			top: 6px;
+			left: 11px;
+			overflow: hidden;
+			font-size: 15px;
+		}
 	}
 `);

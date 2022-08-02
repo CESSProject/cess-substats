@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-29 11:39:53
+ * @LastEditTime: 2022-08-02 17:31:07
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -72,13 +72,21 @@ function Main({ className }) {
 	useEffect(async () => {
 		const params = {
 			tableName: "block_info",
-			id: blockHeight
+			pageindex: 1,
+			pagesize: 1,
+			filter: [
+				{
+					column: "blockHeight",
+					sign: "=",
+					values: [blockHeight]
+				}
+			]
 		};
-		let result = await queryDB.detail(params);
+		let result = await queryDB.list(params);
 		if (result.msg != "ok") {
 			return message.info(result.err || result.msg);
 		}
-		setBlockDetail(result.data);
+		setBlockDetail(result.data[0]);
 	}, [blockHeight]);
 	useEffect(async () => {
 		setLoading(true);
@@ -189,6 +197,14 @@ function Main({ className }) {
 				}
 			},
 			{
+				title: "Signer",
+				dataIndex: "signer",
+				width: "15%",
+				textWrap: "word-break",
+				ellipsis: true,
+				showType: "copy"
+			},
+			{
 				title: "DestAccount",
 				dataIndex: "destAccount",
 				width: "15%",
@@ -199,15 +215,8 @@ function Main({ className }) {
 			{
 				title: "Amount",
 				dataIndex: "amount",
-				width: "5%"
-			},
-			{
-				title: "Signer",
-				dataIndex: "signer",
-				width: "15%",
-				textWrap: "word-break",
-				ellipsis: true,
-				showType: "copy"
+				width: "5%",
+				showType: "currency"
 			},
 			{
 				title: "Signature",
