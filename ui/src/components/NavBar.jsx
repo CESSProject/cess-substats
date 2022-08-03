@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 14:09:30
+ * @LastEditTime: 2022-08-03 17:51:51
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -79,12 +79,14 @@ function Header({ className }) {
 				<div className="header-content">
 					<span className="logo-txt">
 						<NavLink to="/">
-							<img src={process.env.PUBLIC_URL + "/logo.svg"} />
+							<img width={116} src={process.env.PUBLIC_URL + "/img/logo.png"} />
 						</NavLink>
 					</span>
+					<div>HOME</div>
+					<div>CHAIN</div>
 					<span>
 						{navBtn.map(t => (
-							<NavLink key={t.name} to={t.path} style={({ isActive }) => ({ color: getPath(t.path, isActive) ? "#ffc107" : "" })}>
+							<NavLink key={t.name} to={t.path} style={({ isActive }) => ({ backgroundColor: getPath(t.path, isActive) ? "#c7d7f0" : "" })}>
 								{t.icon}&nbsp;
 								{t.name}
 							</NavLink>
@@ -116,14 +118,14 @@ export default styled(Header)`
 		width: 150px;
 		height: 100%;
 		line-height: 30px;
-		background-color: #3187fa;
+		background-color: #eef0f3;
 		position: fixed;
 		left: 0;
 		top: 0;
 		z-index: 999;
 		.header-content {
 			a {
-				color: #fff;
+				color: #333;
 				text-decoration: none;
 				padding-right: 0px;
 				font-size: 17px;
@@ -132,17 +134,17 @@ export default styled(Header)`
 			display: block;
 			overflow: hidden;
 			text-align: left;
-			color: #fff;
+			color: #333;
 			span a {
 				display: block;
 				overflow: hidden;
 				clear: both;
-				padding: 0 20px;
+				padding: 0 10px;
 				line-height: 56px;
 			}
 		}
 		.logo-txt {
-			background-color: #54b3ff;
+			background-color: #fff;
 			display: block;
 			padding: 10px 0;
 			a {
@@ -167,7 +169,7 @@ export default styled(Header)`
 			a {
 				line-height: 45px;
 				font-size: 13px;
-				color: #fff;
+				color: #333;
 				width: 100%;
 				text-align: center;
 				display: block;

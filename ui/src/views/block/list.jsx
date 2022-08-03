@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 14:10:07
+ * @LastEditTime: 2022-08-03 16:03:49
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -26,44 +26,45 @@ const { Column, ColumnGroup } = Table;
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
+const columns = [
+	{
+		title: "Block Height",
+		dataIndex: "blockHeight",
+		key: "blockHeight",
+		width: "10%",
+		showType: "link",
+		tpl: "/block/{blockHeight}"
+	},
+	{
+		title: "Hash",
+		dataIndex: "hash",
+		key: "hash",
+		width: "35%",
+		textWrap: "word-break",
+		ellipsis: true,
+		showType: "copy"
+	},
+	{
+		title: "Prent Hash",
+		dataIndex: "parentHash",
+		key: "parentHash",
+		width: "35%",
+		textWrap: "word-break",
+		ellipsis: true,
+		showType: "copy"
+	},
+	{
+		title: "Time",
+		dataIndex: "timestamp",
+		key: "timestamp",
+		width: "20%",
+		showType: "datetime"
+	}
+];
 
 const Main = ({ ...propsS }) => {
+	document.title = "Blocks-CESS Substats";
 	let params = useParams();
-	const columns = [
-		{
-			title: "Block Height",
-			dataIndex: "blockHeight",
-			key: "blockHeight",
-			width: "10%",
-			showType: "link",
-			tpl: "/block/{blockHeight}"
-		},
-		{
-			title: "Hash",
-			dataIndex: "hash",
-			key: "hash",
-			width: "35%",
-			textWrap: "word-break",
-			ellipsis: true,
-			showType: "copy"
-		},
-		{
-			title: "Prent Hash",
-			dataIndex: "parentHash",
-			key: "parentHash",
-			width: "35%",
-			textWrap: "word-break",
-			ellipsis: true,
-			showType: "copy"
-		},
-		{
-			title: "Time",
-			dataIndex: "timestamp",
-			key: "timestamp",
-			width: "20%",
-			showType: "datetime"
-		}
-	];
 
 	const props = {
 		border: true,

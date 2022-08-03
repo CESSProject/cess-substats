@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-28 14:15:58
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 13:54:25
+ * @LastEditTime: 2022-08-03 15:50:13
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -49,6 +49,7 @@ function formatOne(column) {
 	if (!t.showType) {
 		return;
 	}
+	let tmp = "";
 	switch (t.showType) {
 		case "tpl":
 			t.render = (text, record, index) => {
@@ -77,7 +78,15 @@ function formatOne(column) {
 			}
 			t.render = (text, record, index) => {
 				if (t.tpl == "fromNow") {
-					return moment(text).fromNow();
+					tmp = moment(text).fromNow();
+					if (tmp == "a few seconds ago") {
+						tmp = moment().second() - moment(text).second();
+						if (tmp < 0) {
+							tmp = tmp + 60;
+						}
+						tmp = tmp + " seconds ago";
+					}
+					return tmp;
 				}
 				return moment(text).format(t.tpl);
 			};
