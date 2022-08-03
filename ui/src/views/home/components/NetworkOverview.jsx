@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-02 14:52:30
+ * @LastEditTime: 2022-08-03 11:01:57
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -96,8 +96,9 @@ const SearchBar = ({ className, miners }) => {
 			return;
 		}
 		let balances = parseInt(result.data, 16);
-		balances = parseInt(balances / 1000000000000);
-		balances = formatterCount(balances);
+		balances = formatterCurrencyStr(balances);
+		// balances = parseInt(balances / 1000000000000);
+		// balances = formatterCount(balances);
 		setTotalIssuance(balances);
 	}, []);
 
@@ -200,6 +201,7 @@ export default React.memo(styled(SearchBar)`
 					overflow: hidden;
 					font-size: 15px;
 					line-height: 30px;
+					height: 30px;
 				}
 			}
 			.state-box:hover {

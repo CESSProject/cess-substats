@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-02 16:45:41
+ * @LastEditTime: 2022-08-03 15:04:59
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -25,6 +25,7 @@ const dalBlock = new Dal("tb_block_info");
 const dalTransaction = new Dal("tb_block_transaction");
 const dalEvent = new Dal("tb_block_event");
 const init = require("../init");
+const moment = require("moment");
 
 async function getBlock(value) {
   let hash = "";
@@ -74,8 +75,8 @@ async function saveTx(blockHash, blockHeight, src, events) {
     timestamp = parseInt(
       timestampTx.toHuman().method.args.now.split(",").join("")
     );
-    timestamp = new Date(timestamp);
-    // console.log("timestamp:", timestamp);
+    timestamp = moment(timestamp).toDate();
+    console.log("timestamp:", timestamp);
   } else {
     console.log("timestampTx not found");
     return timestamp;

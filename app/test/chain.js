@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-01 15:14:45
+ * @LastEditTime: 2022-08-03 11:30:25
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -16,6 +16,7 @@ const {
   bnToBn,
   extractTime,
 } = require("@polkadot/util");
+const _ = require("lodash");
 
 async function main() {
   // initialise via static create
@@ -26,11 +27,18 @@ async function main() {
   let a = await api.query.timestamp.now();
   console.log(a);
 
-  a = await api.query.balances.totalIssuance();
-  console.log(a.toHuman());
+  // a = await api.query.balances.totalIssuance();
+  // console.log(a.toHuman());
 
-  a = parseInt("0x000000000000001e365f0de1900011a9", 16);
-  a = a / 1048576000000000000;
+  a = await api.query.system.account.entries();
+  a = a.map(([key, entry]) => {
+    let id = _.get(
+      key.args.map((k) => k.toHuman()),
+      `0`
+    );
+    let humanObj = entry.toJSON();
+    return _.assign(humanObj, { key: id });
+  });
   console.log(a);
 
   // make a call to retrieve the current network head

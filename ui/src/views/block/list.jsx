@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-29 10:16:45
+ * @LastEditTime: 2022-08-03 14:10:07
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -76,7 +76,7 @@ const Main = ({ ...propsS }) => {
 			method: queryDB.list
 		},
 		titleBar: {
-			title: "Block list"
+			title: "Blocks"
 		},
 		table: {
 			columns

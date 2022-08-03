@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-01 18:06:46
+ * @LastEditTime: 2022-08-03 14:23:25
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -34,11 +34,10 @@ const columns = [
 		tpl: "{accountId}"
 	},
 	{
-		title: "Amount",
+		title: "Balances",
 		dataIndex: "amount",
 		width: "20%",
-		showType: "tpl",
-		tpl: "{amount} $TCESS"
+		showType: "currency"
 	},
 	{
 		title: "Transfers",
@@ -69,10 +68,16 @@ const Home = ({ ...props }) => {
 	const propsTable = {
 		border: true,
 		size: "middle",
-		pagesize: 10,
+		pagesize: 20,
 		loadList: {
 			params: {
-				tableName: "block_account"
+				tableName: "block_account",
+				sorter: [
+					{
+						column: "amount",
+						order: "desc"
+					}
+				]
 			},
 			method: queryDB.list
 		},

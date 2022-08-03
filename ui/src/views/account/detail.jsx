@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-02 17:47:27
+ * @LastEditTime: 2022-08-03 14:49:06
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -59,8 +59,7 @@ function Main({ className }) {
 	const { q } = useParams();
 	const [loading, setLoading] = useState(false);
 	const [account, setAccount] = useState(q);
-	const [balances, setBalances] = useState(0);
-	const [columns, setColumns] = useState([]);
+	const [detail, setDetail] = useState(0);
 	const [transactionsOut, setTransactionsOut] = useState([]);
 	const [transactionsIn, setTransactionsIn] = useState([]);
 	const [transactionColumns, setTransactionColumns] = useState([]);
@@ -79,20 +78,29 @@ function Main({ className }) {
 
 	//query Balances
 	useEffect(async () => {
-		ignore = false;
 		setLoading(true);
-		let result = await storageAJAX({ ac1: "system", ac2: "account", id: account });
+		let params = {
+			tableName: "block_account",
+			pageindex: 1,
+			pagesize: 1,
+			filter: [
+				{
+					column: "accountId",
+					sign: "=",
+					values: [account]
+				}
+			]
+		};
+		let result = await queryDB.list(params);
 		if (result.msg != "ok") {
 			setLoading(false);
-			return;
+			return message.info(result.err || result.msg);
 		}
-		// setBalances(parseInt(result.data.data.free, 16) / 1000000000000)
-		setBalances(formatterCurrencyStr(parseInt(result.data.data.free, 16)));
-		console.log(result);
-		setLoading(false);
-		return () => {
-			ignore = true;
-		};
+		if (result.data.length == 0) {
+			setLoading(false);
+			return message.info("Account not found.");
+		}
+		setDetail(result.data[0]);
 	}, [account]);
 
 	// query trans
@@ -128,7 +136,7 @@ function Main({ className }) {
 			pagesize: 10000,
 			filter: [
 				{
-					column: "signer",
+					column: "destAccount",
 					sign: "=",
 					values: [account]
 				},
@@ -145,48 +153,9 @@ function Main({ className }) {
 			setLoading(false);
 			return message.info(result.err || result.msg);
 		}
-		setTransactionsOut(result.data);
+		setTransactionsIn(result.data);
 		setLoading(false);
-	}, [blockHeight]);
-	useEffect(async () => {
-		const columnsArr = [
-			{
-				title: "Block Height",
-				dataIndex: "blockHeight",
-				key: "blockHeight",
-				width: "10%",
-				showType: "link",
-				tpl: "/block/{blockHeight}"
-			},
-			{
-				title: "Hash",
-				dataIndex: "hash",
-				key: "hash",
-				width: "35%",
-				textWrap: "word-break",
-				ellipsis: true,
-				showType: "copy"
-			},
-			{
-				title: "Prent Hash",
-				dataIndex: "parentHash",
-				key: "parentHash",
-				width: "35%",
-				textWrap: "word-break",
-				ellipsis: true,
-				showType: "copy"
-			},
-			{
-				title: "Time",
-				dataIndex: "timestamp",
-				key: "timestamp",
-				width: "20%",
-				showType: "datetime"
-			}
-		];
-		formatShowType.formatArr(columnsArr);
-		setColumns(columnsArr);
-	}, []);
+	}, [account]);
 	useEffect(async () => {
 		const columnsArr = [
 			{
@@ -222,9 +191,10 @@ function Main({ className }) {
 				showType: "copy"
 			},
 			{
-				title: "Amount",
+				title: "Balances",
 				dataIndex: "amount",
-				width: "5%"
+				width: "5%",
+				showType: "currency"
 			},
 			{
 				title: "Signer",
@@ -247,26 +217,6 @@ function Main({ className }) {
 				dataIndex: "timestamp",
 				width: "10%",
 				showType: "datetime"
-			},
-			{
-				title: "Events",
-				dataIndex: "events",
-				render: (text, record, index) => {
-					if (record.events.length == 0) {
-						return "";
-					}
-					return (
-						<Collapse accordion>
-							{record.events.map((ev, i) => {
-								return (
-									<Panel header={ev.section + "." + ev.method} key={i}>
-										<pre>{JSON.stringify(JSON.parse(ev.data), null, 2)}</pre>
-									</Panel>
-								);
-							})}
-						</Collapse>
-					);
-				}
 			}
 		];
 		formatShowType.formatArr(columnsArr);
@@ -279,20 +229,22 @@ function Main({ className }) {
 					<div className="table-content">
 						<Descriptions bordered column={1}>
 							<Descriptions.Item label="AccountID">{account}</Descriptions.Item>
-							<Descriptions.Item label="Balances">{balances}</Descriptions.Item>
+							<Descriptions.Item label="Balances">{formatterCurrencyStr(detail.amount)}</Descriptions.Item>
+							<Descriptions.Item label="Transfers">{detail.txCount}</Descriptions.Item>
+							<Descriptions.Item label="IsMiner">{detail.isMiner == 1 ? "Yes" : "No"}</Descriptions.Item>
 						</Descriptions>
 					</div>
 				</Card>
 			</Spin>
-			{/* <Spin spinning={loading}>
-				<Card title={"Extrinsics(" + transactions.length + ")"} style={{ marginTop: 10 }}>
-					{transactions.length == 0 ? (
+			<Spin spinning={loading}>
+				<Card title={"Transfer received(" + transactionsIn.length + ")"} style={{ marginTop: 10 }}>
+					{transactionsIn.length == 0 ? (
 						<Empty />
 					) : (
 						<div className="table-content">
-							{transactions.map(trx => {
+							{transactionsIn.map((trx, i) => {
 								return (
-									<Card title={"Hash:" + trx.hash}>
+									<Card key={i} title={"Hash:" + trx.hash}>
 										<div className="table-content">
 											<Descriptions bordered column={1}>
 												{transactionColumns.map((t, index) => {
@@ -310,7 +262,32 @@ function Main({ className }) {
 						</div>
 					)}
 				</Card>
-			</Spin> */}
+				<Card title={"Transfer sent(" + transactionsOut.length + ")"} style={{ marginTop: 10 }}>
+					{transactionsOut.length == 0 ? (
+						<Empty />
+					) : (
+						<div className="table-content">
+							{transactionsOut.map((trx, i) => {
+								return (
+									<Card key={i} title={"Hash:" + trx.hash}>
+										<div className="table-content">
+											<Descriptions bordered column={1}>
+												{transactionColumns.map((t, index) => {
+													return (
+														<Descriptions.Item label={t.title} key={t.key}>
+															{t.render ? t.render(trx[t.key], trx, index) : trx[t.key]}
+														</Descriptions.Item>
+													);
+												})}
+											</Descriptions>
+										</div>
+									</Card>
+								);
+							})}
+						</div>
+					)}
+				</Card>
+			</Spin>
 		</div>
 	);
 }

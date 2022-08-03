@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-01 15:31:07
+ * @LastEditTime: 2022-08-03 14:09:30
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -53,7 +53,7 @@ const navBtn = [
 	},
 	{
 		path: "/account/",
-		name: "Account",
+		name: "Accounts",
 		icon: <WalletOutlined />
 	}
 ];

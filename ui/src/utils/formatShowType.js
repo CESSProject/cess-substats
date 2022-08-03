@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-28 14:15:58
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-02 17:29:13
+ * @LastEditTime: 2022-08-03 13:54:25
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -107,18 +107,28 @@ function formatOne(column) {
 		case "accountIcon":
 			t.render = (text, record, index) =>
 				text ? (
-					<Tooltip placement="topLeft" title="click copy">
-						<span
-							onClick={() => {
-								copy(text);
-								message.success("Copy successful !");
-							}}
-							className="enable-copy-icon-box">
-							<AccountIcon props={{ hash: text }} />
-							&nbsp;
-							{text}
-							&nbsp;
-							<CopyOutlined />
+					<Tooltip placement="topLeft">
+						<span className="enable-copy-icon-box">
+							<AccountIcon
+								hash={text}
+								onClick={() => {
+									copy(text);
+									message.success("Copy successful !");
+								}}
+								title="click copy"
+							/>
+							<NavLink to={"/account/" + text} title="link">
+								&nbsp;
+								{text}
+								&nbsp;
+							</NavLink>
+							<CopyOutlined
+								onClick={() => {
+									copy(text);
+									message.success("Copy successful !");
+								}}
+								title="click copy"
+							/>
 						</span>
 					</Tooltip>
 				) : (
@@ -149,7 +159,7 @@ function formatOne(column) {
 				return (
 					<>
 						<span className="money">{text && text.money}</span>
-						<span className="suffix">{text && text.suffix}</span>
+						<span className="suffix">{text && text.suffix} TCESS</span>
 					</>
 				);
 			};

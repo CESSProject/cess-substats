@@ -3,12 +3,12 @@
  * @Autor: fage
  * @Date: 2022-07-12 11:21:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-20 16:15:15
+ * @LastEditTime: 2022-08-03 10:54:23
  * @description: 描述信息
  * @author: chenbinfa
  */
 // import { request } from "@/utils";
-const wsAPI = "ws://localhost:454/ws/";
+const wsAPI = "ws://172.16.2.157:454/ws/";
 let socket = null;
 let timeout = null;
 const events = [];

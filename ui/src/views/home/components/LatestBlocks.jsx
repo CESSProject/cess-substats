@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-02 17:45:24
+ * @LastEditTime: 2022-08-03 14:51:11
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -50,7 +50,7 @@ const Main = ({ className, miners }) => {
 			dataIndex: "timestamp",
 			width: "25%",
 			showType: "datetime",
-			tpl: "fromNow"
+			tpl: "YYYY-MM-DD HH:mm:ss"
 		}
 	];
 

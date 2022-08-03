@@ -3,12 +3,11 @@
  * @Autor: fage
  * @Date: 2022-08-01 17:24:18
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-02 10:41:04
+ * @LastEditTime: 2022-08-03 09:39:07
  * @description: 描述信息
  * @author: chenbinfa
  */
-export default function ({ props }) {
-	let hash = props.hash;
+export default function ({ hash, title, onClick }) {
 	if (!hash || hash.length < 3) {
 		hash = "cXa";
 	}
@@ -411,5 +410,10 @@ export default function ({ props }) {
 				d="M7 7L12 7L12 12L7 12ZM8.8 10.1a1.3,1.3 0 1,0 2.6,0a1.3,1.3 0 1,0 -2.6,0M17 7L17 12L12 12L12 7ZM12.6 10.1a1.3,1.3 0 1,0 2.6,0a1.3,1.3 0 1,0 -2.6,0M17 17L12 17L12 12L17 12ZM12.6 13.9a1.3,1.3 0 1,0 2.6,0a1.3,1.3 0 1,0 -2.6,0M7 17L7 12L12 12L12 17ZM8.8 13.9a1.3,1.3 0 1,0 2.6,0a1.3,1.3 0 1,0 -2.6,0"></path>
 		</svg>
 	);
-	return obj[n] || obj.a;
+	let svg = obj[n] || obj.a;
+	return (
+		<span title={title} onClick={onClick}>
+			{svg}
+		</span>
+	);
 }
