@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 15:33:05
+ * @LastEditTime: 2022-08-04 17:13:59
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -185,6 +185,8 @@ async function saveEvent(blockHeight, src, txId, txIndex, events, timestamp) {
 }
 async function main() {
   api = await init();
+  console.log("start");
+  console.log("database", webconfig.mysql);
   let blockHeight = 1;
   api.rpc.chain.subscribeNewHeads((header) => {
     blockHeight = header.number.toNumber();
