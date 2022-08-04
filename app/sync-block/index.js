@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-04 17:33:01
+ * @LastEditTime: 2022-08-04 17:50:05
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -77,7 +77,7 @@ async function saveTx(blockHash, blockHeight, src, events) {
       timestampTx.toHuman().method.args.now.split(",").join("")
     );
     timestamp = moment(timestamp).toDate();
-    console.log("timestamp:", timestamp);
+    // console.log("timestamp:", timestamp);
   } else {
     console.log("timestampTx not found");
     return timestamp;
@@ -222,7 +222,6 @@ async function startDo(start, end) {
       await getBlock(i);
     } catch (e) {
       console.error(e);
-      break;
     }
   }
   return end;
