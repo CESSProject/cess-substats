@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 17:51:51
+ * @LastEditTime: 2022-08-04 14:15:26
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -15,7 +15,9 @@
 
 import styled from "styled-components";
 import _ from "lodash";
-import { NavLink } from "react-router-dom";
+import { AppstoreOutlined, MailOutlined, SettingOutlined } from "@ant-design/icons";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Menu } from "antd";
 import React, { useRef, useState, useEffect } from "react";
 import {
 	HomeOutlined,
@@ -58,7 +60,28 @@ const navBtn = [
 	}
 ];
 
+function getItem(label, key, icon, children, type) {
+	return {
+		key,
+		icon,
+		children,
+		label,
+		type
+	};
+}
+
+const items = [
+	getItem("HOME", "/", <HomeOutlined />),
+	getItem("CHAIN", "", <AppstoreAddOutlined />, [
+		getItem("Blocks", "/block/"),
+		getItem("Transfers", "/transfer/"),
+		getItem("Miners", "/miner/"),
+		getItem("Accounts", "/account/")
+	])
+];
+
 function Header({ className }) {
+	const navigate = useNavigate();
 	const winHeight = document.body.clientHeight;
 	const getPath = (u, isActive) => {
 		if (isActive) return true;
@@ -73,6 +96,12 @@ function Header({ className }) {
 		}
 		return false;
 	};
+	const onClick = ({ item, key, keyPath, domEvent }) => {
+		console.log("click ", item, key, keyPath, domEvent);
+		if (key) {
+			navigate(key);
+		}
+	};
 	return (
 		<div className={className}>
 			<div className="abs-header" style={{ height: winHeight }}>
@@ -82,7 +111,18 @@ function Header({ className }) {
 							<img width={116} src={process.env.PUBLIC_URL + "/img/logo.png"} />
 						</NavLink>
 					</span>
-					<div>HOME</div>
+					<Menu
+						onClick={onClick}
+						style={{
+							width: 180,
+							backgroundColor: "#eaeff7"
+						}}
+						defaultSelectedKeys={["1"]}
+						defaultOpenKeys={["sub1"]}
+						mode="inline"
+						items={items}
+					/>
+					{/* <div>HOME</div>
 					<div>CHAIN</div>
 					<span>
 						{navBtn.map(t => (
@@ -91,7 +131,7 @@ function Header({ className }) {
 								{t.name}
 							</NavLink>
 						))}
-					</span>
+					</span> */}
 				</div>
 				<div className="nav-bottom-link">
 					<a href="https://cess.cloud/" target="_blank">
@@ -115,14 +155,20 @@ export default styled(Header)`
 	.abs-header {
 		display: block;
 		overflow: hidden;
-		width: 150px;
+		width: 180px;
 		height: 100%;
 		line-height: 30px;
-		background-color: #eef0f3;
+		background-color: #eaeff7;
 		position: fixed;
 		left: 0;
 		top: 0;
 		z-index: 999;
+		.ant-menu-sub.ant-menu-inline {
+			background-color: #dae4f5 !important ;
+		}
+		.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+			background-color: #a4d1e7 !important ;
+		}
 		.header-content {
 			a {
 				color: #333;
