@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-04 17:21:01
+ * @LastEditTime: 2022-08-04 17:33:01
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -189,30 +189,27 @@ async function main() {
   console.log("starting...");
   const platform = os.platform();
   console.log("os platform", platform);
-  console.log("database", webconfig.mysql);
 
-  let blockHeight = 1;
+  let maxHeight = 100;
+  let currHeight = 1;
   api.rpc.chain.subscribeNewHeads((header) => {
-    blockHeight = header.number.toNumber();
-    console.log(`Chain is at #${header.number}`);
+    maxHeight = header.number.toNumber();
+    console.log(`maxHeight ${header.number}`);
   });
-  let lastBlockHeight = 0;
   let sql = "select blockHeight from ?? order by blockHeight desc limit 1";
   let param = [dalBlock.tableName];
   let tmp = await dalBlock.query(sql, param);
-  if (tmp.length == 0) {
-    lastBlockHeight = 0;
-  } else {
-    lastBlockHeight = tmp[0].blockHeight;
+  if (tmp.length > 0) {
+    currHeight = tmp[0].blockHeight + 1;
   }
-  if (blockHeight < lastBlockHeight) {
-    blockHeight = lastBlockHeight + 1;
+  if (maxHeight < currHeight) {
+    maxHeight = currHeight + 1;
   }
-  console.log("lastBlockHeight", lastBlockHeight);
+  console.log("currHeight", currHeight);
   // return;
   while (true) {
-    lastBlockHeight = await startDo(lastBlockHeight, blockHeight);
-    if (lastBlockHeight >= blockHeight) {
+    currHeight = await startDo(currHeight, maxHeight);
+    if (currHeight >= maxHeight) {
       await util.sleep(2000);
     }
   }
