@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-04 17:13:59
+ * @LastEditTime: 2022-08-04 17:17:23
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -26,6 +26,7 @@ const dalTransaction = new Dal("tb_block_transaction");
 const dalEvent = new Dal("tb_block_event");
 const init = require("../init");
 const moment = require("moment");
+var os = require("os");
 
 async function getBlock(value) {
   let hash = "";
@@ -185,8 +186,11 @@ async function saveEvent(blockHeight, src, txId, txIndex, events, timestamp) {
 }
 async function main() {
   api = await init();
-  console.log("start");
+  console.log("starting...");
+  const platform = os.platform();
+  console.log("os platform", platform);
   console.log("database", webconfig.mysql);
+
   let blockHeight = 1;
   api.rpc.chain.subscribeNewHeads((header) => {
     blockHeight = header.number.toNumber();
