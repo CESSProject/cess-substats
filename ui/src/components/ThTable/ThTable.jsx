@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-02 17:49:46
+ * @LastEditTime: 2022-08-04 16:31:04
  */
 import React, { useRef, useState, useEffect } from "react";
 import {
@@ -46,6 +46,7 @@ const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 let runCount = 0;
 let dics = [];
+let timeout = null;
 
 export function ThTable({ props }) {
 	runCount++;
@@ -97,6 +98,8 @@ export function ThTable({ props }) {
 
 	//ajax post
 	useEffect(async () => {
+		ignore = false;
+		clearTimeout(timeout);
 		setLoading(true);
 		let params = {};
 		if (props.loadList?.params) {
@@ -129,23 +132,18 @@ export function ThTable({ props }) {
 		setDataSource(result.data);
 		setTotal(result.total);
 		setLoading(false);
-	}, [reload]);
-
-	//autoRefresh
-	useEffect(async () => {
-		ignore = false;
-		if (!props.loadList || !props.loadList.autoRefresh) {
-			return;
+		//autoRefresh
+		if (props.loadList && props.loadList.autoRefresh) {
+			timeout = setTimeout(() => {
+				if (ignore) return;
+				console.log("autoRefresh", props.loadList.autoRefresh);
+				setReload(new Date());
+			}, props.loadList.autoRefresh);
 		}
-		setInterval(() => {
-			if (ignore) return;
-			console.log("autoRefresh", props.loadList.autoRefresh);
-			setReload(new Date());
-		}, props.loadList.autoRefresh);
 		return () => {
 			ignore = true;
 		};
-	}, []);
+	}, [reload]);
 
 	const onTableChange = (paginationObj, filters, sorter, extra) => {
 		// console.log("pagination", pagination);

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-08-02 10:51:57
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-02 15:43:04
+ * @LastEditTime: 2022-08-04 17:07:53
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -23,8 +23,8 @@ async function initAPI() {
   global.webconfig = webconfig;
   if (api) return api;
   try {
-    const ws = ["ws://192.168.14.145:9944", "ws://106.15.44.155:9948"];
-    const wsProvider = new WsProvider(ws[1]);
+    const ws = webconfig.wsnode.nodeURL;
+    const wsProvider = new WsProvider(ws);
     api = new ApiPromise({ provider: wsProvider });
     await api.isReady;
     global.api = api;
