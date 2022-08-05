@@ -36,8 +36,11 @@ module.exports = class mysqlBase {
     return this.query(sql, [this.tableName, entity]);
   }
 
-  truncate() {
-    let sql = "truncate table " + this.tableName;
+  truncate(tableName) {
+    if (!tableName) {
+      tableName = this.tableName;
+    }
+    let sql = "truncate table " + tableName;
     return this.query(sql);
   }
 
