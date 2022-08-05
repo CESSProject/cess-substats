@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 11:01:57
+ * @LastEditTime: 2022-08-05 11:46:08
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -60,7 +60,10 @@ const SearchBar = ({ className, miners }) => {
 	useEffect(async () => {
 		let result = await constantsAJAX("rrsc", "expectedBlockTime"); // ac1=babe/rrsc
 		if (result.msg != "ok") {
-			return setAvgBlockTime(result.msg);
+			result = await constantsAJAX("babe", "expectedBlockTime"); // ac1=babe/rrsc
+			if (result.msg != "ok") {
+				return setAvgBlockTime(result.msg);
+			}
 		}
 		console.log("result", result);
 		let t = result.data;
@@ -122,7 +125,7 @@ const SearchBar = ({ className, miners }) => {
 			padding: "auto",
 			xField: "dateStr",
 			yField: "Storage Power(GB)",
-			smooth: true,
+			// smooth: true,
 			xAxis: {
 				// type: 'timeCat',
 				tickCount: 5
