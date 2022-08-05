@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-02 16:25:57
+ * @LastEditTime: 2022-08-05 10:46:36
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -40,14 +40,6 @@ async function getBlock(value) {
   const events = await api.query.system.events.at(hash);
   let entity = blockInfo.toHuman();
   console.log(JSON.stringify(entity));
-  getAuthor(blockInfo.block.header.digest).then((t) => {}, console.log);
-}
-async function getAuthor(digest) {
-  const preRuntimes = digest.logs.filter(
-    ({ isPreRuntime, type }) => isPreRuntime && type.toString() === "SUB_"
-  );
-  const { solution } = api.registry.createType("SubPreDigest", preRuntimes[0]);
-  console.log(solution.publicKey);
 }
 async function main() {
   api = await init();

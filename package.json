@@ -3,7 +3,8 @@
   "version": "1.0.3",
   "private": true,
   "scripts": {
-    "start": "node ./app"
+    "start": "node ./app",
+    "startui": " cd ui && npm start"
   },
   "dependencies": {
     "@polkadot/api": "^8.12.2",
