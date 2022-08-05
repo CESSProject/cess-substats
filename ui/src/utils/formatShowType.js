@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-28 14:15:58
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 15:50:13
+ * @LastEditTime: 2022-08-05 16:59:43
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -95,8 +95,15 @@ function formatOne(column) {
 			t.render = (text, record, index) => moment(text).format("MM-DD HH:mm");
 			break;
 		case "copy":
-			t.render = (text, record, index) =>
-				text ? (
+			t.render = (text, record, index) => {
+				if (!text) {
+					return "";
+				}
+				let showText = text;
+				if (text.length > 30) {
+					showText = text.substring(0, 20) + "******" + text.substring(text.length - 8);
+				}
+				return (
 					<Tooltip placement="topLeft" title="click copy">
 						<span
 							onClick={() => {
@@ -104,18 +111,24 @@ function formatOne(column) {
 								message.success("Copy successful !");
 							}}
 							className="enable-copy-txt-box">
-							{text}
+							{showText}
 							&nbsp;
 							<CopyOutlined />
 						</span>
 					</Tooltip>
-				) : (
-					""
 				);
+			};
 			break;
 		case "accountIcon":
-			t.render = (text, record, index) =>
-				text ? (
+			t.render = (text, record, index) => {
+				if (!text) {
+					return text;
+				}
+				let showText = text;
+				if (text.length > 30) {
+					showText = text.substring(0, 20) + "******" + text.substring(text.length - 8);
+				}
+				return (
 					<Tooltip placement="topLeft">
 						<span className="enable-copy-icon-box">
 							<AccountIcon
@@ -128,7 +141,7 @@ function formatOne(column) {
 							/>
 							<NavLink to={"/account/" + text} title="link">
 								&nbsp;
-								{text}
+								{showText}
 								&nbsp;
 							</NavLink>
 							<CopyOutlined
@@ -140,9 +153,8 @@ function formatOne(column) {
 							/>
 						</span>
 					</Tooltip>
-				) : (
-					""
 				);
+			};
 			break;
 		case "link":
 			if (!t.tpl) {

@@ -55,7 +55,7 @@ function formatParams(pre = "", req) {
     dangerous: [],
   };
   if (filter) {
-    console.log("filter", filter);
+    // console.log("filter", filter);
     const filterArr = [];
     filter.forEach((t) => {
       let column = pre + "`" + t.column + "`";

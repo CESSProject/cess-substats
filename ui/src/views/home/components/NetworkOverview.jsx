@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-05 11:46:08
+ * @LastEditTime: 2022-08-05 14:52:20
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -35,11 +35,12 @@ const SearchBar = ({ className, miners }) => {
 	const [avgBlockTime, setAvgBlockTime] = useState("--");
 	const [list, setList] = useState([]);
 
+	// sub blockHeight
 	useEffect(() => {
 		ignore = false;
 		let e = {
-			id: "home-blockHeight",
-			name: "blockHeight",
+			id: "home-blockInfo",
+			name: "blockInfo",
 			e: data => {
 				setBlockHeight(data.blockHeight);
 				setBgColor("red");
@@ -57,6 +58,7 @@ const SearchBar = ({ className, miners }) => {
 		};
 	}, []);
 
+	// expectedBlockTime
 	useEffect(async () => {
 		let result = await constantsAJAX("rrsc", "expectedBlockTime"); // ac1=babe/rrsc
 		if (result.msg != "ok") {
@@ -71,18 +73,16 @@ const SearchBar = ({ className, miners }) => {
 		setAvgBlockTime(t);
 	}, []);
 
+	// sminer.totalIdleSpace
 	useEffect(async () => {
 		ignore = false;
 		async function run() {
 			if (ignore) return;
-			setLoading(true);
 			let result = await storageAJAX({ ac1: "sminer", ac2: "totalIdleSpace" });
 			if (result.msg != "ok") {
-				setLoading(false);
 				return;
 			}
 			setTotalPower(formatterSizeFromMB(result.data));
-			setLoading(false);
 		}
 		setInterval(run, 10000);
 		run();
@@ -91,6 +91,7 @@ const SearchBar = ({ className, miners }) => {
 		};
 	}, []);
 
+	// balances.totalIssuance
 	useEffect(async () => {
 		setLoading(true);
 		let result = await storageAJAX({ ac1: "balances", ac2: "totalIssuance" });
@@ -100,11 +101,10 @@ const SearchBar = ({ className, miners }) => {
 		}
 		let balances = parseInt(result.data, 16);
 		balances = formatterCurrencyStr(balances);
-		// balances = parseInt(balances / 1000000000000);
-		// balances = formatterCount(balances);
 		setTotalIssuance(balances);
 	}, []);
 
+	// storage_power_trend
 	useEffect(async () => {
 		setLoading(true);
 		const params = {
@@ -118,13 +118,13 @@ const SearchBar = ({ className, miners }) => {
 			return;
 		}
 		const list = result.data.sort((t1, t2) => t1.id - t2.id);
-		list.forEach(t => (t["Storage Power(GB)"] = parseFloat((t.power / 1073741824).toFixed(2))));
+		list.forEach(t => (t["Storage Power(GiB)"] = parseFloat((t.power / 1073741824).toFixed(2))));
 		const config = {
 			height: 175,
 			data: list,
 			padding: "auto",
 			xField: "dateStr",
-			yField: "Storage Power(GB)",
+			yField: "Storage Power(GiB)",
 			// smooth: true,
 			xAxis: {
 				// type: 'timeCat',

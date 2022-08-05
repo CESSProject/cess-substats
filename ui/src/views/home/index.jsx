@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 15:56:27
+ * @LastEditTime: 2022-08-05 17:52:59
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -19,7 +19,6 @@ import { ThTable } from "@/components/ThTable";
 import StorageChart from "./components/StorageChart";
 import NetworkOverview from "./components/NetworkOverview";
 import LatestBlocks from "./components/LatestBlocks";
-import Transactions from "./components/Transactions";
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -67,7 +66,8 @@ const columns = [
 	{
 		title: "Mining reward",
 		dataIndex: "totalReward",
-		width: "20%"
+		width: "20%",
+		showType: "currency"
 	}
 ];
 
@@ -129,36 +129,7 @@ const Home = ({ ...props }) => {
 				</Card>
 			</div>
 			<div className="list-box block">
-				<Card
-					bodyStyle={{ padding: 0, margin: 0 }}
-					className="chart-left"
-					title={
-						<span>
-							<AppstoreAddOutlined /> Latest Blocks
-						</span>
-					}
-					extra={
-						<NavLink className="btn-more" to="/block/">
-							ALL
-						</NavLink>
-					}>
-					<LatestBlocks />
-				</Card>
-				<Card
-					bodyStyle={{ padding: 0, margin: 0 }}
-					className="chart-right"
-					title={
-						<span>
-							<SwapOutlined /> Transactions
-						</span>
-					}
-					extra={
-						<NavLink className="btn-more" to="/transfer/">
-							ALL
-						</NavLink>
-					}>
-					<Transactions />
-				</Card>
+				<LatestBlocks />
 			</div>
 			<div className="miner-list">
 				<Card

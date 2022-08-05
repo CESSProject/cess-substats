@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 11:21:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-04 16:05:40
+ * @LastEditTime: 2022-08-05 16:18:35
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -43,15 +43,17 @@ function connect() {
 			if (json.msg != "ok") {
 				return console.error("json.msg", json.msg);
 			}
-			const o = events.find(t => t.name == json.apiName);
-			if (!o || !o.e) {
+			const elist = events.filter(t => t.name == json.apiName && t.e);
+			if (elist.length == 0) {
 				// console.log("event not sub ", json.apiName);
 				return;
 			}
-			try {
-				o.e(json.data);
-			} catch (e) {
-				console.log(e);
+			for (let o of elist) {
+				try {
+					o.e(json.data);
+				} catch (e) {
+					console.log(e);
+				}
 			}
 		});
 	}

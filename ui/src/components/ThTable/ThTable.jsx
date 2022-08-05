@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-04 16:31:04
+ * @LastEditTime: 2022-08-05 14:45:40
  */
 import React, { useRef, useState, useEffect } from "react";
 import {
@@ -98,6 +98,12 @@ export function ThTable({ props }) {
 
 	//ajax post
 	useEffect(async () => {
+		if (props.table && props.table.dataSource) {
+			setDataSource(props.table.dataSource);
+			const total = props.table.total || props.table.dataSource.length;
+			setTotal(total);
+			return;
+		}
 		ignore = false;
 		clearTimeout(timeout);
 		setLoading(true);

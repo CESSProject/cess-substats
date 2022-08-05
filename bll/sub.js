@@ -3,10 +3,11 @@
  * @Autor: fage
  * @Date: 2022-07-11 20:07:29
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-01 17:15:03
+ * @LastEditTime: 2022-08-05 14:51:37
  * @description: 描述信息
  * @author: chenbinfa
  */
+let chainHelper = require("../util/chain-helper");
 async function main() {
   try {
     const api = global.dotApi;
@@ -19,25 +20,8 @@ async function main() {
       try {
         const blockHeight = header.number.toNumber();
         console.log("blockHeight", blockHeight);
-        let result = await api.rpc.chain.getBlockHash(blockHeight);
-        let blockHash = result.toHex();
-        const blockInfo = await api.rpc.chain.getBlock(blockHash);
-        // console.log(blockInfo.toHuman());
-        let signerAccount =
-          blockInfo.block.header.author ||
-          blockInfo.block.header.authorFromMapping ||
-          header.author ||
-          header.authorFromMapping;
-        if (signerAccount) {
-          signerAccount = signerAccount.toHuman();
-        }
-        const msg = {
-          blockHeight,
-          signerAccount,
-          blockHash,
-        };
-        // console.log("blockInfo", msg);
-        send("blockHeight", "ok", msg);
+        const blockInfo = await chainHelper.getBlockInfo(api, blockHeight);
+        send("blockInfo", "ok", blockInfo);
       } catch (e2) {
         console.log(e2);
       }
