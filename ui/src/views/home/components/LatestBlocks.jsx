@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-05 16:51:58
+ * @LastEditTime: 2022-08-08 15:07:44
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Empty, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -138,15 +138,18 @@ const Main = ({ className, miners }) => {
 			id: "home-blockInfo-2",
 			name: "blockInfo",
 			e: data => {
-				console.log("**************", data);
+				// console.log("**************", data);
 				// setBlockHeight(data);
 				// TODO
 				if (ignore) {
 					return;
 				}
+				if (blockList.find(t => t.id == data.blockHeight)) {
+					return;
+				}
 				blockList.unshift({
 					id: data.blockHeight,
-					key: new Date().valueOf(),
+					key: new Date().valueOf() + data.blockHeight,
 					blockHeight: data.blockHeight,
 					hash: data.hash,
 					timestamp: data.timestamp
@@ -162,15 +165,12 @@ const Main = ({ className, miners }) => {
 				if (!data.trnactions || data.trnactions.length == 0) {
 					return;
 				}
-				data.trnactions.forEach(t => {
-					t.key = new Date().valueOf();
+				data.trnactions.forEach((t, i) => {
+					t.key = new Date().valueOf() + "_" + i;
 					t.status = "success";
 					txList.unshift(t);
-					if (txList.length > pTx.pagesize) {
-						txList.pop();
-					}
 				});
-				pTx.table.dataSource = txList;
+				pTx.table.dataSource = txList.slice(0, 10);
 				tmp = _.cloneDeep(pTx);
 				tmp.table.columns = columnsTx;
 				setPropsTx(tmp);
@@ -184,13 +184,13 @@ const Main = ({ className, miners }) => {
 	}, []);
 
 	return (
-		<>
+		<div className={className}>
 			<Card
 				bodyStyle={{ padding: 0, margin: 0 }}
-				className="chart-left"
+				className="chart-left myRadius"
 				title={
 					<span>
-						<AppstoreAddOutlined /> Latest Blocks
+						<img width={19} src={process.env.PUBLIC_URL + "/img/icon_lian.png"} /> Latest Blocks
 					</span>
 				}
 				extra={
@@ -198,14 +198,14 @@ const Main = ({ className, miners }) => {
 						ALL
 					</NavLink>
 				}>
-				{props ? <ThTable props={props} /> : <Empty />}
+				<div className="tx-list-box">{props ? <ThTable props={props} /> : <Empty />}</div>
 			</Card>
 			<Card
 				bodyStyle={{ padding: 0, margin: 0 }}
-				className="chart-right"
+				className="chart-right myRadius"
 				title={
 					<span>
-						<SwapOutlined /> Transactions
+						<img width={19} src={process.env.PUBLIC_URL + "/img/icon_jh.png"} /> Transactions
 					</span>
 				}
 				extra={
@@ -213,13 +213,19 @@ const Main = ({ className, miners }) => {
 						ALL
 					</NavLink>
 				}>
-				{propsTx ? <ThTable props={propsTx} /> : <Empty />}
+				<div className="tx-list-box">{propsTx ? <ThTable props={propsTx} /> : <Empty />}</div>
 			</Card>
-		</>
+		</div>
 	);
 };
 
 export default React.memo(styled(Main)`
 	display: block;
 	overflow: hidden;
+	.tx-list-box {
+		display: block;
+		overflow: hidden;
+		width: 100%;
+		height: 527px;
+	}
 `);

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-05 14:52:20
+ * @LastEditTime: 2022-08-08 15:01:18
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -25,7 +25,7 @@ import "@ant-design/flowchart/dist/index.css";
 let lastBlockTime = 0;
 let ignore = false;
 
-const SearchBar = ({ className, miners }) => {
+const SearchBar = ({ className, miners, space }) => {
 	const [loading, setLoading] = useState(false);
 	const [bgColor, setBgColor] = useState(false);
 	const [chartConfig, setChartConfig] = useState();
@@ -46,7 +46,7 @@ const SearchBar = ({ className, miners }) => {
 				setBgColor("red");
 				setTimeout(() => {
 					if (ignore) return;
-					setBgColor("#fff");
+					setBgColor("#000");
 				}, 500);
 				lastBlockTime = new Date().valueOf();
 			}
@@ -73,24 +73,6 @@ const SearchBar = ({ className, miners }) => {
 		setAvgBlockTime(t);
 	}, []);
 
-	// sminer.totalIdleSpace
-	useEffect(async () => {
-		ignore = false;
-		async function run() {
-			if (ignore) return;
-			let result = await storageAJAX({ ac1: "sminer", ac2: "totalIdleSpace" });
-			if (result.msg != "ok") {
-				return;
-			}
-			setTotalPower(formatterSizeFromMB(result.data));
-		}
-		setInterval(run, 10000);
-		run();
-		return () => {
-			ignore = true;
-		};
-	}, []);
-
 	// balances.totalIssuance
 	useEffect(async () => {
 		setLoading(true);
@@ -103,6 +85,11 @@ const SearchBar = ({ className, miners }) => {
 		balances = formatterCurrencyStr(balances);
 		setTotalIssuance(balances);
 	}, []);
+
+	// setTotalPower
+	useEffect(async () => {
+		setTotalPower(formatterSizeFromMB(space.total));
+	}, [space]);
 
 	// storage_power_trend
 	useEffect(async () => {
@@ -129,7 +116,33 @@ const SearchBar = ({ className, miners }) => {
 			xAxis: {
 				// type: 'timeCat',
 				tickCount: 5
-			}
+			},
+			point: {
+				size: 3,
+				shape: "circular",
+				style: {
+					fill: "white",
+					stroke: "#5B8FF9",
+					lineWidth: 1
+				}
+			},
+			tooltip: {
+				showMarkers: false
+			},
+			state: {
+				active: {
+					style: {
+						shadowBlur: 4,
+						stroke: "#000",
+						fill: "red"
+					}
+				}
+			},
+			interactions: [
+				{
+					type: "marker-active"
+				}
+			]
 		};
 		setChartConfig(config);
 		setLoading(false);
@@ -141,7 +154,7 @@ const SearchBar = ({ className, miners }) => {
 				<div className="state-line">
 					<div className="state-box">
 						<span>Latest Block</span>
-						<span className="trs" style={{ backgroundColor: bgColor }}>
+						<span className="trs" style={{ color: bgColor }}>
 							#{blockHeight} ({avgBlockTime}s)
 						</span>
 					</div>
@@ -181,22 +194,22 @@ export default React.memo(styled(SearchBar)`
 			.state-box {
 				float: left;
 				width: 46%;
-				background-color: #fff;
+				background-color: rgb(247 249 252);
 				margin-bottom: 24px;
 				margin-right: 4%;
 				padding: 19px 4%;
 				border-radius: 4px;
-				border: 1px solid #ddd;
-				transition: background-color 2s;
-				-moz-transition: background-color 2s; /* Firefox 4 */
-				-webkit-transition: background-color 2s; /* Safari 和 Chrome */
-				-o-transition: background-color 2s; /* Opera */
+				border: 1px solid #fff;
+				transition: color 2s;
+				-moz-transition: color 2s; /* Firefox 4 */
+				-webkit-transition: color 2s; /* Safari 和 Chrome */
+				-o-transition: color 2s; /* Opera */
 				.trs {
-					background-color: #fff;
-					transition: background-color 1s;
-					-moz-transition: background-color 1s; /* Firefox 4 */
-					-webkit-transition: background-color 1s; /* Safari 和 Chrome */
-					-o-transition: background-color 1s; /* Opera */
+					color: #000;
+					transition: color 1s;
+					-moz-transition: color 1s; /* Firefox 4 */
+					-webkit-transition: color 1s; /* Safari 和 Chrome */
+					-o-transition: color 1s; /* Opera */
 				}
 				span {
 					display: block;
@@ -215,7 +228,7 @@ export default React.memo(styled(SearchBar)`
 	.right-line-box {
 		float: right;
 		width: 45%;
-		border: 1px solid #ddd;
+		background-color: rgb(247 249 252);
 		border-radius: 5px;
 		padding: 9px 2%;
 		position: relative;

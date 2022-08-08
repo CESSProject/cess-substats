@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-02 11:38:47
+ * @LastEditTime: 2022-08-08 15:11:07
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -18,40 +18,25 @@ import { Pie } from "@ant-design/plots";
 import storageAJAX from "@services/storage";
 import "@ant-design/flowchart/dist/index.css";
 
-const SearchBar = ({ className }) => {
+const SearchBar = ({ className, space }) => {
 	const [loading, setLoading] = useState(false);
 	const [chartConfig, setChartConfig] = useState();
 
 	useEffect(async () => {
-		setLoading(true);
-		let result = await storageAJAX({ ac1: "sminer", ac2: "totalServiceSpace" });
-		console.log("sminer totalSpace result", result);
-		if (result.msg != "ok") {
-			setLoading(false);
-			return;
-		}
-		let totalSpace = result.data;
-		result = await storageAJAX({ ac1: "sminer", ac2: "totalIdleSpace" });
-		console.log("sminer totalPower result", result);
-		let totalPower = result.data;
-		if (result.msg != "ok") {
-			setLoading(false);
-			return;
-		}
 		let usePer = "100";
-		if (totalPower > 0) {
-			usePer = ((totalSpace * 100) / totalPower).toFixed(0);
+		if (space.total > 0) {
+			usePer = ((space.used * 100) / space.total).toFixed(1);
 		}
 		const config = {
 			height: 225,
 			data: [
 				{
 					type: "Use Storage",
-					value: totalSpace
+					value: space.used
 				},
 				{
 					type: "Available Storage",
-					value: totalPower
+					value: space.idle
 				}
 			],
 			legend: false,
@@ -76,21 +61,22 @@ const SearchBar = ({ className }) => {
 					type: "element-active"
 				}
 			],
+			color: "rgb(41 119 240)",
 			statistic: {
 				title: false,
 				content: {
 					style: {
 						whiteSpace: "pre-wrap",
 						overflow: "hidden",
-						textOverflow: "ellipsis"
+						textOverflow: "ellipsis",
+						fontSize: "18px"
 					},
-					content: usePer + "% Storage Used"
+					content: usePer + "%\n\n  Storage Used"
 				}
 			}
 		};
 		setChartConfig(config);
-		setLoading(false);
-	}, []);
+	}, [space]);
 
 	return (
 		<div className={className}>

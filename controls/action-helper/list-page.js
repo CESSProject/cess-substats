@@ -25,8 +25,8 @@ async function list(fieldStr, fromStr, dal, req, res) {
       // console.log(fromStr, whereStr);
       ret.data = [];
     } else {
-      console.log("whereStr", whereStr);
-      console.log("sortStr", sortStr);
+      // console.log("whereStr", whereStr);
+      // console.log("sortStr", sortStr);
       ret.data = await dal.findByPage(
         fieldStr,
         fromStr,
@@ -91,7 +91,7 @@ function formatParams(pre = "", req) {
     }
   }
   if (sorter) {
-    console.log("sorter", sorter);
+    // console.log("sorter", sorter);
     const sortArr = sorter.map((t) => t.column + " " + t.order);
     result.sortStr = "order by " + sortArr.join(",");
     if (!sqlSafe.checkSafe(result.sortStr)) {

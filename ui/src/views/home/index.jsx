@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-05 17:52:59
+ * @LastEditTime: 2022-08-08 15:08:43
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -28,11 +28,25 @@ const { TextArea } = Input;
 let lastBlockTime = 0;
 const columns = [
 	{
-		title: "ID",
+		title: "Rank",
 		dataIndex: "peerid",
 		width: "5%",
-		showType: "link",
-		tpl: "/miner/{key}"
+		render: (text, record, index) => {
+			if (text == 1) {
+				text = <img title="NO.1" width={20} src={process.env.PUBLIC_URL + "/img/rank-1.png"} />;
+			} else if (text == 2) {
+				text = <img title="NO.2" width={20} src={process.env.PUBLIC_URL + "/img/rank-2.png"} />;
+			} else if (text == 3) {
+				text = <img title="NO.3" width={20} src={process.env.PUBLIC_URL + "/img/rank-3.png"} />;
+			} else {
+				text = <span>&nbsp;{text}</span>;
+			}
+			return (
+				<>
+					<NavLink to={"/miner/" + record.key}>{text}</NavLink>
+				</>
+			);
+		}
 	},
 	{
 		title: "Address1",
@@ -70,11 +84,17 @@ const columns = [
 		showType: "currency"
 	}
 ];
+let ignore = false;
 
 const Home = ({ ...props }) => {
 	document.title = "Home-CESS Substats";
 	const navigate = useNavigate();
 	const [miners, setMiners] = useState([]);
+	const [space, setSpace] = useState({
+		used: 0,
+		idle: 0,
+		total: 0
+	});
 	const loadMiners = async () => {
 		let result = await storageAJAX({ ac1: "sminer", ac2: "minerItems" });
 		console.log("result", result);
@@ -105,27 +125,54 @@ const Home = ({ ...props }) => {
 			columns
 		}
 	};
-
+	useEffect(async () => {
+		ignore = false;
+		async function run() {
+			if (ignore) return;
+			let result = await storageAJAX({ ac1: "sminer", ac2: "totalServiceSpace" });
+			if (result.msg != "ok") {
+				return;
+			}
+			const used = result.data;
+			if (ignore) return;
+			result = await storageAJAX({ ac1: "sminer", ac2: "totalIdleSpace" });
+			if (result.msg != "ok") {
+				return;
+			}
+			const idle = result.data;
+			if (ignore) return;
+			setSpace({
+				used,
+				idle,
+				total: used + idle
+			});
+		}
+		setInterval(run, 10000);
+		run();
+		return () => {
+			ignore = true;
+		};
+	}, []);
 	return (
 		<div className="containner-in">
 			<div className="chart-box block">
 				<Card
 					title={
 						<span>
-							<GlobalOutlined /> CESS Storage
+							<img width={19} src={process.env.PUBLIC_URL + "/img/icon_cess.png"} /> CESS Storage
 						</span>
 					}
-					className="chart-left">
-					<StorageChart />
+					className="chart-left myRadius">
+					<StorageChart space={space} />
 				</Card>
 				<Card
-					className="chart-right"
+					className="chart-right myRadius"
 					title={
 						<span>
-							<ApartmentOutlined /> Network Overview
+							<img width={19} src={process.env.PUBLIC_URL + "/img/icon_cp.png"} /> Network Overview
 						</span>
 					}>
-					<NetworkOverview miners={miners} />
+					<NetworkOverview space={space} miners={miners} />
 				</Card>
 			</div>
 			<div className="list-box block">
@@ -135,9 +182,10 @@ const Home = ({ ...props }) => {
 				<Card
 					title={
 						<span>
-							<DatabaseOutlined /> Top Miners
+							<img width={29} src={process.env.PUBLIC_URL + "/img/2.png"} /> Top Miners
 						</span>
 					}
+					className="myRadius"
 					bodyStyle={{ padding: 0, margin: 0 }}
 					extra={
 						<NavLink to="/miner/" className="btn-more">

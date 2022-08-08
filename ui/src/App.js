@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 11:21:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-02 16:56:15
+ * @LastEditTime: 2022-08-08 10:28:25
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -36,6 +36,8 @@ function App() {
 			<BrowserRouter>
 				<NavBar className="page-header" />
 				<div className="containner">
+					<div className="bg-color bg-color-1"></div>
+					<div className="bg-color bg-color-2"></div>
 					<SearchBar />
 					<Routes>
 						<Route path="/" element={<Home />} />

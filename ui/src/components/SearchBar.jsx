@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-01 16:16:14
+ * @LastEditTime: 2022-08-08 10:59:34
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -68,35 +68,49 @@ const SearchBar = ({ className }) => {
 	};
 	return (
 		<div className={className}>
-			<Input.Group compact>
-				<Select size="large" style={{ width: 120 }} value={searchType} onChange={onChangeType} defaultValue="All">
-					<Option value="All">All</Option>
-					<Option value="Block">Block</Option>
-					<Option value="Transaction">Transaction</Option>
-					<Option value="Account">Account</Option>
-				</Select>
-				<Input
-					style={{
-						width: "calc(100% - 240px)"
-					}}
-					id="searchInput"
-					size="large"
-					onPressEnter={onSearch}
-					allowClear
-					value={keyword}
-					onChange={onChangeKeyword}
-					placeholder="Search by Block Height/Transaction Hash/Address ID"
-				/>
-				<Button onClick={onSearch} size="large" style={{ width: 120 }} type="primary" icon={<SearchOutlined />}>
-					Search
-				</Button>
-			</Input.Group>
+			<div className="big-title block">
+				<div className="big-title-txt block">Substats Blockchain Explorer</div>
+				<div className="big-title-txt-2 block">Find that block that eats the world.</div>
+			</div>
+			<Search
+				placeholder="Search by Block Height/Transaction Hash/Address ID"
+				onSearch={onSearch}
+				onPressEnter={onSearch}
+				allowClear
+				value={keyword}
+				bordered={false}
+				onChange={onChangeKeyword}
+				style={{
+					borderRadius: "10px",
+					border: "1px solid #ddd",
+					backgroundColor: "#fff",
+					overflow: "hidden"
+				}}
+				id="searchInput"
+				size="large"
+			/>
 		</div>
 	);
 };
 
 export default React.memo(styled(SearchBar)`
-	padding: 32px;
-	background-color: #fff;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
+	width: 56%;
+	.big-title {
+		font-family: "Microsoft YaHei", 微软雅黑;
+		.big-title-txt {
+			font-size: 23px;
+			color: #000;
+			font-weight: bold;
+		}
+		.big-title-txt-2 {
+			font-size: 17px;
+			color: #aaa;
+			margin-bottom: 16px;
+		}
+	}
+	.ant-input-group-addon button {
+		border: none !important;
+		color: rgb(69 148 255) !important;
+	}
 `);

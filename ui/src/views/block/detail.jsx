@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-02 17:31:07
+ * @LastEditTime: 2022-08-08 15:53:10
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -39,6 +39,7 @@ import queryDB from "@services/queryDB";
 import formatShowType from "@/utils/formatShowType";
 import moment from "moment";
 import copy from "copy-to-clipboard";
+import BreadcrumbBar from "@/components/BreadcrumbBar";
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -258,6 +259,7 @@ function Main({ className }) {
 	}, []);
 	return (
 		<div className={className}>
+			{/* <BreadcrumbBar curr="block/detail" /> */}
 			<Spin spinning={loading}>
 				<Card title="Block Overview">
 					<div className="table-content">

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-04 14:15:26
+ * @LastEditTime: 2022-08-08 15:35:33
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -16,7 +16,7 @@
 import styled from "styled-components";
 import _ from "lodash";
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from "@ant-design/icons";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, use, useLocation } from "react-router-dom";
 import { Menu } from "antd";
 import React, { useRef, useState, useEffect } from "react";
 import {
@@ -71,8 +71,8 @@ function getItem(label, key, icon, children, type) {
 }
 
 const items = [
-	getItem("HOME", "/", <HomeOutlined />),
-	getItem("CHAIN", "", <AppstoreAddOutlined />, [
+	getItem("HOME", "/", <img width={18} src={process.env.PUBLIC_URL + "/img/icon_gzt1.png"} />),
+	getItem("CHAIN", "chain", <img width={18} src={process.env.PUBLIC_URL + "/img/icon_yhgl.png"} />, [
 		getItem("Blocks", "/block/"),
 		getItem("Transfers", "/transfer/"),
 		getItem("Miners", "/miner/"),
@@ -82,29 +82,33 @@ const items = [
 
 function Header({ className }) {
 	const navigate = useNavigate();
-	const winHeight = document.body.clientHeight;
-	const getPath = (u, isActive) => {
-		if (isActive) return true;
-		let p = window.location.pathname;
-		if (u == p) {
-			return true;
-		}
-		const pArr = p.split("/");
-		const uArr = u.split("/");
-		if (pArr[1] == uArr[1]) {
-			return true;
-		}
-		return false;
-	};
+	let location = useLocation();
+	const [selKey, setSelKey] = useState("/");
 	const onClick = ({ item, key, keyPath, domEvent }) => {
 		console.log("click ", item, key, keyPath, domEvent);
 		if (key) {
 			navigate(key);
 		}
 	};
+
+	useEffect(() => {
+		console.log(location);
+		let p = location.pathname;
+		if (p.indexOf("/block/") == 0) {
+			p = "/block/";
+		} else if (p.indexOf("/transfer/") == 0) {
+			p = "/transfer/";
+		} else if (p.indexOf("/miner/") == 0) {
+			p = "/miner/";
+		} else if (p.indexOf("/account/") == 0) {
+			p = "/account/";
+		}
+		setSelKey(p);
+	}, [location]);
+
 	return (
 		<div className={className}>
-			<div className="abs-header" style={{ height: winHeight }}>
+			<div className="abs-header" style={{ height: document.body.clientHeight }}>
 				<div className="header-content">
 					<span className="logo-txt">
 						<NavLink to="/">
@@ -115,23 +119,13 @@ function Header({ className }) {
 						onClick={onClick}
 						style={{
 							width: 180,
-							backgroundColor: "#eaeff7"
+							backgroundColor: "rgb(238 240 243)"
 						}}
-						defaultSelectedKeys={["1"]}
-						defaultOpenKeys={["sub1"]}
+						defaultOpenKeys={["chain"]}
+						selectedKeys={[selKey]}
 						mode="inline"
 						items={items}
 					/>
-					{/* <div>HOME</div>
-					<div>CHAIN</div>
-					<span>
-						{navBtn.map(t => (
-							<NavLink key={t.name} to={t.path} style={({ isActive }) => ({ backgroundColor: getPath(t.path, isActive) ? "#c7d7f0" : "" })}>
-								{t.icon}&nbsp;
-								{t.name}
-							</NavLink>
-						))}
-					</span> */}
 				</div>
 				<div className="nav-bottom-link">
 					<a href="https://cess.cloud/" target="_blank">
@@ -158,16 +152,16 @@ export default styled(Header)`
 		width: 180px;
 		height: 100%;
 		line-height: 30px;
-		background-color: #eaeff7;
+		background-color: rgb(238 240 243);
 		position: fixed;
 		left: 0;
 		top: 0;
 		z-index: 999;
 		.ant-menu-sub.ant-menu-inline {
-			background-color: #dae4f5 !important ;
+			background-color: rgb(221 230 242) !important ;
 		}
 		.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-			background-color: #a4d1e7 !important ;
+			background-color: rgb(198 216 241) !important ;
 		}
 		.header-content {
 			a {
@@ -186,13 +180,12 @@ export default styled(Header)`
 				overflow: hidden;
 				clear: both;
 				padding: 0 10px;
-				line-height: 56px;
 			}
 		}
 		.logo-txt {
 			background-color: #fff;
 			display: block;
-			padding: 10px 0;
+			padding: 10px 10px 17px;
 			a {
 				font-size: 24px;
 			}
@@ -206,7 +199,7 @@ export default styled(Header)`
 			bottom: 0;
 			span {
 				width: 80%;
-				border-top: 1px solid #0464b1;
+				border-top: 1px solid #bcd7ed;
 				display: block;
 				overflow: hidden;
 				clear: both;
@@ -215,7 +208,7 @@ export default styled(Header)`
 			a {
 				line-height: 45px;
 				font-size: 13px;
-				color: #333;
+				color: #2977f0;
 				width: 100%;
 				text-align: center;
 				display: block;
