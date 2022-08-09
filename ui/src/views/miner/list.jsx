@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 15:56:50
+ * @LastEditTime: 2022-08-08 19:27:54
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -59,7 +59,7 @@ const columns = [
 ];
 
 const Home = ({ ...props }) => {
-	document.title = "Sminers-CESS Substats";
+	document.title = "Miners-CESS Substats";
 	const navigate = useNavigate();
 	const [miners, setMiners] = useState([]);
 

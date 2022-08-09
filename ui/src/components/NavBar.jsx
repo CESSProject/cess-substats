@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-08 15:35:33
+ * @LastEditTime: 2022-08-08 17:36:30
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -15,7 +15,7 @@
 
 import styled from "styled-components";
 import _ from "lodash";
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, MailOutlined, SettingOutlined, LinkOutlined } from "@ant-design/icons";
 import { NavLink, useNavigate, use, useLocation } from "react-router-dom";
 import { Menu } from "antd";
 import React, { useRef, useState, useEffect } from "react";
@@ -129,11 +129,21 @@ function Header({ className }) {
 				</div>
 				<div className="nav-bottom-link">
 					<a href="https://cess.cloud/" target="_blank">
-						CESS LAB Product
+						<img src="https://cess.cloud/favicon.ico" />
+						&nbsp;&nbsp;CESS Official&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<LinkOutlined />
 					</a>
-					<span></span>
+					<span className="mini-line"></span>
 					<a href="http://121.46.19.38:53002/" target="_blank">
-						UTOKIA NFT
+						<img src="http://121.46.19.38:53002/favicon.ico" />
+						&nbsp;&nbsp;UTOKIA World&nbsp;&nbsp;&nbsp;&nbsp;
+						<LinkOutlined />
+					</a>
+					<span className="mini-line"></span>
+					<a href="https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftestnet-rpc0.cess.cloud%2Fws%2F#/explorer" target="_blank">
+						<img src="https://polkadot.js.org/apps/favicon.ico" />
+						&nbsp;&nbsp;Polkadot.js App&nbsp;&nbsp;
+						<LinkOutlined />
 					</a>
 				</div>
 			</div>
@@ -197,21 +207,29 @@ export default styled(Header)`
 			position: absolute;
 			left: 0;
 			bottom: 0;
-			span {
+			text-align: left;
+			.mini-line {
 				width: 80%;
-				border-top: 1px solid #bcd7ed;
+				border-top: 1px solid #c9dbe9;
 				display: block;
 				overflow: hidden;
 				clear: both;
 				margin: 0 auto;
 			}
+			img {
+				vertical-align: middle;
+				width: 15px;
+			}
 			a {
 				line-height: 45px;
-				font-size: 13px;
-				color: #2977f0;
-				width: 100%;
-				text-align: center;
+				font-size: 12px;
+				color: #416cab;
+				width: 79%;
 				display: block;
+				margin: 0 auto;
+			}
+			a:hover {
+				color: blue;
 			}
 		}
 	}

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-28 14:15:58
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-05 16:59:43
+ * @LastEditTime: 2022-08-09 09:31:52
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -25,7 +25,8 @@ import {
 	Popconfirm,
 	Checkbox,
 	Card,
-	Form
+	Form,
+	Progress
 } from "antd";
 import { UserOutlined, DownOutlined, DeleteOutlined, SwapRightOutlined, CopyOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
@@ -33,7 +34,7 @@ import _ from "lodash";
 import moment from "moment";
 import copy from "copy-to-clipboard";
 import AccountIcon from "@/components/AccountIcon";
-import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
+import { formatterCurrency, formatterCurrencyMill, formatterCurrencyStr, formatterSize, formatterSizeFromMB, formatterSizeFromMBToGB } from "@utils/format";
 
 function formatArr(columns) {
 	columns.forEach(t => formatOne(t));
@@ -101,7 +102,7 @@ function formatOne(column) {
 				}
 				let showText = text;
 				if (text.length > 30) {
-					showText = text.substring(0, 20) + "******" + text.substring(text.length - 8);
+					showText = text.substring(0, 10) + "******" + text.substring(text.length - 8);
 				}
 				return (
 					<Tooltip placement="topLeft" title="click copy">
@@ -126,7 +127,7 @@ function formatOne(column) {
 				}
 				let showText = text;
 				if (text.length > 30) {
-					showText = text.substring(0, 20) + "******" + text.substring(text.length - 8);
+					showText = text.substring(0, 10) + "******" + text.substring(text.length - 8);
 				}
 				return (
 					<Tooltip placement="topLeft">
@@ -183,6 +184,31 @@ function formatOne(column) {
 						<span className="suffix">{text && text.suffix} TCESS</span>
 					</>
 				);
+			};
+			break;
+		case "currency-m":
+			t.render = (text, record, index) => {
+				if (!text) {
+					return "";
+				}
+				return (
+					<>
+						<span className="money">{formatterCurrencyMill(text)}M</span>
+					</>
+				);
+			};
+			break;
+		case "store-size-g":
+			t.render = (text, record, index) => {
+				if (!text) {
+					return "";
+				}
+				return formatterSizeFromMBToGB(text);
+			};
+			break;
+		case "progress":
+			t.render = (text, record, index) => {
+				return <Progress style={{ width: 200 }} strokeColor="blue" percent={text} size="small" />;
 			};
 			break;
 	}

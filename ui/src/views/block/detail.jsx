@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-08 15:53:10
+ * @LastEditTime: 2022-08-08 19:28:06
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -259,7 +259,7 @@ function Main({ className }) {
 	}, []);
 	return (
 		<div className={className}>
-			{/* <BreadcrumbBar curr="block/detail" /> */}
+			<BreadcrumbBar currPageName="Block detail" />
 			<Spin spinning={loading}>
 				<Card title="Block Overview">
 					<div className="table-content">

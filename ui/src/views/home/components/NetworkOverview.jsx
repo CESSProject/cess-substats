@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-08 15:01:18
+ * @LastEditTime: 2022-08-08 19:37:19
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -107,7 +107,7 @@ const SearchBar = ({ className, miners, space }) => {
 		const list = result.data.sort((t1, t2) => t1.id - t2.id);
 		list.forEach(t => (t["Storage Power(GiB)"] = parseFloat((t.power / 1073741824).toFixed(2))));
 		const config = {
-			height: 175,
+			height: 165,
 			data: list,
 			padding: "auto",
 			xField: "dateStr",
@@ -174,6 +174,7 @@ const SearchBar = ({ className, miners, space }) => {
 			</div>
 			<div className="right-line-box">
 				<div className="right-line-box-title">Storage Power Trends</div>
+				<div className="space-hold block"></div>
 				<Spin spinning={loading}>{chartConfig ? <Line {...chartConfig} /> : ""}</Spin>
 			</div>
 		</div>
@@ -239,6 +240,10 @@ export default React.memo(styled(SearchBar)`
 			left: 11px;
 			overflow: hidden;
 			font-size: 15px;
+		}
+		.space-hold {
+			width: 100%;
+			height: 12px;
 		}
 	}
 `);

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-08 15:08:43
+ * @LastEditTime: 2022-08-09 09:31:06
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -30,7 +30,7 @@ const columns = [
 	{
 		title: "Rank",
 		dataIndex: "peerid",
-		width: "5%",
+		width: "10%",
 		render: (text, record, index) => {
 			if (text == 1) {
 				text = <img title="NO.1" width={20} src={process.env.PUBLIC_URL + "/img/rank-1.png"} />;
@@ -49,7 +49,7 @@ const columns = [
 		}
 	},
 	{
-		title: "Address1",
+		title: "Account",
 		dataIndex: "key",
 		width: "35%",
 		textWrap: "word-break",
@@ -64,24 +64,31 @@ const columns = [
 	// 	ellipsis: true,
 	// 	showType: "copy"
 	// },
+	// {
+	// 	title: "Address2",
+	// 	dataIndex: "beneficiary",
+	// 	width: "30%",
+	// 	textWrap: "word-break",
+	// 	ellipsis: true,
+	// 	showType: "copy"
+	// },
 	{
-		title: "Address2",
-		dataIndex: "beneficiary",
-		width: "30%",
-		textWrap: "word-break",
-		ellipsis: true,
-		showType: "copy"
-	},
-	{
-		title: "Power",
+		title: "Power(GiB)",
 		dataIndex: "power",
-		width: "15%"
+		width: "15%",
+		showType: "store-size-g"
 	},
 	{
-		title: "Mining reward",
+		title: "Power Ratio",
+		dataIndex: "per",
+		width: "20%",
+		showType: "progress"
+	},
+	{
+		title: "Mining reward(TESS)",
 		dataIndex: "totalReward",
 		width: "20%",
-		showType: "currency"
+		showType: "currency-m"
 	}
 ];
 let ignore = false;
@@ -105,9 +112,14 @@ const Home = ({ ...props }) => {
 		result.data.forEach((t, i) => {
 			t.peerid = i + 1;
 		});
+		let totalPower = 0;
 		result.data.forEach(m => {
-			m.power = formatterSizeFromMB(m.power);
+			m.power = _.toNumber(m.power);
 			m.totalReward = _.toNumber(m.rewardInfo.totalReward);
+			totalPower += m.power;
+		});
+		result.data.forEach(m => {
+			m.per = ((m.power * 100) / totalPower).toFixed(1);
 		});
 		setMiners(result.data);
 		return result;

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 14:49:06
+ * @LastEditTime: 2022-08-08 19:26:54
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -41,6 +41,7 @@ import moment from "moment";
 import copy from "copy-to-clipboard";
 import storageAJAX from "@services/storage";
 import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
+import BreadcrumbBar from "@/components/BreadcrumbBar";
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -224,6 +225,7 @@ function Main({ className }) {
 	}, []);
 	return (
 		<div className={className}>
+			<BreadcrumbBar currPageName="Account detail" />
 			<Spin spinning={loading}>
 				<Card title="Account Overview">
 					<div className="table-content">

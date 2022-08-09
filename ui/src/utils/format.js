@@ -31,7 +31,7 @@ const formatterSizeFromMB = bytes => {
 	}
 	if (bytes == 0) return "0 MB";
 	let k = 1024; //set base size
-	let sizeStr = ["iB", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]; //size
+	let sizeStr = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]; //size
 	let i = 0; //Unit subscript and power
 	for (let l = 0; l < 6; l++) {
 		if (bytes / Math.pow(k, l) < 1) {
@@ -40,6 +40,13 @@ const formatterSizeFromMB = bytes => {
 		i = l;
 	}
 	return (bytes / Math.pow(k, i)).toFixed(3) + " " + sizeStr[i];
+};
+const formatterSizeFromMBToGB = bytes => {
+	if (_.isString(bytes)) {
+		bytes = _.toNumber(bytes);
+	}
+	let g = 1024 * 1024 * 1024;
+	return (bytes / g).toFixed(3);
 };
 
 /**
@@ -62,7 +69,14 @@ const formatterCurrency = coin => {
 	}
 	return { money: (coin / Math.pow(k, i)).toFixed(3), suffix: currencyStr[i] };
 };
-
+const formatterCurrencyMill = coin => {
+	if (_.isString(coin)) {
+		coin = _.toNumber(coin);
+	}
+	if (coin == 0) return 0;
+	coin = coin / 1000000000000000000;
+	return coin.toFixed(4);
+};
 /**
  * formatter coin
  * @param coin
@@ -105,4 +119,4 @@ const isJson = str => {
 	return isValid;
 };
 
-export { formatterSize, formatterSizeFromMB, formatterCurrency, formatterCurrencyStr, isJson };
+export { formatterSize, formatterSizeFromMB, formatterSizeFromMBToGB, formatterCurrency, formatterCurrencyMill, formatterCurrencyStr, isJson };

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-08 10:59:34
+ * @LastEditTime: 2022-08-08 16:10:10
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -70,7 +70,7 @@ const SearchBar = ({ className }) => {
 		<div className={className}>
 			<div className="big-title block">
 				<div className="big-title-txt block">Substats Blockchain Explorer</div>
-				<div className="big-title-txt-2 block">Find that block that eats the world.</div>
+				<div className="big-title-txt-2 block">Find the block that eats the world.</div>
 			</div>
 			<Search
 				placeholder="Search by Block Height/Transaction Hash/Address ID"

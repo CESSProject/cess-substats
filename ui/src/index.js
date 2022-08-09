@@ -2,22 +2,22 @@
  * @description: 程序入口文件
  * @author: Jack Chen @懒人码农
  * @Date: 2022-04-24 10:01:40
- * @LastEditors: fage
- * @LastEditTime: 2022-07-07 17:15:57
+ * @LastEditors: chenbinfa
+ * @LastEditTime: 2022-08-08 17:04:04
  */
 
 import "react-app-polyfill/ie9";
 import "react-app-polyfill/stable";
-import { ConfigProvider } from 'antd';
+import { ConfigProvider } from "antd";
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.less";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import zhCN from "antd/lib/locale/zh_CN";
+import enGB from "antd/lib/locale/en_GB";
 
 ReactDOM.render(
-	<ConfigProvider locale={zhCN}>
+	<ConfigProvider locale={enGB}>
 		<App />
 	</ConfigProvider>,
 	document.getElementById("root")
