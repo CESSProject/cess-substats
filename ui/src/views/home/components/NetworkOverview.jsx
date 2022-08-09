@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-08 19:37:19
+ * @LastEditTime: 2022-08-09 11:04:47
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -236,7 +236,7 @@ export default React.memo(styled(SearchBar)`
 		padding-top: 37px;
 		.right-line-box-title {
 			position: absolute;
-			top: 6px;
+			top: 12px;
 			left: 11px;
 			overflow: hidden;
 			font-size: 15px;

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 09:31:06
+ * @LastEditTime: 2022-08-09 11:00:01
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -14,6 +14,7 @@ import "./index.less";
 import subData from "@services/subdata";
 import constantsAJAX from "@services/chain-state/constants";
 import storageAJAX from "@services/storage";
+import miner from "@services/miner";
 import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
 import { ThTable } from "@/components/ThTable";
 import StorageChart from "./components/StorageChart";
@@ -26,72 +27,9 @@ const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 let lastBlockTime = 0;
-const columns = [
-	{
-		title: "Rank",
-		dataIndex: "peerid",
-		width: "10%",
-		render: (text, record, index) => {
-			if (text == 1) {
-				text = <img title="NO.1" width={20} src={process.env.PUBLIC_URL + "/img/rank-1.png"} />;
-			} else if (text == 2) {
-				text = <img title="NO.2" width={20} src={process.env.PUBLIC_URL + "/img/rank-2.png"} />;
-			} else if (text == 3) {
-				text = <img title="NO.3" width={20} src={process.env.PUBLIC_URL + "/img/rank-3.png"} />;
-			} else {
-				text = <span>&nbsp;{text}</span>;
-			}
-			return (
-				<>
-					<NavLink to={"/miner/" + record.key}>{text}</NavLink>
-				</>
-			);
-		}
-	},
-	{
-		title: "Account",
-		dataIndex: "key",
-		width: "35%",
-		textWrap: "word-break",
-		ellipsis: true,
-		showType: "accountIcon"
-	},
-	// {
-	// 	title: "Address1",
-	// 	dataIndex: "key",
-	// 	width: "30%",
-	// 	textWrap: "word-break",
-	// 	ellipsis: true,
-	// 	showType: "copy"
-	// },
-	// {
-	// 	title: "Address2",
-	// 	dataIndex: "beneficiary",
-	// 	width: "30%",
-	// 	textWrap: "word-break",
-	// 	ellipsis: true,
-	// 	showType: "copy"
-	// },
-	{
-		title: "Power(GiB)",
-		dataIndex: "power",
-		width: "15%",
-		showType: "store-size-g"
-	},
-	{
-		title: "Power Ratio",
-		dataIndex: "per",
-		width: "20%",
-		showType: "progress"
-	},
-	{
-		title: "Mining reward(TESS)",
-		dataIndex: "totalReward",
-		width: "20%",
-		showType: "currency-m"
-	}
-];
 let ignore = false;
+
+const minerColumns = miner.getColumns();
 
 const Home = ({ ...props }) => {
 	document.title = "Home-CESS Substats";
@@ -131,10 +69,10 @@ const Home = ({ ...props }) => {
 		pagesize: 10,
 		hidePager: true,
 		loadList: {
-			method: loadMiners
+			method: miner.loadMiners
 		},
 		table: {
-			columns
+			columns: minerColumns
 		}
 	};
 	useEffect(async () => {

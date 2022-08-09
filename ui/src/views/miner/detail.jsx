@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-08 19:27:16
+ * @LastEditTime: 2022-08-09 10:31:20
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -38,6 +38,7 @@ import { useNavigate, useParams, NavLink } from "react-router-dom";
 import queryDB from "@services/queryDB";
 import formatShowType from "@/utils/formatShowType";
 import storageAJAX from "@services/storage";
+import miner from "@services/miner";
 import moment from "moment";
 import copy from "copy-to-clipboard";
 import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
@@ -75,7 +76,7 @@ function Main({ className }) {
 			setLoading(false);
 			return message.error(result.msg);
 		}
-		let mainer = result.data.find(t => t.key == id);
+		let mainer = await miner.loadOneMiner(id);
 		if (!mainer) {
 			setLoading(false);
 			return message.error("miner not found");

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-05 14:45:40
+ * @LastEditTime: 2022-08-09 10:57:06
  */
 import React, { useRef, useState, useEffect } from "react";
 import {
@@ -136,7 +136,7 @@ export function ThTable({ props }) {
 			}
 		});
 		setDataSource(result.data);
-		setTotal(result.total);
+		setTotal(result.total || result.data.length);
 		setLoading(false);
 		//autoRefresh
 		if (props.loadList && props.loadList.autoRefresh) {

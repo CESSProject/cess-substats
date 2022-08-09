@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-08 17:36:30
+ * @LastEditTime: 2022-08-09 11:06:55
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -134,15 +134,15 @@ function Header({ className }) {
 						<LinkOutlined />
 					</a>
 					<span className="mini-line"></span>
-					<a href="http://121.46.19.38:53002/" target="_blank">
-						<img src="http://121.46.19.38:53002/favicon.ico" />
-						&nbsp;&nbsp;UTOKIA World&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftestnet-rpc0.cess.cloud%2Fws%2F#/explorer" target="_blank">
+						<img src="https://polkadot.js.org/apps/favicon.ico" />
+						&nbsp;&nbsp;Polkadot Portal&nbsp;&nbsp;
 						<LinkOutlined />
 					</a>
 					<span className="mini-line"></span>
-					<a href="https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftestnet-rpc0.cess.cloud%2Fws%2F#/explorer" target="_blank">
-						<img src="https://polkadot.js.org/apps/favicon.ico" />
-						&nbsp;&nbsp;Polkadot.js App&nbsp;&nbsp;
+					<a href="http://121.46.19.38:53002/" target="_blank">
+						<img src="http://121.46.19.38:53002/favicon.ico" />
+						&nbsp;&nbsp;UTOKIA World&nbsp;&nbsp;&nbsp;&nbsp;
 						<LinkOutlined />
 					</a>
 				</div>
