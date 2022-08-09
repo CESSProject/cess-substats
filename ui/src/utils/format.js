@@ -97,6 +97,16 @@ const formatterCurrencyStr = coin => {
 	}
 	return `${(coin / Math.pow(k, i)).toFixed(3)} ${currencyStr[i]}`;
 };
+const formatterCurrencyStr2 = coin => {
+	if (_.isString(coin)) {
+		coin = _.toNumber(coin);
+	}
+	if (coin == 0) return 0;
+	coin = coin / 1000000000000;
+	coin = Math.round(coin * 100) / 100;
+	coin = coin.toLocaleString("zh", { style: "decimal" });
+	return coin;
+};
 
 /**
  * check is json
@@ -119,4 +129,4 @@ const isJson = str => {
 	return isValid;
 };
 
-export { formatterSize, formatterSizeFromMB, formatterSizeFromMBToGB, formatterCurrency, formatterCurrencyMill, formatterCurrencyStr, isJson };
+export { formatterSize, formatterSizeFromMB, formatterSizeFromMBToGB, formatterCurrency, formatterCurrencyMill, formatterCurrencyStr, formatterCurrencyStr2, isJson };

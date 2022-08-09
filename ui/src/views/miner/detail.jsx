@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 10:31:20
+ * @LastEditTime: 2022-08-09 14:28:29
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -116,24 +116,24 @@ function Main({ className }) {
 		setColumnsAccounts(columns);
 		const columns2 = [
 			{
-				title: "Total Reward",
+				title: "Total Reward($TCESS)",
 				dataIndex: "totalReward",
-				showType: "currency"
+				showType: "currency-qianfen"
 			},
 			{
-				title: "Available",
+				title: "Available($TCESS)",
 				dataIndex: "totalRewardsCurrentlyAvailableObj",
-				showType: "currency"
+				showType: "currency-qianfen"
 			},
 			{
-				title: "Total Not Receive",
+				title: "Total Not Receive($TCESS)",
 				dataIndex: "collateralsObj",
-				showType: "currency"
+				showType: "currency-qianfen"
 			},
 			{
-				title: "Collaterals",
+				title: "Collaterals($TCESS)",
 				dataIndex: "totalReward",
-				showType: "currency"
+				showType: "currency-qianfen"
 			}
 		];
 		formatShowType.formatArr(columns2);

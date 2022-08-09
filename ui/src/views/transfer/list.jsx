@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 16:03:25
+ * @LastEditTime: 2022-08-09 14:40:18
  */
 import React, { useRef, useState, useEffect } from "react";
 import {
@@ -49,18 +49,19 @@ const { TextArea } = Input;
 
 const columns = [
 	{
-		title: "Block Height",
+		title: "Block",
 		dataIndex: "blockHeight",
 		key: "blockHeight",
-		width: "6%",
+		width: "4%",
 		showType: "link",
-		tpl: "/transfer/{hash}"
+		tpl: "/transfer/{hash}",
+		sorter: true
 	},
 	{
 		title: "Hash",
 		dataIndex: "hash",
 		key: "hash",
-		width: "20%",
+		width: "14%",
 		textWrap: "word-break",
 		ellipsis: true,
 		showType: "copy"
@@ -68,7 +69,7 @@ const columns = [
 	{
 		title: "Method",
 		dataIndex: "method",
-		width: "10%",
+		width: "15%",
 		render: (text, record, index) => {
 			return record.section + "." + text;
 		}
@@ -76,7 +77,7 @@ const columns = [
 	{
 		title: "Status",
 		dataIndex: "status",
-		width: "8%",
+		width: "5%",
 		render: (text, record, index) => {
 			return text === "success" ? (
 				<span className="green">
@@ -87,27 +88,31 @@ const columns = [
 					<ExclamationCircleOutlined /> {text}
 				</span>
 			);
-		}
+		},
+		sorter: true
 	},
+	// {
+	// 	title: "DestAccount",
+	// 	dataIndex: "destAccount",
+	// 	width: "10%",
+	// 	textWrap: "word-break",
+	// 	ellipsis: true,
+	// 	showType: "copy"
+	// },
 	{
-		title: "DestAccount",
-		dataIndex: "destAccount",
-		width: "15%",
-		textWrap: "word-break",
-		ellipsis: true,
-		showType: "copy"
-	},
-	{
-		title: "Amount",
+		title: "Amount($TCESS)",
 		dataIndex: "amount",
-		width: "5%"
+		width: "5%",
+		sorter: true,
+		showType: "currency-qianfen"
 	},
 	{
 		title: "Time",
 		dataIndex: "timestamp",
 		width: "10%",
 		showType: "datetime",
-		tpl: "YYYY-MM-DD HH:mm:ss"
+		tpl: "YYYY-MM-DD HH:mm:ss",
+		sorter: true
 	}
 ];
 

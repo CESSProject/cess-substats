@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-08 19:28:06
+ * @LastEditTime: 2022-08-09 14:28:30
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -214,10 +214,10 @@ function Main({ className }) {
 				showType: "copy"
 			},
 			{
-				title: "Amount",
+				title: "Amount($TCESS)",
 				dataIndex: "amount",
 				width: "5%",
-				showType: "currency"
+				showType: "currency-qianfen"
 			},
 			{
 				title: "Signature",

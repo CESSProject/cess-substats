@@ -3,9 +3,9 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 11:00:01
+ * @LastEditTime: 2022-08-09 15:12:55
  */
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
 import { UserOutlined, DownOutlined, DeleteOutlined, GlobalOutlined, ApartmentOutlined, AppstoreAddOutlined, SwapOutlined, DatabaseOutlined } from "@ant-design/icons";
 import _ from "lodash";
@@ -28,55 +28,42 @@ const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 let lastBlockTime = 0;
 let ignore = false;
+let timeout = null;
 
 const minerColumns = miner.getColumns();
 
 const Home = ({ ...props }) => {
 	document.title = "Home-CESS Substats";
-	const navigate = useNavigate();
 	const [miners, setMiners] = useState([]);
 	const [space, setSpace] = useState({
 		used: 0,
 		idle: 0,
 		total: 0
 	});
-	const loadMiners = async () => {
-		let result = await storageAJAX({ ac1: "sminer", ac2: "minerItems" });
-		console.log("result", result);
-		if (result.msg != "ok") {
-			return;
-		}
-		result.data.sort((t1, t2) => t2.power - t1.power);
-		result.data.forEach((t, i) => {
-			t.peerid = i + 1;
-		});
-		let totalPower = 0;
-		result.data.forEach(m => {
-			m.power = _.toNumber(m.power);
-			m.totalReward = _.toNumber(m.rewardInfo.totalReward);
-			totalPower += m.power;
-		});
-		result.data.forEach(m => {
-			m.per = ((m.power * 100) / totalPower).toFixed(1);
-		});
-		setMiners(result.data);
-		return result;
-	};
 
-	const propsTable = {
-		border: true,
-		size: "middle",
-		pagesize: 10,
-		hidePager: true,
-		loadList: {
-			method: miner.loadMiners
-		},
-		table: {
-			columns: minerColumns
-		}
-	};
+	const propsTable = useMemo(async () => {
+		return {
+			border: true,
+			size: "middle",
+			pagesize: 10,
+			hidePager: true,
+			loadList: {
+				method: async () => {
+					if (ignore) return;
+					let result = await miner.loadMiners();
+					if (ignore) return;
+					if (result.msg == "ok") {
+						setMiners(result.data);
+					}
+					return result;
+				}
+			},
+			table: {
+				columns: minerColumns
+			}
+		};
+	}, []);
 	useEffect(async () => {
-		ignore = false;
 		async function run() {
 			if (ignore) return;
 			let result = await storageAJAX({ ac1: "sminer", ac2: "totalServiceSpace" });
@@ -91,16 +78,18 @@ const Home = ({ ...props }) => {
 			}
 			const idle = result.data;
 			if (ignore) return;
+			console.log("start setSpace *********************************************", ignore);
 			setSpace({
 				used,
 				idle,
 				total: used + idle
 			});
 		}
-		setInterval(run, 10000);
-		run();
+		timeout = setInterval(run, 10000);
+		await run();
 		return () => {
 			ignore = true;
+			clearInterval(timeout);
 		};
 	}, []);
 	return (

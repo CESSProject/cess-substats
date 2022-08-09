@@ -3,10 +3,13 @@
  * @Autor: fage
  * @Date: 2022-07-11 17:31:18
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-08 13:42:49
+ * @LastEditTime: 2022-08-09 15:29:21
  */
 const { ApiPromise, WsProvider, Keyring } = require("@polkadot/api");
-let provider, api, keyring;
+const webconfig = require("../webconfig");
+const config = webconfig.wsnode;
+let api, keyring;
+const provider = new WsProvider(config.nodeURL);
 
 module.exports = main;
 let waiting = false;
@@ -16,8 +19,6 @@ async function main() {
       return;
     }
     waiting = false;
-    const config = global.webconfig.wsnode;
-    provider = new WsProvider(config.nodeURL);
     api = new ApiPromise({
       provider,
     });

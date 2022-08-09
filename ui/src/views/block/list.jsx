@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 16:03:49
+ * @LastEditTime: 2022-08-09 14:42:38
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -33,7 +33,8 @@ const columns = [
 		key: "blockHeight",
 		width: "10%",
 		showType: "link",
-		tpl: "/block/{blockHeight}"
+		tpl: "/block/{blockHeight}",
+		sorter: true
 	},
 	{
 		title: "Hash",
@@ -58,7 +59,8 @@ const columns = [
 		dataIndex: "timestamp",
 		key: "timestamp",
 		width: "20%",
-		showType: "datetime"
+		showType: "datetime",
+		sorter: true
 	}
 ];
 

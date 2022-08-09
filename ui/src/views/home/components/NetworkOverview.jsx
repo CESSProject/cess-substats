@@ -3,14 +3,14 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 11:04:47
+ * @LastEditTime: 2022-08-09 15:03:21
  * @description: 描述信息
  * @author: chenbinfa
  */
 import React, { useState, useEffect } from "react";
 import { Button, Col, Spin, DatePicker, Input, Row, Select, message } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
+import { formatterCurrency, formatterCurrencyStr, formatterCurrencyStr2, formatterSize, formatterSizeFromMB } from "@utils/format";
 import subData from "@services/subdata";
 import constantsAJAX from "@services/chain-state/constants";
 import _ from "lodash";
@@ -42,6 +42,7 @@ const SearchBar = ({ className, miners, space }) => {
 			id: "home-blockInfo",
 			name: "blockInfo",
 			e: data => {
+				if (ignore) return;
 				setBlockHeight(data.blockHeight);
 				setBgColor("red");
 				setTimeout(() => {
@@ -67,7 +68,7 @@ const SearchBar = ({ className, miners, space }) => {
 				return setAvgBlockTime(result.msg);
 			}
 		}
-		console.log("result", result);
+		// console.log("result", result);
 		let t = result.data;
 		t = parseInt(t.replace(",", "")) / 1000;
 		setAvgBlockTime(t);
@@ -82,7 +83,7 @@ const SearchBar = ({ className, miners, space }) => {
 			return;
 		}
 		let balances = parseInt(result.data, 16);
-		balances = formatterCurrencyStr(balances);
+		balances = formatterCurrencyStr2(balances);
 		setTotalIssuance(balances);
 	}, []);
 
@@ -163,8 +164,8 @@ const SearchBar = ({ className, miners, space }) => {
 						<span>{totalPower}</span>
 					</div>
 					<div className="state-box" style={{ marginBottom: 0 }}>
-						<span>Total Issuance</span>
-						<span>{totalIssuance} TCESS</span>
+						<span>Total Issuance($TCESS)</span>
+						<span>{totalIssuance}</span>
 					</div>
 					<div className="state-box" style={{ marginBottom: 0 }}>
 						<span>Storage Miners</span>

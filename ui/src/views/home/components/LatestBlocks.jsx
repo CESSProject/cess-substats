@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-08 15:07:44
+ * @LastEditTime: 2022-08-09 11:54:22
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Empty, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -118,6 +118,8 @@ const Main = ({ className, miners }) => {
 			pagesize: 10,
 			pageindex: 1
 		});
+
+		tmp.data.forEach(t => (t.key = t.id));
 		if (tmp.msg == "ok") {
 			blockList.push(...tmp.data);
 			pBlock.table.dataSource = blockList;
@@ -129,6 +131,7 @@ const Main = ({ className, miners }) => {
 			pageindex: 1
 		});
 		if (tmp.msg == "ok") {
+			tmp.data.forEach(t => (t.key = t.id));
 			txList.push(...tmp.data);
 			pTx.table.dataSource = txList;
 			setPropsTx(pTx);
@@ -149,7 +152,8 @@ const Main = ({ className, miners }) => {
 				}
 				blockList.unshift({
 					id: data.blockHeight,
-					key: new Date().valueOf() + data.blockHeight,
+					key: new Date().valueOf() + data.blockHeight + data.timestamp,
+					dataIndex: new Date().valueOf() + data.blockHeight + data.timestamp,
 					blockHeight: data.blockHeight,
 					hash: data.hash,
 					timestamp: data.timestamp
@@ -167,6 +171,7 @@ const Main = ({ className, miners }) => {
 				}
 				data.trnactions.forEach((t, i) => {
 					t.key = new Date().valueOf() + "_" + i;
+					t.dataIndex = new Date().valueOf() + "_" + i;
 					t.status = "success";
 					txList.unshift(t);
 				});
@@ -176,7 +181,7 @@ const Main = ({ className, miners }) => {
 				setPropsTx(tmp);
 			}
 		};
-		subData.addEvent(e);
+		// subData.addEvent(e);
 		return () => {
 			ignore = true;
 			subData.removeEvent(e.id);

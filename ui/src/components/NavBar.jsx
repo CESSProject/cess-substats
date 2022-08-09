@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 11:06:55
+ * @LastEditTime: 2022-08-09 14:48:16
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -84,15 +84,15 @@ function Header({ className }) {
 	const navigate = useNavigate();
 	let location = useLocation();
 	const [selKey, setSelKey] = useState("/");
-	const onClick = ({ item, key, keyPath, domEvent }) => {
-		console.log("click ", item, key, keyPath, domEvent);
+	const onClick = ({ key, keyPath, domEvent }) => {
+		// console.log("click ", item, key, keyPath, domEvent);
 		if (key) {
 			navigate(key);
 		}
 	};
 
 	useEffect(() => {
-		console.log(location);
+		// console.log(location);
 		let p = location.pathname;
 		if (p.indexOf("/block/") == 0) {
 			p = "/block/";
@@ -130,20 +130,20 @@ function Header({ className }) {
 				<div className="nav-bottom-link">
 					<a href="https://cess.cloud/" target="_blank">
 						<img src="https://cess.cloud/favicon.ico" />
-						&nbsp;&nbsp;CESS Official&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<LinkOutlined />
+						&nbsp;&nbsp;CESS Official
+						<LinkOutlined className="icon-link" />
 					</a>
 					<span className="mini-line"></span>
 					<a href="https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftestnet-rpc0.cess.cloud%2Fws%2F#/explorer" target="_blank">
-						<img src="https://polkadot.js.org/apps/favicon.ico" />
-						&nbsp;&nbsp;Polkadot Portal&nbsp;&nbsp;
-						<LinkOutlined />
+						<img src={process.env.PUBLIC_URL + "/img/favicon-dot.ico"} />
+						&nbsp;&nbsp;Polkadot Portal
+						<LinkOutlined className="icon-link" />
 					</a>
 					<span className="mini-line"></span>
 					<a href="http://121.46.19.38:53002/" target="_blank">
-						<img src="http://121.46.19.38:53002/favicon.ico" />
-						&nbsp;&nbsp;UTOKIA World&nbsp;&nbsp;&nbsp;&nbsp;
-						<LinkOutlined />
+						<img src={process.env.PUBLIC_URL + "/img/favicon-utokla.ico"} />
+						&nbsp;&nbsp;UTOKIA World
+						<LinkOutlined className="icon-link" />
 					</a>
 				</div>
 			</div>
@@ -227,9 +227,16 @@ export default styled(Header)`
 				width: 79%;
 				display: block;
 				margin: 0 auto;
+				position: relative;
 			}
 			a:hover {
 				color: blue;
+			}
+			.icon-link {
+				float: right;
+				right: 15px;
+				top: 18px;
+				position: absolute;
 			}
 		}
 	}

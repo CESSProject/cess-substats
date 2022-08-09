@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 10:57:06
+ * @LastEditTime: 2022-08-09 15:36:30
  */
 import React, { useRef, useState, useEffect } from "react";
 import {
@@ -50,7 +50,7 @@ let timeout = null;
 
 export function ThTable({ props }) {
 	runCount++;
-	console.log("ThTable render count", runCount);
+	// console.log("ThTable render count", runCount);
 	// console.log("props", props);
 	const hasBorder = props.border;
 	const navigate = useNavigate();
@@ -77,7 +77,7 @@ export function ThTable({ props }) {
 		showSizeChanger: true,
 		showQuickJumper: true,
 		onChange: (i, size) => {
-			console.log("i, size", i, size);
+			// console.log("i, size", i, size);
 			setPageindex(i);
 			setPagesize(size);
 			setReload(!reload);
@@ -87,13 +87,13 @@ export function ThTable({ props }) {
 
 	//load dics
 	useEffect(async () => {
-		console.log("load dics");
+		// console.log("load dics");
 		let result = await queryDB.dics();
 		if (result.msg != "ok") {
 			return;
 		}
 		dics = result.data;
-		console.log("dics", dics);
+		// console.log("dics", dics);
 	}, []);
 
 	//ajax post
@@ -135,6 +135,12 @@ export function ThTable({ props }) {
 				t.key = t.id || i;
 			}
 		});
+		result.data.forEach((t, i) => {
+			let arr = result.data.filter(d => d.key == t.key);
+			if (arr.length > 1) {
+				arr[1].key = arr[1].key + "-2";
+			}
+		});
 		setDataSource(result.data);
 		setTotal(result.total || result.data.length);
 		setLoading(false);
@@ -142,7 +148,7 @@ export function ThTable({ props }) {
 		if (props.loadList && props.loadList.autoRefresh) {
 			timeout = setTimeout(() => {
 				if (ignore) return;
-				console.log("autoRefresh", props.loadList.autoRefresh);
+				// console.log("autoRefresh", props.loadList.autoRefresh);
 				setReload(new Date());
 			}, props.loadList.autoRefresh);
 		}
@@ -177,7 +183,7 @@ export function ThTable({ props }) {
 		if (props.table?.rowSelection) {
 			props.table.rowSelection.onChange = (selectedRowKeys, selectedRows) => {
 				setSelectRows(selectedRows);
-				console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
+				// console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
 			};
 		}
 	}, []);
@@ -253,7 +259,7 @@ export function ThTable({ props }) {
 		onFilterSumbit(props.titleBar?.filter, values);
 	};
 	const onFilterSumbit = (filterConfig, values) => {
-		console.log("values", values);
+		// console.log("values", values);
 		const filterBar = [];
 		filterConfig.forEach(t => {
 			const k = t.cloumn;

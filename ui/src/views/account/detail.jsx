@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-08 19:26:54
+ * @LastEditTime: 2022-08-09 14:39:10
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -40,7 +40,7 @@ import formatShowType from "@/utils/formatShowType";
 import moment from "moment";
 import copy from "copy-to-clipboard";
 import storageAJAX from "@services/storage";
-import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
+import { formatterCurrency, formatterCurrencyStr, formatterCurrencyStr2, formatterSize, formatterSizeFromMB } from "@utils/format";
 import BreadcrumbBar from "@/components/BreadcrumbBar";
 
 const { Option } = Select;
@@ -192,10 +192,10 @@ function Main({ className }) {
 				showType: "copy"
 			},
 			{
-				title: "Balances",
+				title: "Balances($TCESS)",
 				dataIndex: "amount",
 				width: "5%",
-				showType: "currency"
+				showType: "currency-qianfen"
 			},
 			{
 				title: "Signer",
@@ -231,7 +231,7 @@ function Main({ className }) {
 					<div className="table-content">
 						<Descriptions bordered column={1}>
 							<Descriptions.Item label="AccountID">{account}</Descriptions.Item>
-							<Descriptions.Item label="Balances">{formatterCurrencyStr(detail.amount)}</Descriptions.Item>
+							<Descriptions.Item label="Balances($TCESS)">{formatterCurrencyStr2(detail.amount)}</Descriptions.Item>
 							<Descriptions.Item label="Transfers">{detail.txCount}</Descriptions.Item>
 							<Descriptions.Item label="IsMiner">{detail.isMiner == 1 ? "Yes" : "No"}</Descriptions.Item>
 						</Descriptions>

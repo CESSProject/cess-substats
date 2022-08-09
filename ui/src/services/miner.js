@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-08-09 10:10:31
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 11:16:34
+ * @LastEditTime: 2022-08-09 14:34:41
  * @description: miner list
  * @author: chenbinfa
  */
@@ -25,7 +25,11 @@ async function loadMiners() {
 		totalPower += m.power;
 	});
 	result.data.forEach(m => {
-		m.per = ((m.power * 100) / totalPower).toFixed(1);
+		if (totalPower == 0) {
+			m.per = 100;
+		} else {
+			m.per = ((m.power * 100) / totalPower).toFixed(1);
+		}
 	});
 	result.data.sort((t1, t2) => t2.power - t1.power);
 	result.data.forEach((t, i) => {
@@ -98,10 +102,10 @@ function getColumns() {
 			showType: "progress"
 		},
 		{
-			title: "Mining reward(TESS)",
+			title: "Mining reward($TCESS)",
 			dataIndex: "totalReward",
 			width: "20%",
-			showType: "currency-m"
+			showType: "currency-qianfen"
 		}
 	];
 	return minerColumns;

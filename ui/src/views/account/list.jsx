@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 15:57:43
+ * @LastEditTime: 2022-08-09 14:28:31
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -14,7 +14,7 @@ import subData from "@services/subdata";
 import constantsAJAX from "@services/chain-state/constants";
 import storageAJAX from "@services/storage";
 import queryDB from "@services/queryDB";
-import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
+import { formatterCurrency, formatterCurrencyStr2, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
 import { ThTable } from "@/components/ThTable";
 
 const { Option } = Select;
@@ -31,23 +31,27 @@ const columns = [
 		showType: "accountIcon",
 		textWrap: "word-break",
 		ellipsis: true,
-		tpl: "{accountId}"
+		tpl: "{accountId}",
+		sorter: true
 	},
 	{
-		title: "Balances",
+		title: "Balances($TCESS)",
 		dataIndex: "amount",
 		width: "20%",
-		showType: "currency"
+		showType: "currency-qianfen",
+		sorter: true
 	},
 	{
 		title: "Transfers",
 		dataIndex: "txCount",
-		width: "20%"
+		width: "20%",
+		sorter: true
 	},
 	{
 		title: "Is Miner",
 		dataIndex: "isMiner",
 		width: "15%",
+		sorter: true,
 		render: (text, record, index) => (text == 1 ? <CheckOutlined /> : <CloseOutlined />)
 	}
 ];

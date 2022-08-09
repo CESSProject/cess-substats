@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-28 14:15:58
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 09:31:52
+ * @LastEditTime: 2022-08-09 14:33:34
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -34,7 +34,15 @@ import _ from "lodash";
 import moment from "moment";
 import copy from "copy-to-clipboard";
 import AccountIcon from "@/components/AccountIcon";
-import { formatterCurrency, formatterCurrencyMill, formatterCurrencyStr, formatterSize, formatterSizeFromMB, formatterSizeFromMBToGB } from "@utils/format";
+import {
+	formatterCurrency,
+	formatterCurrencyMill,
+	formatterCurrencyStr,
+	formatterCurrencyStr2,
+	formatterSize,
+	formatterSizeFromMB,
+	formatterSizeFromMBToGB
+} from "@utils/format";
 
 function formatArr(columns) {
 	columns.forEach(t => formatOne(t));
@@ -194,6 +202,18 @@ function formatOne(column) {
 				return (
 					<>
 						<span className="money">{formatterCurrencyMill(text)}M</span>
+					</>
+				);
+			};
+			break;
+		case "currency-qianfen":
+			t.render = (text, record, index) => {
+				if (!text) {
+					return "";
+				}
+				return (
+					<>
+						<span className="money">{formatterCurrencyStr2(text)}</span>
 					</>
 				);
 			};
