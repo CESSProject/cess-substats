@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 17:34:25
+ * @LastEditTime: 2022-08-09 18:35:43
  */
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -41,29 +41,29 @@ const Home = ({ ...props }) => {
 		total: 0
 	});
 
-	const propsTable = useMemo(async () => {
-		return {
-			border: true,
-			size: "middle",
-			pagesize: 10,
-			hidePager: true,
-			loadList: {
-				method: async () => {
-					if (ignore) return;
-					let result = await miner.loadMiners();
-					if (ignore) return;
-					if (result.msg == "ok") {
-						setMiners(result.data);
-					}
-					return result;
+	const propsTable = {
+		border: true,
+		size: "middle",
+		pagesize: 10,
+		hidePager: true,
+		loadList: {
+			method: async () => {
+				console.log("*****************", ignore);
+				if (ignore) return;
+				let result = await miner.loadMiners();
+				if (ignore) return;
+				if (result.msg == "ok") {
+					setMiners(result.data);
 				}
-			},
-			table: {
-				columns: minerColumns
+				return result;
 			}
-		};
-	}, []);
+		},
+		table: {
+			columns: minerColumns
+		}
+	};
 	useEffect(async () => {
+		ignore = false;
 		async function run() {
 			if (ignore) return;
 			let result = await storageAJAX({ ac1: "sminer", ac2: "totalServiceSpace" });
@@ -85,7 +85,7 @@ const Home = ({ ...props }) => {
 			});
 		}
 		timeout = setInterval(run, 10000);
-		await run();
+		run();
 		return () => {
 			ignore = true;
 			clearInterval(timeout);
