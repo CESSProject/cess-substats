@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 16:12:18
+ * @LastEditTime: 2022-08-09 19:09:04
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -140,11 +140,10 @@ function Header({ className }) {
 						<LinkOutlined className="icon-link" />
 					</a>
 					<span className="mini-line"></span>
-					<a href="http://121.46.19.38:53002/" target="_blank">
+					<label>
 						<img src={process.env.PUBLIC_URL + "/img/favicon-utokla.ico"} />
 						&nbsp;&nbsp;UTOKIA World
-						<LinkOutlined className="icon-link" />
-					</a>
+					</label>
 				</div>
 			</div>
 		</div>
@@ -224,6 +223,15 @@ export default styled(Header)`
 				line-height: 45px;
 				font-size: 12px;
 				color: #416cab;
+				width: 79%;
+				display: block;
+				margin: 0 auto;
+				position: relative;
+			}
+			label {
+				line-height: 45px;
+				font-size: 12px;
+				color: #9b9b9b;
 				width: 79%;
 				display: block;
 				margin: 0 auto;
