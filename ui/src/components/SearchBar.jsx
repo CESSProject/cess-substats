@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-08 16:10:10
+ * @LastEditTime: 2022-08-09 16:13:36
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -99,12 +99,12 @@ export default React.memo(styled(SearchBar)`
 	.big-title {
 		font-family: "Microsoft YaHei", 微软雅黑;
 		.big-title-txt {
-			font-size: 23px;
+			font-size: 20px;
 			color: #000;
 			font-weight: bold;
 		}
 		.big-title-txt-2 {
-			font-size: 17px;
+			font-size: 14px;
 			color: #aaa;
 			margin-bottom: 16px;
 		}

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 15:12:55
+ * @LastEditTime: 2022-08-09 17:34:25
  */
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -78,7 +78,6 @@ const Home = ({ ...props }) => {
 			}
 			const idle = result.data;
 			if (ignore) return;
-			console.log("start setSpace *********************************************", ignore);
 			setSpace({
 				used,
 				idle,

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 14:48:16
+ * @LastEditTime: 2022-08-09 16:12:18
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -210,7 +210,7 @@ export default styled(Header)`
 			text-align: left;
 			.mini-line {
 				width: 80%;
-				border-top: 1px solid #c9dbe9;
+				border-top: 1px solid rgb(225 225 225);
 				display: block;
 				overflow: hidden;
 				clear: both;
@@ -218,7 +218,7 @@ export default styled(Header)`
 			}
 			img {
 				vertical-align: middle;
-				width: 15px;
+				width: 12px;
 			}
 			a {
 				line-height: 45px;
