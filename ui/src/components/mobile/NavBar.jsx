@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 11:52:03
+ * @LastEditTime: 2022-08-10 14:30:19
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -90,6 +90,7 @@ function Header({ className }) {
 		if (key) {
 			navigate(key);
 		}
+		setShowMenu(!showMenu);
 	};
 
 	useEffect(() => {
@@ -176,9 +177,9 @@ export default styled(Header)`
 		}
 		.btn-menu-show {
 			float: right;
-			font-size: 34px;
-			color: #646464;
-			margin: 9px;
+			font-size: 26px;
+			color: #5ea4ed;
+			margin: 12px;
 		}
 	}
 	.abs-header {

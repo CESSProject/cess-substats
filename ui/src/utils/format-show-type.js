@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-28 14:15:58
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 11:04:04
+ * @LastEditTime: 2022-08-10 16:16:21
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -109,8 +109,8 @@ function formatOne(column) {
 					return "";
 				}
 				let showText = text;
-				if (text.length > 30) {
-					showText = text.substring(0, 10) + "******" + text.substring(text.length - 8);
+				if (text.length > 20) {
+					showText = text.substring(0, 5) + "****" + text.substring(text.length - 5);
 				}
 				return (
 					<Tooltip placement="topLeft" title="click copy">
@@ -134,8 +134,8 @@ function formatOne(column) {
 					return text;
 				}
 				let showText = text;
-				if (text.length > 30) {
-					showText = text.substring(0, 10) + "******" + text.substring(text.length - 8);
+				if (text.length > 20) {
+					showText = text.substring(0, 5) + "****" + text.substring(text.length - 5);
 				}
 				return (
 					<Tooltip placement="topLeft">
@@ -233,5 +233,14 @@ function formatOne(column) {
 			break;
 	}
 }
+function formatDataSource(columns, dataSource) {
+	formatArr(columns);
+	dataSource.forEach((t, i) => {
+		columns.forEach(c => {
+			t[c.dataIndex + "_s"] = t[c.dataIndex];
+			t[c.dataIndex] = c.render(t[c.dataIndex], t, i);
+		});
+	});
+}
 
-export { formatArr, formatOne };
+export { formatArr, formatOne, formatDataSource };

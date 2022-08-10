@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 09:55:09
+ * @LastEditTime: 2022-08-10 14:31:40
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -244,6 +244,44 @@ export default React.memo(styled(SearchBar)`
 		.space-hold {
 			width: 100%;
 			height: 12px;
+		}
+	}
+	@media screen and (max-width: 900px) {
+		.left-state-box {
+			width: 100%;
+			clear: both;
+			display: block;
+			overflow: hidden;
+			.state-line {
+				display: block;
+				overflow: hidden;
+				.state-box:nth-child(odd) {
+					margin-left: 0;
+					margin-right: 2%;
+				}
+				.state-box:nth-child(even) {
+					margin-left: 2%;
+					margin-right: 0;
+				}
+				.state-box {
+					width: 48%;
+					margin-bottom: 4px;
+					padding: 8px 2%;
+					span {
+						display: block;
+						clear: both;
+						overflow: hidden;
+						font-size: 15px;
+						line-height: 30px;
+						height: 30px;
+					}
+				}
+			}
+		}
+		.right-line-box {
+			clear: both;
+			width: 100%;
+			margin-top: 10px;
 		}
 	}
 `);

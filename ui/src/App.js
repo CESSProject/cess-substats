@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 11:21:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 11:39:17
+ * @LastEditTime: 2022-08-10 15:46:29
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -19,7 +19,6 @@
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "./App.less";
 import Home from "./views/home";
-import MobileHome from "./views/m/home";
 import BlockList from "./views/block/list";
 import BlockDetail from "./views/block/detail";
 import TransferList from "./views/transfer/list";
@@ -29,7 +28,7 @@ import MinerDetail from "./views/miner/detail";
 import AccountList from "./views/account/list";
 import AccountDetail from "./views/account/detail";
 import NavBar from "./components/NavBar";
-import MobileNavBar from "./components/MobileNavBar";
+import MobileNavBar from "./components/mobile/NavBar";
 import SearchBar from "./components/SearchBar";
 import Demo from "./views/thTableDemo";
 import { isMobile } from "@utils";
@@ -45,7 +44,7 @@ function App() {
 					<div className="bg-color bg-color-2"></div>
 					<SearchBar />
 					<Routes>
-						<Route path="/" element={isM ? <MobileHome /> : <Home />} />
+						<Route path="/" element={<Home />} />
 						<Route path="/block" element={<BlockList />} />
 						<Route path="/block/:q" element={<BlockDetail />} />
 						<Route path="/transfer" element={<TransferList />} />

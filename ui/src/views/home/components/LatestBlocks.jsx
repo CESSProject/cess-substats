@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 17:58:33
+ * @LastEditTime: 2022-08-10 15:46:47
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Empty, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -19,8 +19,12 @@ import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFr
 import copy from "copy-to-clipboard";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import { ThTable } from "@/components/ThTable";
+import BlockList from "@/components/mobile/BlockList";
+import TransactionList from "@/components/mobile/TransactionList";
+
 import styled from "styled-components";
-import Transactions from "./Transactions";
+import { isMobile } from "@utils";
+var isM = isMobile();
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -203,7 +207,7 @@ const Main = ({ className, miners }) => {
 						ALL
 					</NavLink>
 				}>
-				<div className="tx-list-box">{props ? <ThTable props={props} /> : <Empty />}</div>
+				<div className="tx-list-box">{!props ? <Empty /> : isM ? <BlockList props={props} /> : <ThTable props={props} />}</div>
 			</Card>
 			<Card
 				bodyStyle={{ padding: 0, margin: 0 }}
@@ -218,7 +222,7 @@ const Main = ({ className, miners }) => {
 						ALL
 					</NavLink>
 				}>
-				<div className="tx-list-box">{propsTx ? <ThTable props={propsTx} /> : <Empty />}</div>
+				<div className="tx-list-box">{!propsTx ? <Empty /> : isM ? <TransactionList props={propsTx} /> : <ThTable props={propsTx} />}</div>
 			</Card>
 		</div>
 	);
@@ -231,6 +235,6 @@ export default React.memo(styled(Main)`
 		display: block;
 		overflow: hidden;
 		width: 100%;
-		height: 527px;
+		/* height: 527px; */
 	}
 `);

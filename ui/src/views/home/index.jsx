@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 20:45:34
+ * @LastEditTime: 2022-08-10 15:49:58
  */
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -20,6 +20,9 @@ import { ThTable } from "@/components/ThTable";
 import StorageChart from "./components/StorageChart";
 import NetworkOverview from "./components/NetworkOverview";
 import LatestBlocks from "./components/LatestBlocks";
+import MinerList from "@/components/mobile/MinerList";
+import { isMobile } from "@utils";
+var isM = isMobile();
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -132,7 +135,7 @@ const Home = ({ ...props }) => {
 							ALL
 						</NavLink>
 					}>
-					<ThTable props={propsTable} />
+					{isM ? <MinerList props={propsTable} /> : <ThTable props={propsTable} />}
 				</Card>
 			</div>
 		</div>
