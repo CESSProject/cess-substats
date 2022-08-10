@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 14:31:31
+ * @LastEditTime: 2022-08-10 11:06:38
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -36,7 +36,7 @@ import styled from "styled-components";
 import _ from "lodash";
 import { useNavigate, useParams, NavLink } from "react-router-dom";
 import queryDB from "@services/queryDB";
-import formatShowType from "@/utils/formatShowType";
+import { formatArr } from "@/utils/format-show-type";
 import moment from "moment";
 import copy from "copy-to-clipboard";
 import BreadcrumbBar from "@/components/BreadcrumbBar";
@@ -197,7 +197,7 @@ function Main({ className }) {
 				}
 			}
 		];
-		formatShowType.formatArr(columnsArr);
+		formatArr(columnsArr);
 		setTransactionColumns(columnsArr);
 	}, []);
 	return (

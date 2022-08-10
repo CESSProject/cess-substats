@@ -1,11 +1,13 @@
 /*
- * @Author: zhouxingyu
- * @Date: 2022-01-17 10:52:36
- * @description: 工具函数入口
- * @Last Modified by: zhouxingyu
- * @Last Modified time: 2022-01-17 17:02:28
+ * @Description:
+ * @Autor: fage
+ * @Date: 2022-08-10 10:38:48
+ * @LastEditors: chenbinfa
+ * @LastEditTime: 2022-08-10 10:49:31
+ * @description: 描述信息
+ * @author: chenbinfa
  */
-
-import request from "./request";
-
-export { request };
+export * from "@utils/format";
+export * from "@utils/format-show-type";
+export * from "@utils/check-mobile";
+export * from "@utils/request";

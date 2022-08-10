@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 20:45:34
+ * @LastEditTime: 2022-08-10 11:29:09
  */
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -15,11 +15,13 @@ import subData from "@services/subdata";
 import constantsAJAX from "@services/chain-state/constants";
 import storageAJAX from "@services/storage";
 import miner from "@services/miner";
-import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
+import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils";
 import { ThTable } from "@/components/ThTable";
-import StorageChart from "./components/StorageChart";
-import NetworkOverview from "./components/NetworkOverview";
-import LatestBlocks from "./components/LatestBlocks";
+import StorageChart from "@/views/home/components/StorageChart";
+import NetworkOverview from "@/views/home/components/NetworkOverview";
+import LatestBlocks from "@/views/home/components/LatestBlocks";
+
+// import { formatterSize } from "@utils";
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;

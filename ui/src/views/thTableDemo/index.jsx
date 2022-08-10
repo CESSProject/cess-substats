@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-26 17:02:01
+ * @LastEditTime: 2022-08-09 19:57:41
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -13,7 +13,7 @@ import "./list.less";
 import constantsAJAX from "@services/chain-state/constants";
 import storageAJAX from "@services/storage";
 import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
-import ThTable from "@/components/ThTable";
+import { ThTable } from "@/components/ThTable";
 import queryDB from "@services/queryDB";
 import moment from "moment";
 

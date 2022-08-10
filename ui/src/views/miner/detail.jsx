@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 14:28:29
+ * @LastEditTime: 2022-08-10 10:27:48
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -36,12 +36,11 @@ import styled from "styled-components";
 import _ from "lodash";
 import { useNavigate, useParams, NavLink } from "react-router-dom";
 import queryDB from "@services/queryDB";
-import formatShowType from "@/utils/formatShowType";
 import storageAJAX from "@services/storage";
 import miner from "@services/miner";
 import moment from "moment";
 import copy from "copy-to-clipboard";
-import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
+import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@/utils/format";
 import BreadcrumbBar from "@/components/BreadcrumbBar";
 
 const { Option } = Select;

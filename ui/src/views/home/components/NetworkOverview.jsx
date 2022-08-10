@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 15:03:21
+ * @LastEditTime: 2022-08-10 09:55:09
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -20,7 +20,6 @@ import { useNavigate } from "react-router-dom";
 import { Pie, Line } from "@ant-design/plots";
 import storageAJAX from "@services/storage";
 import queryDB from "@services/queryDB";
-import { formatterCount } from "@utils/formatterCount";
 import "@ant-design/flowchart/dist/index.css";
 let lastBlockTime = 0;
 let ignore = false;

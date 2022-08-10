@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 16:13:36
+ * @LastEditTime: 2022-08-10 11:58:33
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -73,6 +73,7 @@ const SearchBar = ({ className }) => {
 				<div className="big-title-txt-2 block">Find the block that eats the world.</div>
 			</div>
 			<Search
+				className="search-box"
 				placeholder="Search by Block Height/Transaction Hash/Address ID"
 				onSearch={onSearch}
 				onPressEnter={onSearch}
@@ -95,7 +96,9 @@ const SearchBar = ({ className }) => {
 
 export default React.memo(styled(SearchBar)`
 	margin-bottom: 20px;
-	width: 56%;
+	.search-box {
+		max-width: 700px;
+	}
 	.big-title {
 		font-family: "Microsoft YaHei", 微软雅黑;
 		.big-title-txt {

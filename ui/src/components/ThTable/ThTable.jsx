@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 15:36:30
+ * @LastEditTime: 2022-08-10 11:05:15
  */
 import React, { useRef, useState, useEffect } from "react";
 import {
@@ -36,7 +36,7 @@ import { ThForm } from "./ThForm";
 import { ThDetail } from "./ThDetail";
 import moment from "moment";
 import copy from "copy-to-clipboard";
-import formatShowType from "@/utils/formatShowType";
+import { formatArr } from "@/utils";
 let ignore = false;
 
 const { Option } = Select;
@@ -192,7 +192,7 @@ export function ThTable({ props }) {
 		if (!props.table || !props.table.columns) {
 			return;
 		}
-		formatShowType.formatArr(props.table.columns);
+		formatArr(props.table.columns);
 	}, []);
 
 	const onModalOk = () => {
@@ -373,7 +373,7 @@ export function ThTable({ props }) {
 				<div className="filter-box">
 					<Form size={props.size} name="horizontal_filter" form={form} layout="inline" onFinish={onFilterFormFinish}>
 						{props.filterBar?.map((f, i) => renderFilterItem(f))}
-						<Form.Item className="right-btn-box" key={i}>
+						<Form.Item className="right-btn-box">
 							<Button type="default" htmlType="button" onClick={onFilterReset}>
 								重置
 							</Button>

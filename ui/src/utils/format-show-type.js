@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-28 14:15:58
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 14:33:34
+ * @LastEditTime: 2022-08-10 11:04:04
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -234,4 +234,4 @@ function formatOne(column) {
 	}
 }
 
-export default { formatArr, formatOne };
+export { formatArr, formatOne };

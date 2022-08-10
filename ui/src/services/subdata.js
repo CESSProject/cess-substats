@@ -3,11 +3,10 @@
  * @Autor: fage
  * @Date: 2022-07-12 11:21:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-05 16:18:35
+ * @LastEditTime: 2022-08-10 10:28:29
  * @description: 描述信息
  * @author: chenbinfa
  */
-// import { request } from "@/utils";
 const wsAPI = process.env.REACT_APP_BASE_WS + "";
 let socket = null;
 let timeout = null;
