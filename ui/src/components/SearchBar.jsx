@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 11:58:33
+ * @LastEditTime: 2022-08-10 16:41:42
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -74,7 +74,7 @@ const SearchBar = ({ className }) => {
 			</div>
 			<Search
 				className="search-box"
-				placeholder="Search by Block Height/Transaction Hash/Address ID"
+				placeholder="Block Height/Transaction Hash/Account"
 				onSearch={onSearch}
 				onPressEnter={onSearch}
 				allowClear

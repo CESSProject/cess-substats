@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 15:37:50
+ * @LastEditTime: 2022-08-10 17:49:21
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -15,57 +15,29 @@ import moment from "moment";
 import styled from "styled-components";
 import { useNavigate, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import { formatDataSource } from "@/utils";
+import MList from "./MList";
 
 const CBlockList = ({ className, props }) => {
-	const columns = _.cloneDeep(props.table.columns);
-	const dataSource = _.cloneDeep(props.table.dataSource);
-	formatDataSource(columns, dataSource);
+	props.table.renderItem = item => {
+		return (
+			<List.Item>
+				<div className="block-list-box block">
+					<div className="block">
+						<span className="left-name">Block：</span>
+						<span className="right-value">
+							{item.blockHeight} <label>({item.timestamp})</label>
+						</span>
+					</div>
+					<div className="block">
+						<span className="left-name">Hash：</span>
+						<span className="right-value">{item.hash}</span>
+					</div>
+				</div>
+			</List.Item>
+		);
+	};
 
-	return (
-		<div className={className}>
-			<List
-				itemLayout="horizontal"
-				dataSource={dataSource}
-				renderItem={item => (
-					<List.Item>
-						<div className="block-list-box block">
-							<div className="block">
-								<span className="left-name">Block：</span>
-								<span className="right-value">
-									{item.blockHeight} <label>({item.timestamp})</label>
-								</span>
-							</div>
-							<div className="block">
-								<span className="left-name">Hash：</span>
-								<span className="right-value">{item.hash}</span>
-							</div>
-						</div>
-					</List.Item>
-				)}
-			/>
-		</div>
-	);
+	return <MList props={props} />;
 };
 
-export default React.memo(styled(CBlockList)`
-	display: block;
-	overflow: hidden;
-	.block-list-box {
-		width: 100%;
-		.block {
-			clear: both;
-		}
-		.left-name {
-			color: #aaa;
-			float: left;
-			width: 25%;
-			text-align: right;
-			padding-right: 10px;
-		}
-		.right-value label {
-			font-size: 13px;
-			color: green;
-			padding-left: 2px;
-		}
-	}
-`);
+export default React.memo(CBlockList);

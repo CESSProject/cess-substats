@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 15:42:18
+ * @LastEditTime: 2022-08-10 17:50:51
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -15,10 +15,10 @@ import moment from "moment";
 import styled from "styled-components";
 import { useNavigate, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import { formatDataSource } from "@/utils";
+import MList from "./MList";
 
 const CBlockList = ({ className, props }) => {
-	const columns = _.cloneDeep(props.table.columns);
-	columns.push({
+	props.table.columns.push({
 		title: "Hash",
 		dataIndex: "hash",
 		width: "60%",
@@ -26,60 +26,30 @@ const CBlockList = ({ className, props }) => {
 		ellipsis: true,
 		showType: "copy"
 	});
-	const dataSource = _.cloneDeep(props.table.dataSource);
-	formatDataSource(columns, dataSource);
-	return (
-		<div className={className}>
-			<List
-				itemLayout="horizontal"
-				dataSource={dataSource}
-				renderItem={item => (
-					<List.Item>
-						<div className="block-list-box block">
-							<div className="block">
-								<span className="left-name">Method：</span>
-								<span className="right-value">{item.method}</span>
-							</div>
-							<div className="block">
-								<span className="left-name">Status：</span>
-								<span className="right-value">{item.status}</span>
-							</div>
-							<div className="block">
-								<span className="left-name">Time：</span>
-								<span className="right-value">{item.timestamp}</span>
-							</div>
-							<div className="block">
-								<span className="left-name">TXHash：</span>
-								<span className="right-value">{item.hash}</span>
-							</div>
-						</div>
-					</List.Item>
-				)}
-			/>
-		</div>
-	);
+	props.table.renderItem = item => {
+		return (
+			<List.Item>
+				<div className="block-list-box block">
+					<div className="block">
+						<span className="left-name">Method：</span>
+						<span className="right-value">{item.method}</span>
+					</div>
+					<div className="block">
+						<span className="left-name">Status：</span>
+						<span className="right-value">{item.status}</span>
+					</div>
+					<div className="block">
+						<span className="left-name">Time：</span>
+						<span className="right-value">{item.timestamp}</span>
+					</div>
+					<div className="block">
+						<span className="left-name">TXHash：</span>
+						<span className="right-value">{item.hash}</span>
+					</div>
+				</div>
+			</List.Item>
+		);
+	};
+	return <MList props={props} />;
 };
-
-export default React.memo(styled(CBlockList)`
-	display: block;
-	overflow: hidden;
-	.block-list-box {
-		position: relative;
-		padding: 4px 10px;
-		display: block;
-		width: 100%;
-		.block {
-			clear: both;
-		}
-		.left-name {
-			color: #aaa;
-			float: left;
-			width: 20%;
-			text-align: right;
-			padding-right: 10px;
-		}
-		.right-value {
-			/* float: right; */
-		}
-	}
-`);
+export default React.memo(CBlockList);
