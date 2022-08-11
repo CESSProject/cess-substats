@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-11 17:11:22
+ * @LastEditTime: 2022-08-11 17:38:34
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -18,7 +18,7 @@ import { formatDataSource } from "@/utils";
 import MList from "./MList";
 
 const CBlockList = ({ className, props }) => {
-	useEffect(() => {
+	if (!props.table.columns.find(t => t.title == "Hash")) {
 		props.table.columns.push({
 			title: "Hash",
 			dataIndex: "hash",
@@ -27,7 +27,7 @@ const CBlockList = ({ className, props }) => {
 			ellipsis: true,
 			showType: "copy"
 		});
-	}, []);
+	}
 	props.table.renderItem = item => {
 		return (
 			<List.Item>
