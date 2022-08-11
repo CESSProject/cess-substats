@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 14:28:31
+ * @LastEditTime: 2022-08-11 15:04:00
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -16,6 +16,9 @@ import storageAJAX from "@services/storage";
 import queryDB from "@services/queryDB";
 import { formatterCurrency, formatterCurrencyStr2, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
 import { ThTable } from "@/components/ThTable";
+import { isMobile } from "@utils";
+import MList from "@/components/mobile/MList";
+const isM = isMobile();
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -52,9 +55,13 @@ const columns = [
 		dataIndex: "isMiner",
 		width: "15%",
 		sorter: true,
-		render: (text, record, index) => (text == 1 ? <CheckOutlined /> : <CloseOutlined />)
+		render: (text, record, index) => (text == 1 ? "YES" : "NO")
 	}
 ];
+if (isM) {
+	columns[1].title = "Balances";
+	columns[1].tpl = "{amount} ($TCESS)";
+}
 
 const Home = ({ ...props }) => {
 	document.title = "Account-CESS Substats";
@@ -97,7 +104,19 @@ const Home = ({ ...props }) => {
 	return (
 		<div className="containner-in">
 			<div className="miner-list">
-				<ThTable props={propsTable} />
+				{isM ? (
+					<Card
+						title={
+							<span>
+								<UserOutlined /> Accounts
+							</span>
+						}
+						className="myRadius">
+						<MList props={propsTable} />
+					</Card>
+				) : (
+					<ThTable props={propsTable} />
+				)}
 			</div>
 		</div>
 	);

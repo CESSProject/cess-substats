@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 14:42:38
+ * @LastEditTime: 2022-08-11 14:46:43
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -20,6 +20,9 @@ import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFr
 import copy from "copy-to-clipboard";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import { ThTable } from "@/components/ThTable";
+import { isMobile } from "@utils";
+import MList from "@/components/mobile/MList";
+const isM = isMobile();
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -28,7 +31,7 @@ const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const columns = [
 	{
-		title: "Block Height",
+		title: "BlockHeight",
 		dataIndex: "blockHeight",
 		key: "blockHeight",
 		width: "10%",
@@ -89,7 +92,19 @@ const Main = ({ ...propsS }) => {
 	return (
 		<div className="containner-in">
 			<div className="list">
-				<ThTable props={props} />
+				{isM ? (
+					<Card
+						title={
+							<span>
+								<img width={19} src={process.env.PUBLIC_URL + "/img/icon_lian.png"} /> Blocks
+							</span>
+						}
+						className="myRadius">
+						<MList props={props} />
+					</Card>
+				) : (
+					<ThTable props={props} />
+				)}
 			</div>
 		</div>
 	);

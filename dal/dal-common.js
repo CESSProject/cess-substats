@@ -3,8 +3,8 @@
  * @Autor: fage
  * @Date: 2022-07-11 15:11:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-12 11:02:36
- * @description: 描述信息
+ * @LastEditTime: 2022-08-11 11:12:02
+ * @description: mysql common class
  * @author: chenbinfa
  */
 "use strict";
@@ -22,7 +22,7 @@ module.exports = class DalCommon extends MysqlBase {
         if (checkQuery) {
           let result = await super.findOne(checkQuery);
           if (result && result.length > 0) {
-            ret.msg = "添加重复了.";
+            ret.msg = "duplicate";
             return resolve(ret);
           }
         }
@@ -33,7 +33,7 @@ module.exports = class DalCommon extends MysqlBase {
         resolve(ret);
       } catch (e) {
         if (JSON.stringify(e).indexOf("ER_DUP_ENTRY") != -1) {
-          ret.msg = "添加重复了";
+          ret.msg = "duplicate";
           return resolve(ret);
         }
         console.log(e);

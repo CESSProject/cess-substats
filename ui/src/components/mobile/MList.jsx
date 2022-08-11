@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 17:44:18
+ * @LastEditTime: 2022-08-11 11:54:20
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -30,6 +30,8 @@ const CList = ({ className, props }) => {
 
 	const pagination = {
 		total,
+		size: "small",
+		position: "both",
 		current: pageindex,
 		pageSize: pagesize,
 		showSizeChanger: true,
@@ -42,6 +44,30 @@ const CList = ({ className, props }) => {
 		},
 		showTotal: total => `Total ${total}`
 	};
+	if (props)
+		if (!props.table || !props.table.renderItem) {
+			props.table.renderItem = item => {
+				return (
+					<List.Item>
+						<div className="block-list-box block">
+							{props.table.columns.map(c => {
+								let k = c.key || c.dataIndex;
+								let v = item[c.dataIndex];
+								return (
+									<div className="block" key={k}>
+										<span className="left-name">{c.title}：</span>
+										<span className="right-value">
+											{v}
+											{c.label ? <label>({item[c.label]})</label> : ""}
+										</span>
+									</div>
+								);
+							})}
+						</div>
+					</List.Item>
+				);
+			};
+		}
 
 	//ajax post
 	useEffect(async () => {
@@ -116,13 +142,14 @@ export default React.memo(styled(CList)`
 		.left-name {
 			color: #aaa;
 			float: left;
-			width: 20%;
+			width: 30%;
 			text-align: right;
 			padding-right: 10px;
 		}
 		.right-value {
 			label {
 				color: green;
+				padding-left: 10px;
 			}
 		}
 	}

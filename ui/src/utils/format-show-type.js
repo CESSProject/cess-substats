@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-28 14:15:58
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 16:16:21
+ * @LastEditTime: 2022-08-11 15:10:28
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -62,11 +62,7 @@ function formatOne(column) {
 	switch (t.showType) {
 		case "tpl":
 			t.render = (text, record, index) => {
-				let tpl = t.tpl;
-				Object.keys(record).forEach(k => {
-					tpl = tpl.replace("{" + k + "}", record[k]);
-				});
-				return tpl;
+				return tpl(t, text, record);
 			};
 			break;
 		case "date":
@@ -108,6 +104,7 @@ function formatOne(column) {
 				if (!text) {
 					return "";
 				}
+				text = tpl(t, text, record);
 				let showText = text;
 				if (text.length > 20) {
 					showText = text.substring(0, 5) + "****" + text.substring(text.length - 5);
@@ -213,7 +210,7 @@ function formatOne(column) {
 				}
 				return (
 					<>
-						<span className="money">{formatterCurrencyStr2(text)}</span>
+						<span className="money">{tpl(t, formatterCurrencyStr2(text), record)}</span>
 					</>
 				);
 			};
@@ -223,7 +220,7 @@ function formatOne(column) {
 				if (!text) {
 					return "";
 				}
-				return formatterSizeFromMBToGB(text);
+				return tpl(t, formatterSizeFromMBToGB(text), record);
 			};
 			break;
 		case "progress":
@@ -233,12 +230,28 @@ function formatOne(column) {
 			break;
 	}
 }
+function tpl(column, text, record) {
+	if (!column.tpl) return text;
+	let tpl = column.tpl;
+	Object.keys(record).forEach(k => {
+		let v = record[k];
+		if (k == column.dataIndex || k == column.key) {
+			v = text;
+		}
+		tpl = tpl.replace("{" + k + "}", v);
+	});
+	return tpl;
+}
 function formatDataSource(columns, dataSource) {
 	formatArr(columns);
 	dataSource.forEach((t, i) => {
 		columns.forEach(c => {
 			t[c.dataIndex + "_s"] = t[c.dataIndex];
-			t[c.dataIndex] = c.render(t[c.dataIndex], t, i);
+			if (c.render) {
+				t[c.dataIndex] = c.render(t[c.dataIndex], t, i);
+			} else {
+				t[c.dataIndex] = t[c.dataIndex];
+			}
 		});
 	});
 }

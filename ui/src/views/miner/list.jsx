@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 11:00:00
+ * @LastEditTime: 2022-08-11 14:08:00
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -16,6 +16,7 @@ import storageAJAX from "@services/storage";
 import miner from "@services/miner";
 import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@utils/format";
 import { ThTable } from "@/components/ThTable";
+import MList from "@/components/mobile/MList";
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -23,7 +24,9 @@ const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 let lastBlockTime = 0;
-const minerColumns = miner.getColumns();
+import { isMobile } from "@utils";
+const isM = isMobile();
+const minerColumns = miner.getColumns(isM ? "list" : "table");
 
 const Home = ({ ...props }) => {
 	document.title = "Miners-CESS Substats";
@@ -48,7 +51,19 @@ const Home = ({ ...props }) => {
 	return (
 		<div className="containner-in">
 			<div className="miner-list">
-				<ThTable props={propsTable} />
+				{isM ? (
+					<Card
+						title={
+							<span>
+								<img width={19} src={process.env.PUBLIC_URL + "/img/2.png"} /> Top Miners
+							</span>
+						}
+						className="myRadius">
+						<MList props={propsTable} />
+					</Card>
+				) : (
+					<ThTable props={propsTable} />
+				)}
 			</div>
 		</div>
 	);

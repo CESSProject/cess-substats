@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 11:06:10
+ * @LastEditTime: 2022-08-11 16:25:40
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -29,7 +29,8 @@ import {
 	Form,
 	Collapse,
 	Empty,
-	Spin
+	Spin,
+	List
 } from "antd";
 import { UserOutlined, DownOutlined, DeleteOutlined, SwapRightOutlined, CheckCircleOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import styled from "styled-components";
@@ -40,6 +41,7 @@ import { formatArr } from "@/utils/format-show-type";
 import moment from "moment";
 import copy from "copy-to-clipboard";
 import BreadcrumbBar from "@/components/BreadcrumbBar";
+import MList from "@/components/mobile/MList";
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -174,6 +176,12 @@ function Main({ className }) {
 	useEffect(async () => {
 		const columnsArr = [
 			{
+				title: "Hash",
+				dataIndex: "hash",
+				width: "15%",
+				showType: "copy"
+			},
+			{
 				title: "Method",
 				dataIndex: "method",
 				width: "15%",
@@ -241,7 +249,7 @@ function Main({ className }) {
 						return "";
 					}
 					return (
-						<Collapse accordion>
+						<Collapse accordion bordered={false} ghost>
 							{record.events.map((ev, i) => {
 								return (
 									<Panel header={ev.section + "." + ev.method} key={i}>
@@ -263,15 +271,16 @@ function Main({ className }) {
 			<Spin spinning={loading}>
 				<Card title="Block Overview">
 					<div className="table-content">
-						<Descriptions bordered column={1}>
+						<div className="block-list-box block">
 							{columns.map((t, index) => {
 								return (
-									<Descriptions.Item label={t.title} key={t.key}>
-										{t.render ? t.render(blockDetail[t.key], blockDetail, index) : blockDetail[t.key]}
-									</Descriptions.Item>
+									<div className="block" key={index}>
+										<span className="left-name">{t.title}：</span>
+										<span className="right-value">{t.render ? t.render(blockDetail[t.key], blockDetail, index) : blockDetail[t.key]}</span>
+									</div>
 								);
 							})}
-						</Descriptions>
+						</div>
 					</div>
 				</Card>
 			</Spin>
@@ -280,22 +289,40 @@ function Main({ className }) {
 					{transactions.length == 0 ? (
 						<Empty />
 					) : (
-						<div className="table-content">
-							{transactions.map(trx => {
+						<div className="block-list-box block">
+							{transactions.map((trx, i) => {
 								return (
-									<Card title={"Hash:" + trx.hash}>
-										<div className="table-content">
-											<Descriptions bordered column={1}>
-												{transactionColumns.map((t, index) => {
+									<div className="one-transaction block" key={trx.key || trx.dataIndex || i}>
+										<Card title={"Transfer Info"} className="trx-info">
+											{transactionColumns
+												.filter(w => w.title != "Events")
+												.map((t, index) => {
+													const value = t.render ? t.render(trx[t.key], trx, index) : trx[t.key];
+													if (value === "") {
+														return "";
+													}
 													return (
-														<Descriptions.Item label={t.title} key={t.key}>
-															{t.render ? t.render(trx[t.key], trx, index) : trx[t.key]}
-														</Descriptions.Item>
+														<div className="block" key={index}>
+															<span className="left-name">{t.title}：</span>
+															<span className="right-value">{value}</span>
+														</div>
 													);
 												})}
-											</Descriptions>
-										</div>
-									</Card>
+										</Card>
+										{transactionColumns
+											.filter(w => w.title == "Events")
+											.map((t, index) => {
+												const value = t.render ? t.render(trx[t.key], trx, index) : trx[t.key];
+												if (value === "") {
+													return "";
+												}
+												return (
+													<Card key={index} title="Events" bodyStyle={{ padding: 6, margin: 0 }} className="trx-events">
+														{value}
+													</Card>
+												);
+											})}
+									</div>
 								);
 							})}
 						</div>
@@ -317,8 +344,59 @@ export default styled(Main)`
 		}
 	}
 	pre {
-		background-color: #000;
+		background-color: #999;
 		color: #fff;
 		padding: 20px;
+	}
+	.block-list-box {
+		position: relative;
+		padding: 4px 10px;
+		display: block;
+		width: 100%;
+		line-height: 27px;
+		.block {
+			clear: both;
+			line-height: 32px;
+		}
+		.one-transaction {
+			border-bottom: 1px solid #eee;
+			padding: 20px 0;
+			.trx-info,
+			.trx-events {
+				display: block;
+				overflow: hidden;
+				margin-bottom: 5px;
+			}
+			@media screen and (min-width: 901px) {
+				.trx-info {
+					display: block;
+					overflow: hidden;
+					float: left;
+					width: 40%;
+					margin-bottom: 0px;
+				}
+				.trx-events {
+					display: block;
+					overflow: hidden;
+					float: right;
+					width: 59%;
+					margin-bottom: 0px;
+				}
+			}
+		}
+		.left-name {
+			color: #aaa;
+			float: left;
+			width: 35%;
+			text-align: right;
+			padding-right: 10px;
+			max-width: 200px;
+		}
+		.right-value {
+			label {
+				color: green;
+				padding-left: 10px;
+			}
+		}
 	}
 `;

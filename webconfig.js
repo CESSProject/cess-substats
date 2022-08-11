@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-11 15:11:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 11:59:39
+ * @LastEditTime: 2022-08-11 10:03:53
  */
 "use strict";
 const path = require("path");
@@ -11,7 +11,7 @@ const mysql = require("./mysql-config");
 module.exports = {
   sitename: "CESS Brower",
   wsnode: {
-    nodeURL: "ws://localhost:9944", //"ws://106.15.44.155:9948", //"ws://192.168.14.145:9944", // "ws://106.15.44.155:9949", //"wss://testnet-rpc0.cess.cloud/ws/",
+    nodeURL: "wss://testnet-rpc0.cess.cloud/ws/", //"ws://106.15.44.155:9948", //"ws://192.168.14.145:9944", // "ws://106.15.44.155:9949", //"wss://testnet-rpc0.cess.cloud/ws/",
     keyringOption: { type: "sr25519", ss58Format: 42 },
   },
   host: "localhost",

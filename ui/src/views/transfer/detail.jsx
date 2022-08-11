@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 11:06:38
+ * @LastEditTime: 2022-08-11 16:45:31
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -117,6 +117,14 @@ function Main({ className }) {
 	useEffect(async () => {
 		const columnsArr = [
 			{
+				title: "Hash",
+				dataIndex: "hash",
+				width: "15%",
+				textWrap: "word-break",
+				ellipsis: true,
+				showType: "copy"
+			},
+			{
 				title: "Method",
 				dataIndex: "method",
 				width: "15%",
@@ -204,33 +212,31 @@ function Main({ className }) {
 		<div className={className}>
 			<BreadcrumbBar currPageName="Transfer detail" />
 			<Spin spinning={loading}>
-				<Card title={"Extrinsics(" + transactions.length + ")"} style={{ marginTop: 10 }}>
-					{transactions.length == 0 ? (
-						<Empty />
-					) : (
-						<div className="table-content">
-							{transactions.map(trx => {
-								return (
-									<Card title={"Hash:" + trx.hash}>
-										<div className="table-content">
-											<Descriptions bordered column={1}>
-												{transactionColumns.map((t, index) => {
-													return trx[t.key] ? (
-														<Descriptions.Item label={t.title} key={t.key}>
-															{t.render ? t.render(trx[t.key], trx, index) : trx[t.key]}
-														</Descriptions.Item>
-													) : (
-														""
-													);
-												})}
-											</Descriptions>
-										</div>
-									</Card>
-								);
-							})}
-						</div>
-					)}
-				</Card>
+				{transactions.length == 0 ? (
+					<Empty />
+				) : (
+					<div className="table-content">
+						{transactions.map((trx, i) => {
+							return (
+								<Card title="Detail" key={i}>
+									<div className="table-content">
+										<Descriptions bordered column={1}>
+											{transactionColumns.map((t, index) => {
+												return trx[t.key] ? (
+													<Descriptions.Item label={t.title} key={t.key}>
+														{t.render ? t.render(trx[t.key], trx, index) : trx[t.key]}
+													</Descriptions.Item>
+												) : (
+													""
+												);
+											})}
+										</Descriptions>
+									</div>
+								</Card>
+							);
+						})}
+					</div>
+				)}
 			</Spin>
 		</div>
 	);
