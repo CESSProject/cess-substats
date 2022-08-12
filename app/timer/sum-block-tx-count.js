@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-08-05 11:15:38
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-11 19:53:13
+ * @LastEditTime: 2022-08-11 19:58:51
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -36,7 +36,7 @@ async function main() {
       txCount,
       eventCount,
     });
-    console.log(entity.blockHeight, tmp.affectedRows == 1 ? "成功" : "失败");
+    console.log(entity.blockHeight, tmp.affectedRows == 1 ? "✔" : "✘");
   }
   await main();
 }
