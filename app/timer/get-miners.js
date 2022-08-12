@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-12 15:59:37
+ * @LastEditTime: 2022-08-12 16:09:23
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -41,7 +41,7 @@ async function getMiner() {
     let obj = {
       collateralAccount: id,
       beneficiaryAccount: json.beneficiary,
-      collaterals: toNumber(json.collaterals),
+      collaterals: toNumber(json.collaterals.toString()),
       state: human.state,
       power: json.power,
       space: json.space,
@@ -77,8 +77,8 @@ async function main() {
   await getMiner();
 }
 function toNumber(v) {
-  if (typeof v == "string" && v.indexOf("0x") == 0) {
-    v == parseInt(v, 16);
+  if (typeof v != "number") {
+    v = parseInt(v, 16);
   }
   return v;
 }
