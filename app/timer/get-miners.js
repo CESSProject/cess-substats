@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-12 16:09:23
+ * @LastEditTime: 2022-08-12 16:14:49
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -62,15 +62,14 @@ async function getMiner() {
     if (tmp.length > 0) {
       entity.id = tmp[0].id;
       tmp = await dal.update(entity);
-      console.log("update", i, retsult.length);
+      console.log("update", i, "/", retsult.length);
     } else {
       tmp = await dal.insert(entity);
-      console.log("add", i, retsult.length);
+      console.log("add", i, "/", retsult.length);
     }
-    console.log(tmp);
   }
   console.log("complete");
-  setTimeout(getMiner, 30000);
+  setTimeout(getMiner, 300000);
 }
 async function main() {
   api = await init();
