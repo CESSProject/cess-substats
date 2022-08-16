@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-08-09 10:10:31
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-15 18:00:27
+ * @LastEditTime: 2022-08-16 17:52:58
  * @description: miner list
  * @author: chenbinfa
  */
@@ -45,12 +45,21 @@ async function loadMiners(p) {
 // 	return result;
 // }
 async function loadOneMiner(key) {
-	let tmp = await loadMiners();
-	if (!tmp.data || tmp.msg != "ok") {
-		return;
+	let p = {
+		tableName: "miner",
+		filter: [
+			{
+				column: "beneficiaryAccount",
+				sign: "=",
+				values: [key]
+			}
+		]
+	};
+	let result = await queryDB.list(p);
+	if (result.msg != "ok" || !result.data || result.data.length == 0) {
+		return null;
 	}
-	const miner = tmp.data.find(t => t.key == key);
-	return miner;
+	return result.data[0];
 }
 function getColumns(type = "table") {
 	const minerColumns = [
@@ -100,19 +109,22 @@ function getColumns(type = "table") {
 			title: "Power(GiB)",
 			dataIndex: "power",
 			width: "15%",
-			showType: "store-size-g"
+			showType: "store-size-g",
+			sorter: true
 		},
 		{
 			title: "Power Ratio",
 			dataIndex: "powerPer",
 			width: "20%",
-			showType: "progress"
+			showType: "progress",
+			sorter: true
 		},
 		{
 			title: "Mining reward($TCESS)",
 			dataIndex: "totalReward",
 			width: "20%",
-			showType: "currency-qianfen"
+			showType: "currency-qianfen",
+			sorter: true
 		}
 	];
 	const listColumns = [

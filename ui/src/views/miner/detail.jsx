@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-16 17:04:39
+ * @LastEditTime: 2022-08-16 18:01:37
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -75,30 +75,23 @@ function Main({ className }) {
 			setLoading(false);
 			return message.error("miner not found");
 		}
-		mainer.power = formatterSizeFromMB(mainer.power);
-		mainer.totalReward = formatterCurrency(_.toNumber(mainer.rewardInfo.totalReward));
-
-		mainer.totalRewardsCurrentlyAvailableObj = formatterCurrency(_.toNumber(mainer.rewardInfo.totalRewardsCurrentlyAvailable));
-		mainer.totaldNotReceiveObj = formatterCurrency(_.toNumber(mainer.rewardInfo.totaldNotReceive));
-		mainer.collateralsObj = formatterCurrency(_.toNumber(mainer.collaterals));
 		setDetail(mainer);
-		// console.log("mainer", mainer);
 		setLoading(false);
 	}, [id]);
 	useEffect(() => {
 		const columns = [
 			{
 				title: "Miner ID",
-				dataIndex: "peerid"
+				dataIndex: "id"
 			},
 			{
-				title: "Account-1",
-				dataIndex: "key",
+				title: "Collateral Account",
+				dataIndex: "collateralAccount",
 				showType: "copy"
 			},
 			{
-				title: "Account-2",
-				dataIndex: "beneficiary",
+				title: "Beneficiary Account",
+				dataIndex: "beneficiaryAccount",
 				showType: "copy"
 			},
 			{
@@ -116,17 +109,17 @@ function Main({ className }) {
 			},
 			{
 				title: "Available($TCESS)",
-				dataIndex: "totalRewardsCurrentlyAvailableObj",
+				dataIndex: "totalRewardsCurrentlyAvailable",
 				showType: "currency-qianfen"
 			},
 			{
 				title: "Total Not Receive($TCESS)",
-				dataIndex: "collateralsObj",
+				dataIndex: "totalNotReceive",
 				showType: "currency-qianfen"
 			},
 			{
 				title: "Collaterals($TCESS)",
-				dataIndex: "totalReward",
+				dataIndex: "collaterals",
 				showType: "currency-qianfen"
 			}
 		];
@@ -151,8 +144,8 @@ function Main({ className }) {
 					</div>
 				</Card>
 			</Spin>
-			{/* <Spin spinning={loading}>
-				<Card title="Miner Detail">
+			<Spin spinning={loading}>
+				<Card title="Miner Detail" style={{ marginTop: 10 }}>
 					<div className="table-content">
 						<Descriptions bordered column={1} title="Accounts" labelStyle={{ width: "20%" }}>
 							{columnsBalance.map((t, index) => {
@@ -165,7 +158,7 @@ function Main({ className }) {
 						</Descriptions>
 					</div>
 				</Card>
-			</Spin> */}
+			</Spin>
 		</div>
 	);
 }

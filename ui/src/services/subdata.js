@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 11:21:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-16 15:05:32
+ * @LastEditTime: 2022-08-16 17:29:46
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -70,6 +70,6 @@ function removeEvent(id) {
 	const i = events.findIndex(t => t.id == id);
 	if (i > -1) {
 		events.splice(i, 1);
-		console.log("remove event complect ", events.length);
+		console.log("remove event complect ", id, " events.length", events.length);
 	}
 }

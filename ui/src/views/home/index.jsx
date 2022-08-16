@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-16 16:27:23
+ * @LastEditTime: 2022-08-16 17:44:52
  */
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -34,53 +34,60 @@ let ignore = false;
 let timeout = null;
 
 const minerColumns = miner.getColumns(isM ? "list" : "table");
-console.log("minerColumns", minerColumns);
+
 const Home = ({ ...props }) => {
 	document.title = "Home-CESS Substats";
 	const [miners, setMiners] = useState([]);
+	const [propsTable, setPropsTable] = useState();
 	const [space, setSpace] = useState({
 		used: 0,
 		idle: 0,
 		total: 0
 	});
-
-	const propsTable = {
-		border: true,
-		size: "middle",
-		pagesize: 10,
-		hidePager: true,
-		loadList: {
-			method: async () => {
-				if (ignore) return;
-				let result = await miner.loadMiners({
-					tableName: "miner_summary",
-					pageindex: 1,
-					pagesize: 20,
-					sorter: [
-						{
-							column: "power",
-							order: "desc"
-						}
-					]
-				});
-				if (ignore) return;
-				if (result.msg == "ok") {
-					setMiners(result.data);
+	useEffect(() => {
+		const c = _.cloneDeep(minerColumns);
+		c[2].sorter = false;
+		c[3].sorter = false;
+		c[4].sorter = false;
+		const props = {
+			border: true,
+			size: "middle",
+			pagesize: 10,
+			hidePager: true,
+			loadList: {
+				method: async () => {
+					if (ignore) return;
+					let result = await miner.loadMiners({
+						tableName: "miner_summary",
+						pageindex: 1,
+						pagesize: 20,
+						sorter: [
+							{
+								column: "power",
+								order: "desc"
+							}
+						]
+					});
+					if (ignore) return;
+					if (result.msg == "ok") {
+						setMiners(result.data);
+					}
+					return {
+						msg: "ok",
+						data: result.data.slice(0, 20)
+					};
 				}
-				return {
-					msg: "ok",
-					data: result.data.slice(0, 20)
-				};
+			},
+			table: {
+				columns: c
 			}
-		},
-		table: {
-			columns: minerColumns
-		}
-	};
+		};
+		setPropsTable(props);
+	}, []);
+
 	useEffect(() => {
 		ignore = false;
 		async function run() {
-			console.log("********ignore*********", ignore);
 			if (ignore) return;
 			let result = await storageAJAX({ ac1: "sminer", ac2: "totalServiceSpace" });
 			if (result.msg != "ok") {
@@ -132,23 +139,27 @@ const Home = ({ ...props }) => {
 			<div className="list-box block">
 				<Blocks />
 			</div>
-			<div className="miner-list">
-				<Card
-					title={
-						<span>
-							<img width={29} src={process.env.PUBLIC_URL + "/img/2.png"} /> Top Miners
-						</span>
-					}
-					className="myRadius"
-					bodyStyle={{ padding: 0, margin: 0 }}
-					extra={
-						<NavLink to="/miner/" className="btn-more">
-							ALL
-						</NavLink>
-					}>
-					{isM ? <MinerList props={propsTable} /> : <ThTable props={propsTable} />}
-				</Card>
-			</div>
+			{propsTable ? (
+				<div className="miner-list">
+					<Card
+						title={
+							<span>
+								<img width={29} src={process.env.PUBLIC_URL + "/img/2.png"} /> Top Miners
+							</span>
+						}
+						className="myRadius"
+						bodyStyle={{ padding: 0, margin: 0 }}
+						extra={
+							<NavLink to="/miner/" className="btn-more">
+								ALL
+							</NavLink>
+						}>
+						{isM ? <MinerList props={propsTable} /> : <ThTable props={propsTable} />}
+					</Card>
+				</div>
+			) : (
+				""
+			)}
 		</div>
 	);
 };
