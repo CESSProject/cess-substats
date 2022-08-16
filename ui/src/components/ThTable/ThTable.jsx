@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 11:05:15
+ * @LastEditTime: 2022-08-16 17:03:31
  */
 import React, { useRef, useState, useEffect } from "react";
 import {
@@ -97,61 +97,65 @@ export function ThTable({ props }) {
 	}, []);
 
 	//ajax post
-	useEffect(async () => {
-		if (props.table && props.table.dataSource) {
-			setDataSource(props.table.dataSource);
-			const total = props.table.total || props.table.dataSource.length;
-			setTotal(total);
-			return;
-		}
-		ignore = false;
-		clearTimeout(timeout);
-		setLoading(true);
-		let params = {};
-		if (props.loadList?.params) {
-			params = _.cloneDeep(props.loadList.params);
-		}
-		params.pageindex = pageindex;
-		params.pagesize = pagesize;
-		if (sorter) {
-			params.sorter = [
-				{
-					column: sorter.column,
-					order: sorter.order
+	useEffect(() => {
+		(async function anyNameFunction() {
+			if (props.table && props.table.dataSource) {
+				setDataSource(props.table.dataSource);
+				const total = props.table.total || props.table.dataSource.length;
+				setTotal(total);
+				return;
+			}
+			ignore = false;
+			clearTimeout(timeout);
+			setLoading(true);
+			let params = {};
+			if (props.loadList?.params) {
+				params = _.cloneDeep(props.loadList.params);
+			}
+			params.pageindex = pageindex;
+			params.pagesize = pagesize;
+			if (sorter) {
+				params.sorter = [
+					{
+						column: sorter.column,
+						order: sorter.order
+					}
+				];
+			}
+			if (filter) {
+				params.filter = filter;
+				params.filterType = "and";
+			}
+			let result = await props.loadList?.method(params);
+			if (!result || result.msg != "ok") {
+				setLoading(false);
+				return;
+			}
+			result.data.forEach((t, i) => {
+				if (!t.key) {
+					t.key = t.id || i;
 				}
-			];
-		}
-		if (filter) {
-			params.filter = filter;
-			params.filterType = "and";
-		}
-		let result = await props.loadList?.method(params);
-		if (!result || result.msg != "ok") {
+			});
+			result.data.forEach((t, i) => {
+				let arr = result.data.filter(d => d.key == t.key);
+				if (arr.length > 1) {
+					arr[1].key = arr[1].key + "-2";
+				}
+			});
+			setDataSource(result.data);
+			setTotal(result.total || result.data.length);
+			console.log("result.data", result.data.length);
+			console.log("result.total", result.total);
 			setLoading(false);
-			return;
-		}
-		result.data.forEach((t, i) => {
-			if (!t.key) {
-				t.key = t.id || i;
+			//autoRefresh
+			if (props.loadList && props.loadList.autoRefresh) {
+				timeout = setTimeout(() => {
+					if (ignore) return;
+					// console.log("autoRefresh", props.loadList.autoRefresh);
+					setReload(new Date());
+				}, props.loadList.autoRefresh);
 			}
-		});
-		result.data.forEach((t, i) => {
-			let arr = result.data.filter(d => d.key == t.key);
-			if (arr.length > 1) {
-				arr[1].key = arr[1].key + "-2";
-			}
-		});
-		setDataSource(result.data);
-		setTotal(result.total || result.data.length);
-		setLoading(false);
-		//autoRefresh
-		if (props.loadList && props.loadList.autoRefresh) {
-			timeout = setTimeout(() => {
-				if (ignore) return;
-				// console.log("autoRefresh", props.loadList.autoRefresh);
-				setReload(new Date());
-			}, props.loadList.autoRefresh);
-		}
+		})();
 		return () => {
 			ignore = true;
 		};
@@ -174,7 +178,7 @@ export function ThTable({ props }) {
 	};
 
 	// format props.batchAction
-	useEffect(async () => {
+	useEffect(() => {
 		if (props.batchAction && props.batchAction.length > 0 && !props.table?.rowSelection) {
 			props.table.rowSelection = {
 				type: "checkbox"
@@ -188,7 +192,7 @@ export function ThTable({ props }) {
 		}
 	}, []);
 	// format props.table.columns
-	useEffect(async () => {
+	useEffect(() => {
 		if (!props.table || !props.table.columns) {
 			return;
 		}

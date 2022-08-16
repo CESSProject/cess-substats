@@ -3,12 +3,12 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-11 11:54:20
+ * @LastEditTime: 2022-08-16 16:58:51
  * @description: 描述信息
  * @author: chenbinfa
  */
 import React, { useState, useEffect } from "react";
-import { Breadcrumb, Col, DatePicker, Input, Row, Select, message, Divider, List, Typography, Avatar } from "antd";
+import { Breadcrumb, Col, DatePicker, Input, Row, Empty, Select, message, Divider, List, Typography, Avatar } from "antd";
 import { ClockCircleOutlined, UserOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import moment from "moment";
@@ -21,8 +21,8 @@ const CList = ({ className, props }) => {
 	const [dataSource, setDataSource] = useState([]);
 
 	const [total, setTotal] = useState(0);
-	const [pageindex, setPageindex] = useState(props.pageindex || 1);
-	const [pagesize, setPagesize] = useState(props.pagesize);
+	const [pageindex, setPageindex] = useState(props?.pageindex || 1);
+	const [pagesize, setPagesize] = useState(props?.pagesize || 10);
 	const [reload, setReload] = useState(false);
 
 	const [sorter, setSorter] = useState(null);
@@ -44,30 +44,29 @@ const CList = ({ className, props }) => {
 		},
 		showTotal: total => `Total ${total}`
 	};
-	if (props)
-		if (!props.table || !props.table.renderItem) {
-			props.table.renderItem = item => {
-				return (
-					<List.Item>
-						<div className="block-list-box block">
-							{props.table.columns.map(c => {
-								let k = c.key || c.dataIndex;
-								let v = item[c.dataIndex];
-								return (
-									<div className="block" key={k}>
-										<span className="left-name">{c.title}：</span>
-										<span className="right-value">
-											{v}
-											{c.label ? <label>({item[c.label]})</label> : ""}
-										</span>
-									</div>
-								);
-							})}
-						</div>
-					</List.Item>
-				);
-			};
-		}
+	if (!props.table.renderItem) {
+		props.table.renderItem = item => {
+			return (
+				<List.Item>
+					<div className="block-list-box block">
+						{props.table.columns.map(c => {
+							let k = c.key || c.dataIndex;
+							let v = item[c.dataIndex];
+							return (
+								<div className="block" key={k}>
+									<span className="left-name">{c.title}：</span>
+									<span className="right-value">
+										{v}
+										{c.label ? <label>({item[c.label]})</label> : ""}
+									</span>
+								</div>
+							);
+						})}
+					</div>
+				</List.Item>
+			);
+		};
+	}
 
 	//ajax post
 	useEffect(async () => {
@@ -119,9 +118,9 @@ const CList = ({ className, props }) => {
 				itemLayout="horizontal"
 				dataSource={dataSource}
 				loading={loading}
-				size={props.size}
-				pagination={props.hidePager ? false : pagination}
-				renderItem={props.table.renderItem}
+				size={props?.size}
+				pagination={props?.hidePager ? false : pagination}
+				renderItem={props?.table?.renderItem}
 			/>
 		</div>
 	);

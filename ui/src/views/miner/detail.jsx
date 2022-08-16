@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 10:27:48
+ * @LastEditTime: 2022-08-16 17:04:39
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -42,6 +42,7 @@ import moment from "moment";
 import copy from "copy-to-clipboard";
 import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFromMB } from "@/utils/format";
 import BreadcrumbBar from "@/components/BreadcrumbBar";
+import { formatArr } from "@/utils";
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -69,12 +70,6 @@ function Main({ className }) {
 	}
 	useEffect(async () => {
 		setLoading(true);
-		let result = await storageAJAX({ ac1: "sminer", ac2: "minerItems" });
-		console.log("result", result);
-		if (result.msg != "ok") {
-			setLoading(false);
-			return message.error(result.msg);
-		}
 		let mainer = await miner.loadOneMiner(id);
 		if (!mainer) {
 			setLoading(false);
@@ -90,7 +85,7 @@ function Main({ className }) {
 		// console.log("mainer", mainer);
 		setLoading(false);
 	}, [id]);
-	useEffect(async () => {
+	useEffect(() => {
 		const columns = [
 			{
 				title: "Miner ID",
@@ -111,7 +106,7 @@ function Main({ className }) {
 				dataIndex: "power"
 			}
 		];
-		formatShowType.formatArr(columns);
+		formatArr(columns);
 		setColumnsAccounts(columns);
 		const columns2 = [
 			{
@@ -135,7 +130,7 @@ function Main({ className }) {
 				showType: "currency-qianfen"
 			}
 		];
-		formatShowType.formatArr(columns2);
+		formatArr(columns2);
 		setColumnsBalance(columns2);
 	}, []);
 	return (
@@ -156,7 +151,7 @@ function Main({ className }) {
 					</div>
 				</Card>
 			</Spin>
-			<Spin spinning={loading}>
+			{/* <Spin spinning={loading}>
 				<Card title="Miner Detail">
 					<div className="table-content">
 						<Descriptions bordered column={1} title="Accounts" labelStyle={{ width: "20%" }}>
@@ -170,7 +165,7 @@ function Main({ className }) {
 						</Descriptions>
 					</div>
 				</Card>
-			</Spin>
+			</Spin> */}
 		</div>
 	);
 }

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-11 14:46:43
+ * @LastEditTime: 2022-08-16 15:45:29
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -43,7 +43,7 @@ const columns = [
 		title: "Hash",
 		dataIndex: "hash",
 		key: "hash",
-		width: "35%",
+		width: "30%",
 		textWrap: "word-break",
 		ellipsis: true,
 		showType: "copy"
@@ -52,10 +52,17 @@ const columns = [
 		title: "Prent Hash",
 		dataIndex: "parentHash",
 		key: "parentHash",
-		width: "35%",
+		width: "30%",
 		textWrap: "word-break",
 		ellipsis: true,
 		showType: "copy"
+	},
+	{
+		title: "Transactions",
+		dataIndex: "txCount",
+		key: "txCount",
+		width: "10%",
+		sorter: true
 	},
 	{
 		title: "Time",

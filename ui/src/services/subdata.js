@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 11:21:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 10:28:29
+ * @LastEditTime: 2022-08-16 15:05:32
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -59,6 +59,10 @@ function connect() {
 }
 
 function addEvent(e) {
+	let i = events.findIndex(t => t.id == e.id);
+	if (i > -1) {
+		events.splice(i, 1);
+	}
 	events.push(e);
 	connect();
 }

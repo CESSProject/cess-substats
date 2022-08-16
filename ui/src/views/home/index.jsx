@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-11 11:36:08
+ * @LastEditTime: 2022-08-16 16:27:23
  */
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -19,7 +19,7 @@ import { formatterCurrency, formatterCurrencyStr, formatterSize, formatterSizeFr
 import { ThTable } from "@/components/ThTable";
 import StorageChart from "./components/StorageChart";
 import NetworkOverview from "./components/NetworkOverview";
-import LatestBlocks from "./components/LatestBlocks";
+import Blocks from "./components/Blocks";
 import MinerList from "@/components/mobile/MinerList";
 import { isMobile } from "@utils";
 const isM = isMobile();
@@ -33,8 +33,8 @@ let lastBlockTime = 0;
 let ignore = false;
 let timeout = null;
 
-const minerColumns = miner.getColumns();
-
+const minerColumns = miner.getColumns(isM ? "list" : "table");
+console.log("minerColumns", minerColumns);
 const Home = ({ ...props }) => {
 	document.title = "Home-CESS Substats";
 	const [miners, setMiners] = useState([]);
@@ -52,7 +52,17 @@ const Home = ({ ...props }) => {
 		loadList: {
 			method: async () => {
 				if (ignore) return;
-				let result = await miner.loadMiners();
+				let result = await miner.loadMiners({
+					tableName: "miner_summary",
+					pageindex: 1,
+					pagesize: 20,
+					sorter: [
+						{
+							column: "power",
+							order: "desc"
+						}
+					]
+				});
 				if (ignore) return;
 				if (result.msg == "ok") {
 					setMiners(result.data);
@@ -67,9 +77,10 @@ const Home = ({ ...props }) => {
 			columns: minerColumns
 		}
 	};
-	useEffect(async () => {
+	useEffect(() => {
 		ignore = false;
 		async function run() {
+			console.log("********ignore*********", ignore);
 			if (ignore) return;
 			let result = await storageAJAX({ ac1: "sminer", ac2: "totalServiceSpace" });
 			if (result.msg != "ok") {
@@ -119,7 +130,7 @@ const Home = ({ ...props }) => {
 				</Card>
 			</div>
 			<div className="list-box block">
-				<LatestBlocks />
+				<Blocks />
 			</div>
 			<div className="miner-list">
 				<Card

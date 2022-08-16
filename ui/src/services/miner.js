@@ -3,42 +3,48 @@
  * @Autor: fage
  * @Date: 2022-08-09 10:10:31
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-11 14:06:26
+ * @LastEditTime: 2022-08-15 18:00:27
  * @description: miner list
  * @author: chenbinfa
  */
 import storageAJAX from "@services/storage";
 import { NavLink } from "react-router-dom";
+import queryDB from "@services/queryDB";
 
 export default { loadMiners, loadOneMiner, getColumns };
 
-async function loadMiners() {
-	let result = await storageAJAX({ ac1: "sminer", ac2: "minerItems" });
-	// console.log("result", result);
-	if (result.msg != "ok") {
-		return result;
-	}
-	let totalPower = 0;
-	result.data.forEach(m => {
-		m.power = _.toNumber(m.power);
-		m.totalReward = _.toNumber(m.rewardInfo.totalReward);
-		totalPower += m.power;
-	});
-	result.data.forEach(m => {
-		if (totalPower == 0) {
-			m.per = 100;
-		} else {
-			m.per = ((m.power * 100) / totalPower).toFixed(1);
-		}
-	});
-	result.data.sort((t1, t2) => t2.power - t1.power);
-	result.data.forEach((t, i) => {
-		t.peerid = i + 1;
-	});
-	// localStorage.setItem()
+async function loadMiners(p) {
+	let result = await queryDB.list(p);
 	return result;
 }
-async function loadOneMiner() {
+// async function loadMiners() {
+// 	let result = await storageAJAX({ ac1: "sminer", ac2: "minerItems" });
+// 	// console.log("result", result);
+// 	if (result.msg != "ok") {
+// 		return result;
+// 	}
+// 	let totalPower = 0;
+// 	result.data.forEach((m, i) => {
+// 		m.power = _.toNumber(m.power);
+// 		m.totalReward = _.toNumber(m.rewardInfo.totalReward);
+// 		totalPower += m.power;
+// 	});
+// 	result.data.forEach(m => {
+// 		if (totalPower == 0) {
+// 			m.per = 100;
+// 		} else {
+// 			m.per = ((m.power * 100) / totalPower).toFixed(1);
+// 		}
+// 	});
+// 	result.data.sort((t1, t2) => t2.power - t1.power);
+// 	result.data.forEach((t, i) => {
+// 		t.peerid = i + 1;
+// 		if (!t.key) t.key = i + 1;
+// 	});
+// 	// localStorage.setItem()
+// 	return result;
+// }
+async function loadOneMiner(key) {
 	let tmp = await loadMiners();
 	if (!tmp.data || tmp.msg != "ok") {
 		return;
@@ -50,9 +56,10 @@ function getColumns(type = "table") {
 	const minerColumns = [
 		{
 			title: "Rank",
-			dataIndex: "peerid",
+			dataIndex: "id",
 			width: "10%",
 			render: (text, record, index) => {
+				text = index + 1;
 				if (text == 1) {
 					text = <img title="NO.1" width={20} src={process.env.PUBLIC_URL + "/img/rank-1.png"} />;
 				} else if (text == 2) {
@@ -62,12 +69,12 @@ function getColumns(type = "table") {
 				} else {
 					text = <span>&nbsp;{text}</span>;
 				}
-				return <NavLink to={"/miner/" + record.key}>{text}</NavLink>;
+				return <NavLink to={"/miner/" + record.beneficiaryAccount}>{text}</NavLink>;
 			}
 		},
 		{
 			title: "Account",
-			dataIndex: "key",
+			dataIndex: "beneficiaryAccount",
 			width: "35%",
 			textWrap: "word-break",
 			ellipsis: true,
@@ -97,7 +104,7 @@ function getColumns(type = "table") {
 		},
 		{
 			title: "Power Ratio",
-			dataIndex: "per",
+			dataIndex: "powerPer",
 			width: "20%",
 			showType: "progress"
 		},
@@ -111,9 +118,10 @@ function getColumns(type = "table") {
 	const listColumns = [
 		{
 			title: "Rank",
-			dataIndex: "peerid",
+			dataIndex: "id",
 			width: "10%",
 			render: (text, record, index) => {
+				text = index + 1;
 				if (text == 1) {
 					text = <img title="NO.1" width={20} src={process.env.PUBLIC_URL + "/img/rank-1.png"} />;
 				} else if (text == 2) {
@@ -123,12 +131,12 @@ function getColumns(type = "table") {
 				} else {
 					text = <span>&nbsp;{text}</span>;
 				}
-				return <NavLink to={"/miner/" + record.key}>{text}</NavLink>;
+				return <NavLink to={"/miner/" + record.beneficiaryAccount}>{text}</NavLink>;
 			}
 		},
 		{
 			title: "Account",
-			dataIndex: "key",
+			dataIndex: "beneficiaryAccount",
 			width: "35%",
 			textWrap: "word-break",
 			ellipsis: true,
@@ -143,16 +151,9 @@ function getColumns(type = "table") {
 		},
 		{
 			title: "Ratio",
-			dataIndex: "per",
+			dataIndex: "powerPer",
 			width: "20%",
 			showType: "progress"
-		},
-		{
-			title: "Mining reward",
-			dataIndex: "totalReward",
-			width: "20%",
-			showType: "currency-qianfen",
-			tpl: "{totalReward}($TCESS)"
 		}
 	];
 	return type == "table" ? minerColumns : listColumns;

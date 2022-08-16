@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-11 14:08:00
+ * @LastEditTime: 2022-08-15 11:29:04
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -37,6 +37,9 @@ const Home = ({ ...props }) => {
 		border: true,
 		size: "middle",
 		pagesize: 10,
+		params: {
+			tableName: "miner_summary"
+		},
 		loadList: {
 			method: miner.loadMiners
 		},

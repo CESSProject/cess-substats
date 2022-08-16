@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 11:05:45
+ * @LastEditTime: 2022-08-16 17:02:41
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -36,12 +36,16 @@ import styled from "styled-components";
 import _ from "lodash";
 import { useNavigate, useParams, NavLink } from "react-router-dom";
 import queryDB from "@services/queryDB";
-import { formatArr } from "@/utils";
+import { formatArr, isMobile } from "@/utils";
 import moment from "moment";
 import copy from "copy-to-clipboard";
 import storageAJAX from "@services/storage";
 import { formatterCurrency, formatterCurrencyStr, formatterCurrencyStr2, formatterSize, formatterSizeFromMB } from "@utils/format";
 import BreadcrumbBar from "@/components/BreadcrumbBar";
+import { ThTable } from "@/components/ThTable";
+import MList from "@/components/mobile/MList";
+import miner from "@services/miner";
+const isM = isMobile();
 
 const { Option } = Select;
 const { Column, ColumnGroup } = Table;
@@ -52,6 +56,8 @@ const { Panel } = Collapse;
 let runCount = 0;
 let dics = [];
 let ignore = false;
+const minerColumns = miner.getColumns();
+minerColumns[1].dataIndex = "collateralAccount";
 
 //test account
 //cXffK7BmstE5rXcK8pxKLufkffp9iASMntxUm6ctpR6xS3icV
@@ -64,6 +70,9 @@ function Main({ className }) {
 	const [transactionsOut, setTransactionsOut] = useState([]);
 	const [transactionsIn, setTransactionsIn] = useState([]);
 	const [transactionColumns, setTransactionColumns] = useState([]);
+	const [miners, setMiners] = useState([]);
+	const [minerCol, setMinerCol] = useState([]);
+	const [propsTable, setPropsTable] = useState(null);
 
 	if (!q) {
 		return message.error("accountId is not found");
@@ -223,6 +232,50 @@ function Main({ className }) {
 		formatArr(columnsArr);
 		setTransactionColumns(columnsArr);
 	}, []);
+	// miner_summary
+	useEffect(() => {
+		(async function anyNameFunction() {
+			ignore = false;
+			let result = await miner.loadMiners({
+				tableName: "miner",
+				pageindex: 1,
+				pagesize: 200,
+				sorter: [
+					{
+						column: "power",
+						order: "desc"
+					}
+				],
+				filter: [
+					{
+						column: "beneficiaryAccount",
+						sign: "=",
+						values: [account]
+					}
+				]
+			});
+			if (ignore) return;
+			if (result.msg == "ok") {
+				result.data.forEach(t => (t.key = t.id));
+				setMiners(result.data);
+				setMinerCol(formatArr(minerColumns));
+				const props = {
+					border: true,
+					size: "middle",
+					pagesize: 200,
+					hidePager: true,
+					table: {
+						columns: minerColumns,
+						dataSource: result.data
+					}
+				};
+				setPropsTable(props);
+			}
+		})();
+		return () => {
+			ignore = true;
+		};
+	}, [account]);
 	return (
 		<div className={className}>
 			<BreadcrumbBar currPageName="Account detail" />
@@ -238,6 +291,22 @@ function Main({ className }) {
 					</div>
 				</Card>
 			</Spin>
+			{detail.isMiner == 1 && propsTable && miners && miners.length > 0 ? (
+				<div className="miner-list">
+					<Card
+						title={
+							<span>
+								<img width={29} src={process.env.PUBLIC_URL + "/img/2.png"} /> Staking Account({miners.length})
+							</span>
+						}
+						className="myRadius"
+						bodyStyle={{ padding: 0, margin: 0 }}>
+						{isM ? <MList props={propsTable} /> : <Table pagination={false} dataSource={miners} columns={minerColumns} />}
+					</Card>
+				</div>
+			) : (
+				""
+			)}
 			<Spin spinning={loading}>
 				<Card title={"Transfer received(" + transactionsIn.length + ")"} style={{ marginTop: 10 }}>
 					{transactionsIn.length == 0 ? (
@@ -297,6 +366,9 @@ function Main({ className }) {
 export default styled(Main)`
 	display: block;
 	overflow: hidden;
+	.miner-list {
+		margin-top: 10px;
+	}
 	.table-content {
 		background-color: #fff;
 		.ant-descriptions-header {

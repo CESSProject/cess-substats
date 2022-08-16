@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-03 14:19:31
+ * @LastEditTime: 2022-08-15 11:55:12
  * @description: auto record everyday power to db
  * @author: chenbinfa
  */
@@ -58,6 +58,15 @@ async function main() {
       isMiner: 1,
     };
     await save(o);
+    amount = await getBalances(entity.beneficiary);
+    txCount = await getTxCount(entity.beneficiary);
+    const o2 = {
+      accountId: entity.beneficiary,
+      amount,
+      txCount,
+      isMiner: 1,
+    };
+    await save(o2);
   }
   console.log("complete!");
   setTimeout(main, 10000);

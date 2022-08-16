@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 14:31:40
+ * @LastEditTime: 2022-08-16 17:04:41
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -87,7 +87,7 @@ const SearchBar = ({ className, miners, space }) => {
 	}, []);
 
 	// setTotalPower
-	useEffect(async () => {
+	useEffect(() => {
 		setTotalPower(formatterSizeFromMB(space.total));
 	}, [space]);
 

@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./app",
-    "startui": " cd ui && npm start"
+    "startui": " cd ui && npm start",
+    "buildui": " cd ui && npm run build"
   },
   "dependencies": {
     "@polkadot/api": "^8.12.2",
