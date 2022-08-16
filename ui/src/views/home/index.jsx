@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-16 17:44:52
+ * @LastEditTime: 2022-08-16 20:01:22
  */
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -133,7 +133,7 @@ const Home = ({ ...props }) => {
 							<img width={19} src={process.env.PUBLIC_URL + "/img/icon_cp.png"} /> Network Overview
 						</span>
 					}>
-					<NetworkOverview space={space} miners={miners} />
+					<NetworkOverview space={space} />
 				</Card>
 			</div>
 			<div className="list-box block">

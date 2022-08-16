@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-16 17:04:41
+ * @LastEditTime: 2022-08-16 20:01:20
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -24,7 +24,7 @@ import "@ant-design/flowchart/dist/index.css";
 let lastBlockTime = 0;
 let ignore = false;
 
-const SearchBar = ({ className, miners, space }) => {
+const SearchBar = ({ className, space }) => {
 	const [loading, setLoading] = useState(false);
 	const [bgColor, setBgColor] = useState(false);
 	const [chartConfig, setChartConfig] = useState();
@@ -33,6 +33,7 @@ const SearchBar = ({ className, miners, space }) => {
 	const [totalIssuance, setTotalIssuance] = useState(0);
 	const [avgBlockTime, setAvgBlockTime] = useState("--");
 	const [list, setList] = useState([]);
+	const [minerCount, setMinerCount] = useState(0);
 
 	// sub blockHeight
 	useEffect(() => {
@@ -148,6 +149,23 @@ const SearchBar = ({ className, miners, space }) => {
 		setLoading(false);
 	}, []);
 
+	// get minerCount
+	useEffect(async () => {
+		setLoading(true);
+		const params = {
+			tableName: "miner",
+			pageindex: 1,
+			pagesize: 1
+		};
+		let result = await queryDB.list(params);
+		if (result.msg != "ok") {
+			setLoading(false);
+			return;
+		}
+		setMinerCount(result.total);
+		setLoading(false);
+	}, []);
+
 	return (
 		<div className={className}>
 			<div className="left-state-box">
@@ -168,7 +186,7 @@ const SearchBar = ({ className, miners, space }) => {
 					</div>
 					<div className="state-box" style={{ marginBottom: 0 }}>
 						<span>Storage Miners</span>
-						<span>{miners.length} Nodes</span>
+						<span>{minerCount} Nodes</span>
 					</div>
 				</div>
 			</div>

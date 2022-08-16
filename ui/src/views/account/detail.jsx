@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-16 17:02:41
+ * @LastEditTime: 2022-08-16 19:49:14
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -251,8 +251,14 @@ function Main({ className }) {
 						column: "beneficiaryAccount",
 						sign: "=",
 						values: [account]
+					},
+					{
+						column: "collateralAccounts",
+						sign: "=",
+						values: [account]
 					}
-				]
+				],
+				filterType: "or"
 			});
 			if (ignore) return;
 			if (result.msg == "ok") {
