@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-08-05 14:06:57
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-05 14:33:27
+ * @LastEditTime: 2022-08-17 14:06:02
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -33,8 +33,8 @@ async function getBlockInfo(api, blockHeight) {
     hash,
     parentHash: blockInfo.header.parentHash,
     blockHeight,
-    stateRoot: blockInfo.header.stateRoot,
-    extrinsicsRoot: blockInfo.header.extrinsicsRoot,
+    // stateRoot: blockInfo.header.stateRoot,
+    // extrinsicsRoot: blockInfo.header.extrinsicsRoot,
     timestamp,
     trnactions,
   };
@@ -71,15 +71,15 @@ async function getTx(blockHeight, src) {
         isSigned: json.isSigned ? 1 : 0,
         method: json.method.method,
         section: json.method.section,
-        args: JSON.stringify(json.method.args),
+        // args: JSON.stringify(json.method.args),
         timestamp,
       };
       if (json.isSigned) {
-        entity.era = json.era.ImmortalEra;
-        entity.nonce = enx.nonce.toNumber();
-        entity.signature = enx.signature.toHex();
+        // entity.era = json.era.ImmortalEra;
+        // entity.nonce = enx.nonce.toNumber();
+        // entity.signature = enx.signature.toHex();
         entity.signer = json.signer.Id;
-        entity.tip = enx.tip.toNumber();
+        // entity.tip = enx.tip.toNumber();
         if (
           entity.method == "transferKeepAlive" &&
           entity.section == "balances"

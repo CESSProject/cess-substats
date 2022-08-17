@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 19:57:41
+ * @LastEditTime: 2022-08-17 14:05:53
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -174,22 +174,22 @@ const Main = () => {
 					textWrap: "word-break",
 					ellipsis: true
 				},
-				{
-					title: "stateRoot",
-					dataIndex: "stateRoot",
-					key: "stateRoot",
-					width: "15%",
-					textWrap: "word-break",
-					ellipsis: true
-				},
-				{
-					title: "extrinsicsRoot",
-					dataIndex: "extrinsicsRoot",
-					key: "extrinsicsRoot",
-					width: "15%",
-					textWrap: "word-break",
-					ellipsis: true
-				},
+				// {
+				// 	title: "stateRoot",
+				// 	dataIndex: "stateRoot",
+				// 	key: "stateRoot",
+				// 	width: "15%",
+				// 	textWrap: "word-break",
+				// 	ellipsis: true
+				// },
+				// {
+				// 	title: "extrinsicsRoot",
+				// 	dataIndex: "extrinsicsRoot",
+				// 	key: "extrinsicsRoot",
+				// 	width: "15%",
+				// 	textWrap: "word-break",
+				// 	ellipsis: true
+				// },
 				{
 					title: "timestamp",
 					dataIndex: "timestamp",
@@ -244,22 +244,22 @@ const Main = () => {
 					textWrap: "word-break",
 					ellipsis: true
 				},
-				{
-					title: "stateRoot",
-					dataIndex: "stateRoot",
-					key: "stateRoot",
-					width: "15%",
-					textWrap: "word-break",
-					ellipsis: true
-				},
-				{
-					title: "extrinsicsRoot",
-					dataIndex: "extrinsicsRoot",
-					key: "extrinsicsRoot",
-					width: "15%",
-					textWrap: "word-break",
-					ellipsis: true
-				},
+				// {
+				// 	title: "stateRoot",
+				// 	dataIndex: "stateRoot",
+				// 	key: "stateRoot",
+				// 	width: "15%",
+				// 	textWrap: "word-break",
+				// 	ellipsis: true
+				// },
+				// {
+				// 	title: "extrinsicsRoot",
+				// 	dataIndex: "extrinsicsRoot",
+				// 	key: "extrinsicsRoot",
+				// 	width: "15%",
+				// 	textWrap: "word-break",
+				// 	ellipsis: true
+				// },
 				{
 					title: "timestamp",
 					dataIndex: "timestamp",

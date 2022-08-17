@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-04 17:50:05
+ * @LastEditTime: 2022-08-17 14:04:03
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -58,8 +58,8 @@ async function saveBlock(hash, blockHeight, src, timestamp) {
     // signerAccount,
     parentHash: blockInfo.header.parentHash,
     blockHeight,
-    stateRoot: blockInfo.header.stateRoot,
-    extrinsicsRoot: blockInfo.header.extrinsicsRoot,
+    // stateRoot: blockInfo.header.stateRoot,
+    // extrinsicsRoot: blockInfo.header.extrinsicsRoot,
     timestamp,
   });
   // console.log(result);
@@ -97,15 +97,15 @@ async function saveTx(blockHash, blockHeight, src, events) {
         isSigned: json.isSigned ? 1 : 0,
         method: json.method.method,
         section: json.method.section,
-        args: JSON.stringify(json.method.args),
+        // args: JSON.stringify(json.method.args),
         timestamp,
       };
       if (json.isSigned) {
-        entity.era = json.era.ImmortalEra;
-        entity.nonce = enx.nonce.toNumber();
-        entity.signature = enx.signature.toHex();
+        // entity.era = json.era.ImmortalEra;
+        // entity.nonce = enx.nonce.toNumber();
+        // entity.signature = enx.signature.toHex();
         entity.signer = json.signer.Id;
-        entity.tip = enx.tip.toNumber();
+        // entity.tip = enx.tip.toNumber();
         if (
           entity.method == "transferKeepAlive" &&
           entity.section == "balances"
