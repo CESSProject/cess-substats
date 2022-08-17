@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-16 17:33:30
+ * @LastEditTime: 2022-08-17 11:09:51
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Empty, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -71,7 +71,7 @@ const columnsTx = [
 		dataIndex: "status",
 		width: "8%",
 		render: (text, record, index) => {
-			return text === "success" ? (
+			return text.indexOf("success") != -1 ? (
 				<span className="green">
 					<CheckCircleOutlined /> {text}
 				</span>

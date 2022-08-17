@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-16 19:49:14
+ * @LastEditTime: 2022-08-17 11:00:46
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -253,7 +253,7 @@ function Main({ className }) {
 						values: [account]
 					},
 					{
-						column: "collateralAccounts",
+						column: "collateralAccount",
 						sign: "=",
 						values: [account]
 					}
