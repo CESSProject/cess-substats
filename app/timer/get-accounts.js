@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-15 11:55:12
+ * @LastEditTime: 2022-08-17 14:26:43
  * @description: auto record everyday power to db
  * @author: chenbinfa
  */
@@ -69,7 +69,7 @@ async function main() {
     await save(o2);
   }
   console.log("complete!");
-  setTimeout(main, 10000);
+  setTimeout(main, 1000000);
 }
 async function save(o) {
   let tmp = await dal.findOne({

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-15 14:52:18
+ * @LastEditTime: 2022-08-17 14:26:56
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -125,7 +125,7 @@ async function getMiner() {
     // console.log("delete from tb_miner_summary", tmp);
   }
   console.log("complete");
-  setTimeout(getMiner, 300000);
+  setTimeout(getMiner, 3000000);
 }
 async function main() {
   api = await init();
