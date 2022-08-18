@@ -54,6 +54,8 @@ POST /api/dics/list
 
 Storeage api query with chain.
 
+API as [https://testnet.cess.cloud/#/chainstate](https://testnet.cess.cloud/#/chainstate)
+
 ### Request URL
 
 ```
@@ -112,6 +114,8 @@ ac1 and ac2 enable values
 ## Chain consts
 
 Node const query
+
+API as [https://testnet.cess.cloud/#/chainstate/constants](https://testnet.cess.cloud/#/chainstate/constants)
 
 ### Request URL
 
@@ -178,7 +182,7 @@ ac1 and ac2 enable values
 
 ## Query list
 
-query list from database
+Query list from database
 
 ### Request URL
 
@@ -238,7 +242,7 @@ The param tableName value as :
 
 ## Query detail
 
-query detail from database
+Query detail from database
 
 ### Request URL
 
