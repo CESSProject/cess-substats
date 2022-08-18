@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-16 20:01:22
+ * @LastEditTime: 2022-08-17 16:54:14
  */
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -48,7 +48,9 @@ const Home = ({ ...props }) => {
 		const c = _.cloneDeep(minerColumns);
 		c[2].sorter = false;
 		c[3].sorter = false;
-		c[4].sorter = false;
+		if (c[4]) {
+			c[4].sorter = false;
+		}
 		const props = {
 			border: true,
 			size: "middle",

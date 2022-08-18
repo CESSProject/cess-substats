@@ -169,7 +169,7 @@ module.exports = class mysqlBase {
   }
   getTableNames(tableName) {
     let sql =
-      "select table_name,table_comment,table_rows from information_schema.tables where table_schema='manage' and table_type='BASE TABLE'";
+      "select table_name,table_comment,table_rows from information_schema.tables where table_schema='substats' and table_type='BASE TABLE'";
     if (tableName) {
       sql += " and table_name='" + tableName + "'";
     }
@@ -179,7 +179,7 @@ module.exports = class mysqlBase {
   findColumnName(tableName) {
     let sql =
       "select column_name,column_comment,column_type from information_schema.columns where TABLE_SCHEMA=? and table_name=?";
-    return this.query(sql, ["manage", tableName || this.tableName]);
+    return this.query(sql, ["substats", tableName || this.tableName]);
   }
 
   findMaxId(tableName) {
