@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-11 15:11:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-09-06 16:49:10
+ * @LastEditTime: 2022-09-06 17:23:54
  */
 "use strict";
 const path = require("path");
@@ -14,7 +14,7 @@ module.exports = {
     nodeURL: "ws://173.208.220.226:9944", //"ws://localhost:9944"
     keyringOption: { type: "sr25519", ss58Format: 42 },
   },
-  host: "localhost",
+  host: "substats.cess.cloud",
   port: {
     http: 80,
   },

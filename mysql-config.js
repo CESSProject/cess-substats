@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-11 15:11:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-09-06 16:48:16
+ * @LastEditTime: 2022-09-06 17:18:21
  */
 "use strict";
 const fs = require("fs");
@@ -16,13 +16,17 @@ module.exports = function (configFilePath) {
       console.error(e);
     }
   } else {
-    return {
-      connectionLimit: 10,
-      host: "127.0.0.1",
-      user: "substats",
-      password: "af0fd#021lfda",
-      port: 3306,
-      database: "substats",
-    };
+    console.log("config file not found:", configFilePath);
   }
+  return null;
 };
+
+// the mysql config format as:
+// {
+//   "connectionLimit": 10,
+//   "host": "127.0.0.1",
+//   "user": "substats",
+//   "password": "Ni6eY85EXM6ZrMLG",
+//   "port": 3306,
+//   "database": "substats"
+// }

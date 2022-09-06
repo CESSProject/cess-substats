@@ -1,25 +1,91 @@
-# CESS blockchain browser
+# CESS blockchain browser of substats
 
-## About
+## 1. About
+We have designed a set of explorer modular components for the Substrate ecosystem, which can be used by stakeholders (such as miners and storage users) and other users. Users can inquire about basic information in the network, such as space information, rankings, blocks, transactions, addresses, visual trend charts, etc. Substats is open-source and has flexible scalability in both network and its functionalities. Hence early-stage projects or individual developers can easily integrate our components based on their business needs. The data analysis module and custom components are the two core functions of Substats.
 
-### 1、Node.js API
+#### **Features**
 
-1. Server:Express
-2. Database:Mysql
-3. Polkadot
+● **On-chain data processing station**: A processing station is built between users and the blockchain network, which includes a cache (database) layer and a computing (data processing) layer. The cache layer is responsible for pulling the data on the chain to the local database for storage. The computing layer is responsible for processing the on-chain data in the database, so that it can be combined into more meaningful data for users, such as historical data statistics, network-wide computing power rankings, etc.
 
-### 2、UI
+● **Convenient data display and retrieval**: Compared with reading blockchain network data through RPC nodes, it is more convenient and faster for the client's wxplorer to read directly in the database of the processing station built by Substats.
 
-1. React
-2. Ant-design
-3. Ant-design/charts
-4. React-router-dom
-5. Styled-components
-6. Reduxjs/toolkit
+● **One-click construction**: Learn from the features of Polkadot.js App. The Substats framework only needs to configure a small amount of information to achieve one-click deployment and startup. Significantly reduce development costs.
+
+● **Modular UI components**: The UI components of Substats are all decoupled, allowing developers to customize the development of UI components with low threshold.
+
+● **Open source and security**: Substats only provides completely open source code, and is not responsible for replacing management and operation services. All services are deployed and operated by the project party, avoiding trust costs.
 
 
+## 2. Technology stack used
 
-## Project file structure
+### 1) Node.js API
+
+- Server:Express
+- Database:Mysql
+- Polkadot
+
+### 2) Frontend UI
+
+- React
+- Ant-design
+- Ant-design/charts
+- React-router-dom
+- Styled-components
+- Reduxjs/toolkit
+
+## 3. Install
+
+### 1) Install database
+- create a database of name "substats";
+- run the sql file /db-init.sql
+- make database config file content as:
+```
+{
+  "connectionLimit": 10,
+  "host": "127.0.0.1",
+  "user": "substats",
+  "password": "Ni6eY85EXM6ZrMLG",
+  "port": 3306,
+  "database": "substats"
+}
+```
+- edit /webconfig.js and change config path at the line 25
+
+### 2) Install API server
+
+```
+npm install
+// or
+yarn install
+```
+
+### 3) Install Frontend UI
+
+```
+cd ui
+npm install
+// or
+yarn install
+```
+
+## 4. Run
+
+### 1) Run API server
+
+```
+npm run start
+// or
+yarn run start
+```
+### 2) Run Frontend UI
+
+```
+npm run startui
+// or
+yarn run startui
+```
+
+## 5. Project file structure
 
 ```
 ├── app #  timer app
