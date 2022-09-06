@@ -1,4 +1,4 @@
-# CESS blockchain browser of substats
+# Substats (blockchain browser)
 
 ## 1. About
 We have designed a set of explorer modular components for the Substrate ecosystem, which can be used by stakeholders (such as miners and storage users) and other users. Users can inquire about basic information in the network, such as space information, rankings, blocks, transactions, addresses, visual trend charts, etc. Substats is open-source and has flexible scalability in both network and its functionalities. Hence early-stage projects or individual developers can easily integrate our components based on their business needs. The data analysis module and custom components are the two core functions of Substats.
@@ -24,7 +24,7 @@ We have designed a set of explorer modular components for the Substrate ecosyste
 - Database:Mysql
 - Polkadot
 
-### 2) Frontend UI
+### 2) frontend UI
 
 - React
 - Ant-design
@@ -33,12 +33,12 @@ We have designed a set of explorer modular components for the Substrate ecosyste
 - Styled-components
 - Reduxjs/toolkit
 
-## 3. Install
+## 3. Install guide
 
 ### 1) Install database
-- create a database of name "substats";
+- create a database with name "substats";
 - run the sql file /db-init.sql
-- make database config file content as:
+- make database config file and content as:
 ```
 {
   "connectionLimit": 10,
@@ -49,7 +49,7 @@ We have designed a set of explorer modular components for the Substrate ecosyste
   "database": "substats"
 }
 ```
-- edit /webconfig.js and change config path at the line 25
+- edit the config file of "/webconfig.js" and change config path at the line 25
 
 ### 2) Install API server
 
@@ -59,7 +59,7 @@ npm install
 yarn install
 ```
 
-### 3) Install Frontend UI
+### 3) Install frontend UI
 
 ```
 cd ui
@@ -68,7 +68,7 @@ npm install
 yarn install
 ```
 
-## 4. Run
+## 4. Run guide
 
 ### 1) Run API server
 
@@ -77,7 +77,7 @@ npm run start
 // or
 yarn run start
 ```
-### 2) Run Frontend UI
+### 2) Run frontend UI
 
 ```
 npm run startui
