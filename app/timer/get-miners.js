@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-09-06 16:11:15
+ * @LastEditTime: 2022-09-06 16:12:55
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -107,6 +107,9 @@ async function getMiner() {
     entity.collateralAccountCount = entity.collateralAccounts.length;
     entity.collateralAccounts = entity.collateralAccounts.join(",");
     entity.powerPer = _.round((entity.power * 100) / totalPower, 1);
+    if (isNaN(entity.powerPer)) {
+      entity.powerPer = 0;
+    }
     let tmp = await dalSum.findWithQuery({
       beneficiaryAccount: entity.beneficiaryAccount,
     });
