@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-17 14:26:56
+ * @LastEditTime: 2022-09-06 16:11:15
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -86,6 +86,9 @@ async function getMiner() {
       summaryList.push(o);
     }
     entity.powerPer = _.round((entity.power * 100) / totalPower, 1);
+    if (isNaN(entity.powerPer)) {
+      entity.powerPer = 0;
+    }
     let tmp = await dal.findWithQuery({
       collateralAccount: entity.collateralAccount,
     });
