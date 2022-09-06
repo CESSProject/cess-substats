@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-11 15:11:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-18 11:07:26
+ * @LastEditTime: 2022-09-06 16:49:10
  */
 "use strict";
 const path = require("path");
@@ -19,11 +19,10 @@ module.exports = {
     http: 80,
   },
   publicApi: {
-    //对外API的秘钥
     secret: "MA14BAHJ2JEASL",
   },
   serverIP: "140.143.93.47",
-  mysql: mysql(),
+  mysql: mysql("../substats-mysql-config.json"),
   cookie: {
     enable: false,
     secret: "3**&2fMNU",
