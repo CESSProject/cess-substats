@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-11 15:11:35
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-07-20 17:38:43
+ * @LastEditTime: 2022-08-18 16:34:17
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -18,8 +18,9 @@ const update = require("../action-helper/update");
 const exportHelper = require("../action-helper/export");
 const batchUpdate = require("../action-helper/batch-update");
 const copy = require("../action-helper/copy");
+let tables = null;
 
-module.exports = function (req, res, next) {
+module.exports = async function (req, res, next) {
   let funs = {
     list: list,
     create: create,
@@ -39,15 +40,25 @@ module.exports = function (req, res, next) {
   };
   let tableName = req.body.tableName;
   let dal = new Dal("tb_" + tableName);
+  const valiResult = await checkTableName(dal, tableName);
+  if (!valiResult) {
+    return res.json({ msg: "table [" + tableName + "] not found" });
+  }
   let f = funs[req.body.action];
   if (f) {
     f(ret, dal, req, res);
   } else {
-    ret.msg = "action(" + req.body.action + ")未定义";
+    ret.msg = "action(" + req.body.action + ")not found";
     res.json(ret);
   }
 };
-
+async function checkTableName(dal, tableName) {
+  if (!tables) {
+    const list = await dal.getTableNames();
+    tables = list.map((t) => t.table_name.replace("tb_", ""));
+  }
+  return tables.indexOf(tableName) != -1;
+}
 function list(ret, dal, req, res) {
   let fieldStr = " * ";
   let fromStr = dal.tableName + " as a";

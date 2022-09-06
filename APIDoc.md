@@ -50,9 +50,9 @@ POST /api/dics/list
 -------------------------------------------------
 
 
-## Chain storeage api query
+## Chain state query
 
-Storeage api query with chain.
+Query state info from chain.
 
 API as [https://testnet.cess.cloud/#/chainstate](https://testnet.cess.cloud/#/chainstate)
 

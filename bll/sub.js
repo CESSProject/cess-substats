@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-11 20:07:29
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-05 14:51:37
+ * @LastEditTime: 2022-08-18 16:33:41
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -19,7 +19,7 @@ async function main() {
     api.rpc.chain.subscribeNewHeads(async (header) => {
       try {
         const blockHeight = header.number.toNumber();
-        console.log("blockHeight", blockHeight);
+        // console.log("blockHeight", blockHeight);
         const blockInfo = await chainHelper.getBlockInfo(api, blockHeight);
         send("blockInfo", "ok", blockInfo);
       } catch (e2) {
