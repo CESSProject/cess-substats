@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-08-05 11:15:38
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-05 11:20:50
+ * @LastEditTime: 2022-09-06 16:30:57
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -18,6 +18,9 @@ async function main() {
     "tb_block_transaction",
     "tb_block_event",
     "tb_block_account",
+    "tb_miner",
+    "tb_miner_summary",
+    "tb_storage_power_trend",
   ];
   for (let tb of tables) {
     console.log("truncating", tb);

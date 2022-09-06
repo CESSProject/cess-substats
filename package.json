@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./app",
     "startui": " cd ui && npm start",
-    "buildui": " cd ui && npm run build"
+    "buildui": " cd ui && npm run build",
+    "reset": "npm stop all && node ./app/db-batch/truncate-block-list.js && npm restart all"
   },
   "dependencies": {
     "@polkadot/api": "^8.12.2",
