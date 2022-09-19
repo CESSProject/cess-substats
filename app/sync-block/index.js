@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-09-19 17:16:43
+ * @LastEditTime: 2022-09-19 17:17:59
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -250,7 +250,7 @@ async function startDo(start, end) {
   return end;
 }
 
-showLog(...msg){
+function showLog(...msg) {
   console.log(...msg);
 }
 main();
