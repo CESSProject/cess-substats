@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-09-19 16:50:16
+ * @LastEditTime: 2022-09-19 16:55:29
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -91,10 +91,13 @@ async function saveTx(blockHash, blockHeight, src, events) {
     console.log("timestampTx not found");
     return timestamp;
   }
+  console.log("saving blockInfo.extrinsics");
   for (let index in blockInfo.extrinsics) {
+    console.log("saving blockInfo.extrinsics of", index);
     let enx = blockInfo.extrinsics[index];
     try {
       if (typeof enx != "object" || !("toHuman" in enx)) {
+        console.log("continue 1 of ", index);
         continue;
       }
       let json = enx.toHuman();
@@ -127,14 +130,19 @@ async function saveTx(blockHash, blockHeight, src, events) {
         (entity.section == "timestamp" && entity.method == "set") ||
         entity.method == "noteMinGasPriceTarget"
       ) {
+        console.log("continue 2 of ", index);
         continue;
       }
+      console.log("dalTransaction.insert ", index);
       let result = await dalTransaction.insert(entity);
+      console.log("dalTransaction.insert end", index);
       let txId = result.id;
       if (txId == 0) {
         console.log("transaction save fail ", result);
+        console.log("continue 3 of ", index);
         continue;
       }
+      console.log("saveEvent start", index);
       let status = await saveEvent(
         blockHeight,
         src,
@@ -143,10 +151,12 @@ async function saveTx(blockHash, blockHeight, src, events) {
         events,
         timestamp
       );
+      console.log("dalTransaction.update start", index);
       await dalTransaction.update({
         id: txId,
         status,
       });
+      console.log("dalTransaction.update end", index);
     } catch (e) {
       console.error(e);
       console.log("error enx", enx);
