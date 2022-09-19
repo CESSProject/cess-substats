@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-17 14:04:03
+ * @LastEditTime: 2022-09-19 16:50:16
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -33,17 +33,24 @@ async function getBlock(value) {
   if (typeof value != "number") {
     hash = value;
   } else {
+    console.log("getBlockHash", value);
     let result = await api.rpc.chain.getBlockHash(value);
+    console.log("getBlockHash success", value);
     hash = result.toHex();
   }
+  console.log("getBlock", hash);
   const blockInfo = await api.rpc.chain.getBlock(hash);
   const blockHeight = blockInfo.block.header.number.toNumber();
+  console.log("dalBlock.findWithQuery,blockHeight:", blockHeight);
   const tmp = await dalBlock.findWithQuery({ blockHeight });
   if (tmp.length > 0) {
     return console.log("Item is exists");
   }
+  console.log("api.query.system.events.at", hash);
   const events = await api.query.system.events.at(hash);
+  console.log("saveTx", blockHeight);
   const timestamp = await saveTx(hash, blockHeight, blockInfo, events);
+  console.log("saveBlock", timestamp);
   await saveBlock(hash, blockHeight, blockInfo, timestamp);
   console.log("block sync sccuess", blockHeight);
 }
@@ -53,6 +60,7 @@ async function saveBlock(hash, blockHeight, src, timestamp) {
   // console.log("blockInfo", blockInfo);
   // let signerAccount = src.header.author || src.header.authorFromMapping;
   // signerAccount = signerAccount.toHuman();
+  console.log("dalBlock.insert", blockHeight);
   let result = await dalBlock.insert({
     hash,
     // signerAccount,
@@ -62,6 +70,7 @@ async function saveBlock(hash, blockHeight, src, timestamp) {
     // extrinsicsRoot: blockInfo.header.extrinsicsRoot,
     timestamp,
   });
+  console.log("dalBlock.insert end", blockHeight);
   // console.log(result);
 }
 async function saveTx(blockHash, blockHeight, src, events) {
