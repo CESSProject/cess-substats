@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-09-19 16:55:29
+ * @LastEditTime: 2022-09-19 17:16:43
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -35,22 +35,22 @@ async function getBlock(value) {
   } else {
     console.log("getBlockHash", value);
     let result = await api.rpc.chain.getBlockHash(value);
-    console.log("getBlockHash success", value);
+    showLog("getBlockHash success", value);
     hash = result.toHex();
   }
-  console.log("getBlock", hash);
+  showLog("getBlock", hash);
   const blockInfo = await api.rpc.chain.getBlock(hash);
   const blockHeight = blockInfo.block.header.number.toNumber();
-  console.log("dalBlock.findWithQuery,blockHeight:", blockHeight);
+  showLog("dalBlock.findWithQuery,blockHeight:", blockHeight);
   const tmp = await dalBlock.findWithQuery({ blockHeight });
   if (tmp.length > 0) {
     return console.log("Item is exists");
   }
-  console.log("api.query.system.events.at", hash);
+  showLog("api.query.system.events.at", hash);
   const events = await api.query.system.events.at(hash);
-  console.log("saveTx", blockHeight);
+  showLog("saveTx", blockHeight);
   const timestamp = await saveTx(hash, blockHeight, blockInfo, events);
-  console.log("saveBlock", timestamp);
+  showLog("saveBlock", timestamp);
   await saveBlock(hash, blockHeight, blockInfo, timestamp);
   console.log("block sync sccuess", blockHeight);
 }
@@ -60,7 +60,7 @@ async function saveBlock(hash, blockHeight, src, timestamp) {
   // console.log("blockInfo", blockInfo);
   // let signerAccount = src.header.author || src.header.authorFromMapping;
   // signerAccount = signerAccount.toHuman();
-  console.log("dalBlock.insert", blockHeight);
+  showLog("dalBlock.insert", blockHeight);
   let result = await dalBlock.insert({
     hash,
     // signerAccount,
@@ -70,7 +70,7 @@ async function saveBlock(hash, blockHeight, src, timestamp) {
     // extrinsicsRoot: blockInfo.header.extrinsicsRoot,
     timestamp,
   });
-  console.log("dalBlock.insert end", blockHeight);
+  showLog("dalBlock.insert end", blockHeight);
   // console.log(result);
 }
 async function saveTx(blockHash, blockHeight, src, events) {
@@ -88,21 +88,25 @@ async function saveTx(blockHash, blockHeight, src, events) {
     timestamp = moment(timestamp).toDate();
     // console.log("timestamp:", timestamp);
   } else {
-    console.log("timestampTx not found");
+    showLog("timestampTx not found");
     return timestamp;
   }
-  console.log("saving blockInfo.extrinsics");
+  showLog("saving blockInfo.extrinsics");
   for (let index in blockInfo.extrinsics) {
     console.log("saving blockInfo.extrinsics of", index);
     let enx = blockInfo.extrinsics[index];
     try {
       if (typeof enx != "object" || !("toHuman" in enx)) {
-        console.log("continue 1 of ", index);
+        showLog("continue 1 of ", index);
         continue;
       }
       let json = enx.toHuman();
       let hash = enx.hash.toHex();
       // console.log(json, hash);
+      if (json.method.method != "transferKeepAlive" || !json.isSigned) {
+        showLog("continue 1.1 of ", index);
+        continue;
+      }
       let entity = {
         blockHeight,
         hash,
@@ -130,19 +134,19 @@ async function saveTx(blockHash, blockHeight, src, events) {
         (entity.section == "timestamp" && entity.method == "set") ||
         entity.method == "noteMinGasPriceTarget"
       ) {
-        console.log("continue 2 of ", index);
+        showLog("continue 2 of ", index);
         continue;
       }
-      console.log("dalTransaction.insert ", index);
+      showLog("dalTransaction.insert ", index);
       let result = await dalTransaction.insert(entity);
-      console.log("dalTransaction.insert end", index);
+      showLog("dalTransaction.insert end", index);
       let txId = result.id;
       if (txId == 0) {
         console.log("transaction save fail ", result);
         console.log("continue 3 of ", index);
         continue;
       }
-      console.log("saveEvent start", index);
+      showLog("saveEvent start", index);
       let status = await saveEvent(
         blockHeight,
         src,
@@ -151,12 +155,12 @@ async function saveTx(blockHash, blockHeight, src, events) {
         events,
         timestamp
       );
-      console.log("dalTransaction.update start", index);
+      showLog("dalTransaction.update start", index);
       await dalTransaction.update({
         id: txId,
         status,
       });
-      console.log("dalTransaction.update end", index);
+      showLog("dalTransaction.update end", index);
     } catch (e) {
       console.error(e);
       console.log("error enx", enx);
@@ -244,5 +248,9 @@ async function startDo(start, end) {
     }
   }
   return end;
+}
+
+showLog(...msg){
+  console.log(...msg);
 }
 main();
