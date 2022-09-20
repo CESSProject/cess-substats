@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-11 14:53:34
+ * @LastEditTime: 2022-09-20 10:21:39
  */
 import React, { useRef, useState, useEffect } from "react";
 import {
@@ -133,7 +133,17 @@ const Main = ({ ...propsS }) => {
 		pagesize: 10,
 		loadList: {
 			params: {
-				tableName: "block_transaction"
+				tableName: "block_transaction",
+				sorter: [
+					{
+						column: "blockHeight",
+						order: "desc"
+					},
+					{
+						column: "id",
+						order: "desc"
+					}
+				]
 			},
 			method: queryDB.list
 		},

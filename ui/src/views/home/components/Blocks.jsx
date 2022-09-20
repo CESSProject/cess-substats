@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-17 11:44:21
+ * @LastEditTime: 2022-09-20 10:24:16
  */
 import React, { useRef, useState, useEffect } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Tooltip, Descriptions, Empty, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -91,11 +91,24 @@ const columnsTx = [
 	}
 ];
 const ajax = async tableName => {
-	let tmp = await queryDB.list({
+	let par = {
 		tableName,
 		pagesize: 10,
 		pageindex: 1
-	});
+	};
+	if (tableName == "block_transaction") {
+		par.sorter = [
+			{
+				column: "blockHeight",
+				order: "desc"
+			},
+			{
+				column: "id",
+				order: "desc"
+			}
+		];
+	}
+	let tmp = await queryDB.list(par);
 	if (tmp.msg != "ok") {
 		message.error(tmp.msg);
 		return null;
