@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-09-19 17:17:59
+ * @LastEditTime: 2022-09-20 10:53:06
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -27,6 +27,8 @@ const dalEvent = new Dal("tb_block_event");
 const init = require("../init");
 const moment = require("moment");
 var os = require("os");
+
+const saveTxMethods = ["faucet", "transferKeepAlive"];
 
 async function getBlock(value) {
   let hash = "";
@@ -103,8 +105,11 @@ async function saveTx(blockHash, blockHeight, src, events) {
       let json = enx.toHuman();
       let hash = enx.hash.toHex();
       // console.log(json, hash);
-      if (json.method.method != "transferKeepAlive" || !json.isSigned) {
-        showLog("continue 1.1 of ", index);
+      // if (json.method.method != "transferKeepAlive" || !json.isSigned) {
+      //   showLog("continue 1.1 of ", index);
+      //   continue;
+      // }
+      if (saveTxMethods.indexOf(json.method.method) == -1) {
         continue;
       }
       let entity = {

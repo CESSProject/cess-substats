@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-05 10:46:36
+ * @LastEditTime: 2022-09-20 10:46:53
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -39,11 +39,13 @@ async function getBlock(value) {
 
   const events = await api.query.system.events.at(hash);
   let entity = blockInfo.toHuman();
-  console.log(JSON.stringify(entity));
+  console.log(JSON.stringify(entity, null, 2));
+  console.log("========================================");
+  console.log(JSON.stringify(events, null, 2));
 }
 async function main() {
   api = await init();
-  await getBlock(2);
+  await getBlock(172808);
   console.log("complete!");
   process.exit();
 }
