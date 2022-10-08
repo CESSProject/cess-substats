@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-07 14:36:09
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-17 16:54:14
+ * @LastEditTime: 2022-10-08 14:21:59
  */
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { DatePicker, Input, Menu, Modal, Button, Dropdown, Descriptions, Select, Space, Table, message, Tabs, Popconfirm, Checkbox, Card, Form } from "antd";
@@ -118,6 +118,7 @@ const Home = ({ ...props }) => {
 	}, []);
 	return (
 		<div className="containner-in">
+			<div className="top-price-box"></div>
 			<div className="chart-box block">
 				<Card
 					title={
