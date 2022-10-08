@@ -60,6 +60,26 @@ code {
 	z-index: -1;
 	background-image: radial-gradient(#a1dff5, #cbf0ff, #f8f8f8, #f8f8f8, #f8f8f8);
 }
+.modal-price {
+	.green {
+		color: green;
+	}
+	.gray {
+		color: #aaa;
+	}
+	.tb-top-btn {
+		text-align: right;
+		color: #318ce9;
+		padding-bottom: 16px;
+		cursor: pointer;
+	}
+	.tb-bottom-txt {
+		width: 100%;
+		text-align: right;
+		color: #999;
+		line-height: 40px;
+	}
+}
 @media screen and (min-width: 901px) {
 	.containner {
 		margin-left: 198px;
@@ -77,26 +97,6 @@ code {
 			bottom: -200px;
 			left: 0;
 			background-position: -30px 5px;
-		}
-	}
-	.modal-price {
-		.green {
-			color: green;
-		}
-		.gray {
-			color: #aaa;
-		}
-		.tb-top-btn {
-			text-align: right;
-			color: #318ce9;
-			padding-bottom: 16px;
-			cursor: pointer;
-		}
-		.tb-bottom-txt {
-			width: 100%;
-			text-align: right;
-			color: #999;
-			line-height: 40px;
 		}
 	}
 }
@@ -120,6 +120,13 @@ code {
 			left: -250px;
 			width: 500px;
 			height: 500px;
+		}
+	}
+	.modal-price {
+		table {
+			width: 100%;
+			display: block;
+			overflow: auto hidden;
 		}
 	}
 }

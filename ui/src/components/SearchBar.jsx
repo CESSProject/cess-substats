@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-10-08 16:22:32
+ * @LastEditTime: 2022-10-08 16:51:11
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -203,15 +203,6 @@ const SearchBar = ({ className }) => {
 
 	return (
 		<div className={className}>
-			<div className="top-price-btn">
-				<div className="top-price-btn-left">
-					<span className="block">Learn About CESS Storage Pricing</span>
-					<label className="block">Estimated {getPrice(1024, 2)} / GiB / Month</label>
-				</div>
-				<div className="top-price-btn-right">
-					<span onClick={() => setIsModalOpen(true)}>Learn more</span>
-				</div>
-			</div>
 			<Modal
 				title="
 Storage Pricing Calculator"
@@ -229,7 +220,7 @@ Storage Pricing Calculator"
 						<RedoOutlined /> Refresh
 					</div>
 				)}
-				<Table loading={loading} dataSource={dataSource} columns={columns} pagination={false} />
+				<Table className="tb-price" loading={loading} dataSource={dataSource} columns={columns} pagination={false} />
 				<div className="tb-bottom-txt">* Fee = 1000 + 10000 * Storage Scale (GiB) / Storage Power (GiB)</div>
 			</Modal>
 			<div className="big-title block">
@@ -254,6 +245,15 @@ Storage Pricing Calculator"
 				id="searchInput"
 				size="large"
 			/>
+			<div className="top-price-btn">
+				<div className="top-price-btn-left">
+					<span className="block">Learn About CESS Storage Pricing</span>
+					<label className="block">Estimated {getPrice(1024, 2)} / GiB / Month</label>
+				</div>
+				<div className="top-price-btn-right">
+					<span onClick={() => setIsModalOpen(true)}>Learn more</span>
+				</div>
+			</div>
 		</div>
 	);
 };
@@ -298,6 +298,14 @@ export default React.memo(styled(SearchBar)`
 			span:hover {
 				background-color: #73abf7;
 			}
+		}
+	}
+	@media screen and (max-width: 900px) {
+		.top-price-btn {
+			position: relative !important;
+			width: 100% !important;
+			margin: 20px auto 0;
+			padding: 5px 10px;
 		}
 	}
 	.search-box {
