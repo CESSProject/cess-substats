@@ -103,3 +103,5 @@ yarn run startui
 ├── mysql-config.js   # db config
 └── web.config # server config
 ```
+
+https://github.com/CESSProject/Grants-Program/blob/master/applications/substats.md
