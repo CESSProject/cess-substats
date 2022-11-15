@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-11-15 17:38:58
+ * @LastEditTime: 2022-11-15 17:56:10
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -58,9 +58,13 @@ async function getMiner() {
       timerStatus: 2,
     };
     totalPower += obj.power;
-    totalStoreSpace += obj.collaterals;
+    totalStoreSpace += obj.collaterals / 2000000000000000;
     return obj;
   });
+  //更新储存空间totalStoreSpace
+  if (totalStoreSpace) {
+    saveStoreSpace(totalStoreSpace);
+  }
   if (retsult.length > 0) {
     let sql = "update tb_miner set timerStatus=1";
     await dal.query(sql);
@@ -134,15 +138,11 @@ async function getMiner() {
     tmp = await dalSum.query(sql);
     // console.log("delete from tb_miner_summary", tmp);
   }
-  //更新储存空间totalStoreSpace
-  if (totalStoreSpace) {
-    await saveStoreSpace(totalStoreSpace);
-  }
   console.log("complete");
   setTimeout(getMiner, 3000000);
 }
 async function saveStoreSpace(v) {
-  v = v / 2000000000000000;
+  // v = v / 2000000000000000;
   const dateStr = moment().format("YYYY-MM-DD");
   let tmp = await dalPower.findWithQuery({ dateStr });
   if (tmp && tmp.length > 0) {
