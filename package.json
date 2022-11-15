@@ -1,6 +1,6 @@
 {
   "name": "cess-explorer",
-  "version": "0.1.0",
+  "version": "0.2.4",
   "private": true,
   "scripts": {
     "start": "node ./app",

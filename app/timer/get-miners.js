@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-09-06 16:12:55
+ * @LastEditTime: 2022-11-15 17:27:55
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -26,12 +26,14 @@ const Dal = require("../../dal/dal-common");
 const dal = new Dal("tb_miner");
 const dalSum = new Dal("tb_miner_summary");
 const init = require("../init");
+const moment = require("moment");
 
 async function getMiner() {
   console.log("start");
   let retsult = await api.query.sminer.minerItems.entries();
   console.log("get miner", retsult.length);
-  let totalPower = 0;
+  let totalPower = 0,
+    totalStoreSpace = 0; //总存储空间（未验证的）
   retsult = retsult.map(([key, entry]) => {
     let id = _.get(
       key.args.map((k) => k.toHuman()),
@@ -55,6 +57,7 @@ async function getMiner() {
       timerStatus: 2,
     };
     totalPower += obj.power;
+    totalStoreSpace += obj.collaterals;
     return obj;
   });
   if (retsult.length > 0) {
@@ -130,8 +133,28 @@ async function getMiner() {
     tmp = await dalSum.query(sql);
     // console.log("delete from tb_miner_summary", tmp);
   }
+  //更新储存空间totalStoreSpace
+  if (totalStoreSpace) {
+    await saveStoreSpace(totalStoreSpace);
+  }
   console.log("complete");
   setTimeout(getMiner, 3000000);
+}
+async function saveStoreSpace(v) {
+  v = v / 2000000000000000;
+  const dateStr = moment().format("YYYY-MM-DD");
+  let tmp = await dal.findWithQuery({ dateStr });
+  if (tmp && tmp.length > 0) {
+    await dal.update({
+      id: tmp[0].id,
+      power: v,
+    });
+  } else {
+    await dal.insert({
+      power: v,
+      dateStr,
+    });
+  }
 }
 async function main() {
   api = await init();
