@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-11-15 17:59:14
+ * @LastEditTime: 2022-11-15 18:58:33
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -165,7 +165,7 @@ async function main() {
 }
 function toNumber(v) {
   if (typeof v != "number") {
-    v = parseInt(v, 16);
+    v = parseInt(v);
   }
   if (isNaN(v)) {
     v = 0;
