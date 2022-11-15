@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-11-15 19:56:27
+ * @LastEditTime: 2022-11-15 20:16:02
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -105,8 +105,8 @@ const SearchBar = ({ className, space }) => {
 			setLoading(false);
 			return;
 		}
-		setList(result.data);
 		const list = result.data.sort((t1, t2) => t1.id - t2.id);
+		setList(list);
 		list.forEach(t => (t["Storage Power(TiB)"] = parseFloat(t.power.toFixed(2))));
 		const config = {
 			height: 165,
@@ -173,7 +173,7 @@ const SearchBar = ({ className, space }) => {
 				<div className="state-line">
 					<div className="state-box">
 						<span>Storage Power</span>
-						<span className="trs">{list && list.length > 0 ? list[0].power : 0} TiB</span>
+						<span className="trs">{list && list.length > 0 ? list[list.length - 1].power : 0} TiB</span>
 					</div>
 					<div className="state-box">
 						<span>Verified Storage Power</span>
