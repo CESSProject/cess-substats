@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-11-15 17:27:55
+ * @LastEditTime: 2022-11-15 17:38:58
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -25,6 +25,7 @@ global.webconfig = webconfig;
 const Dal = require("../../dal/dal-common");
 const dal = new Dal("tb_miner");
 const dalSum = new Dal("tb_miner_summary");
+const dalPower = new Dal("tb_storage_power_trend");
 const init = require("../init");
 const moment = require("moment");
 
@@ -143,14 +144,14 @@ async function getMiner() {
 async function saveStoreSpace(v) {
   v = v / 2000000000000000;
   const dateStr = moment().format("YYYY-MM-DD");
-  let tmp = await dal.findWithQuery({ dateStr });
+  let tmp = await dalPower.findWithQuery({ dateStr });
   if (tmp && tmp.length > 0) {
-    await dal.update({
+    await dalPower.update({
       id: tmp[0].id,
       power: v,
     });
   } else {
-    await dal.insert({
+    await dalPower.insert({
       power: v,
       dateStr,
     });
