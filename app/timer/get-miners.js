@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-11-15 18:58:33
+ * @LastEditTime: 2022-11-15 20:22:34
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -139,7 +139,7 @@ async function getMiner() {
     // console.log("delete from tb_miner_summary", tmp);
   }
   console.log("complete");
-  setTimeout(getMiner, 3000000);
+  setTimeout(getMiner, 60000);
 }
 async function saveStoreSpace(v) {
   console.log("collaterals", v);
