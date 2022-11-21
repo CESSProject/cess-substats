@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-09-20 10:53:06
+ * @LastEditTime: 2022-11-21 17:00:28
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -28,7 +28,10 @@ const init = require("../init");
 const moment = require("moment");
 var os = require("os");
 
-const saveTxMethods = ["faucet", "transferKeepAlive"];
+const saveTxMethods =
+  "faucet,transferKeepAlive,buyspace,expansionSpace,renewalSpace,outstandingChallenges,slashed,registered".split(
+    ","
+  );
 
 async function getBlock(value) {
   let hash = "";
@@ -121,6 +124,7 @@ async function saveTx(blockHash, blockHeight, src, events) {
         // args: JSON.stringify(json.method.args),
         timestamp,
       };
+      let methodFull = entity.section + "." + entity.method;
       if (json.isSigned) {
         // entity.era = json.era.ImmortalEra;
         // entity.nonce = enx.nonce.toNumber();
