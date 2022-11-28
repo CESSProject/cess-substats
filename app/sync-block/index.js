@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-11-28 10:44:57
+ * @LastEditTime: 2022-11-28 11:48:12
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -29,7 +29,7 @@ const moment = require("moment");
 var os = require("os");
 
 const saveTxMethods =
-  "faucet,transferKeepAlive,buyspace,expansionSpace,renewalSpace,outstandingChallenges,slashed,registered".split(
+  "faucet,transferKeepAlive,renewalSpace,expansionSpace,buySpace,bond,slashed,regnstk".split(
     ","
   );
 
@@ -145,6 +145,9 @@ async function saveTx(blockHash, blockHeight, src, events) {
       ) {
         showLog("continue 2 of ", index);
         continue;
+      }
+      if (entity.method == "regnstk") {
+        entity.amount = json.method.args.staking_val.split(",").join("");
       }
       showLog("dalTransaction.insert ", index);
       let result = await dalTransaction.insert(entity);

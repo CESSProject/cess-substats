@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-11-28 11:22:29
+ * @LastEditTime: 2022-11-28 11:32:21
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -192,7 +192,7 @@ function Main({ className }) {
 				showType: "copy"
 			},
 			{
-				title: "Balances($TCESS)",
+				title: "Amount($TCESS)",
 				dataIndex: "amount",
 				width: "5%",
 				showType: "currency-qianfen"
@@ -314,7 +314,13 @@ function Main({ className }) {
 						<div className="table-content">
 							{transactionsIn.map((trx, i) => {
 								return (
-									<Card key={i} title={"Hash:" + trx.hash}>
+									<Card
+										key={i}
+										title={
+											<NavLink to={"/transfer/" + trx.hash} title="link">
+												Hash:{trx.hash}
+											</NavLink>
+										}>
 										<div className="table-content">
 											<Descriptions bordered column={1}>
 												{transactionColumns.map((t, index) => {
@@ -339,7 +345,13 @@ function Main({ className }) {
 						<div className="table-content">
 							{transactionsOut.map((trx, i) => {
 								return (
-									<Card key={i} title={"Hash:" + trx.hash}>
+									<Card
+										key={i}
+										title={
+											<NavLink to={"/transfer/" + trx.hash} title="link">
+												Hash:{trx.hash}
+											</NavLink>
+										}>
 										<div className="table-content">
 											<Descriptions bordered column={1}>
 												{transactionColumns.map((t, index) => {

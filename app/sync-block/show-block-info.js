@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-09-20 10:46:53
+ * @LastEditTime: 2022-11-28 11:42:03
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -45,7 +45,7 @@ async function getBlock(value) {
 }
 async function main() {
   api = await init();
-  await getBlock(172808);
+  await getBlock(389215);
   console.log("complete!");
   process.exit();
 }
