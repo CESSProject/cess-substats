@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-17 11:00:46
+ * @LastEditTime: 2022-11-28 11:22:29
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -125,14 +125,8 @@ function Main({ className }) {
 					column: "signer",
 					sign: "=",
 					values: [account]
-				},
-				{
-					column: "amount",
-					sign: ">",
-					values: [0]
 				}
-			],
-			filterType: "and"
+			]
 		};
 		let result = await queryDB.list(params);
 		if (result.msg != "ok") {
@@ -149,11 +143,6 @@ function Main({ className }) {
 					column: "destAccount",
 					sign: "=",
 					values: [account]
-				},
-				{
-					column: "amount",
-					sign: ">",
-					values: [0]
 				}
 			],
 			filterType: "and"
@@ -166,6 +155,8 @@ function Main({ className }) {
 		setTransactionsIn(result.data);
 		setLoading(false);
 	}, [account]);
+
+	// setTransactionColumns
 	useEffect(async () => {
 		const columnsArr = [
 			{
@@ -232,6 +223,7 @@ function Main({ className }) {
 		formatArr(columnsArr);
 		setTransactionColumns(columnsArr);
 	}, []);
+
 	// miner_summary
 	useEffect(() => {
 		(async function anyNameFunction() {
@@ -282,6 +274,7 @@ function Main({ className }) {
 			ignore = true;
 		};
 	}, [account]);
+
 	return (
 		<div className={className}>
 			<BreadcrumbBar currPageName="Account detail" />

@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-26 17:49:48
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-11 16:45:31
+ * @LastEditTime: 2022-11-28 11:18:24
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -67,6 +67,7 @@ function Main({ className }) {
 	if (document.getElementById("searchInput")) {
 		document.getElementById("searchInput").value = txHash;
 	}
+	// load block_transaction
 	useEffect(async () => {
 		setLoading(true);
 		let params = {
@@ -114,6 +115,8 @@ function Main({ className }) {
 		setTransactions(transfers);
 		setLoading(false);
 	}, [txHash]);
+
+	//setTransactionColumns
 	useEffect(async () => {
 		const columnsArr = [
 			{
@@ -208,6 +211,7 @@ function Main({ className }) {
 		formatArr(columnsArr);
 		setTransactionColumns(columnsArr);
 	}, []);
+
 	return (
 		<div className={className}>
 			<BreadcrumbBar currPageName="Transfer detail" />
