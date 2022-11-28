@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-11-21 17:00:28
+ * @LastEditTime: 2022-11-28 10:44:57
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -112,9 +112,9 @@ async function saveTx(blockHash, blockHeight, src, events) {
       //   showLog("continue 1.1 of ", index);
       //   continue;
       // }
-      if (saveTxMethods.indexOf(json.method.method) == -1) {
-        continue;
-      }
+      // if (saveTxMethods.indexOf(json.method.method) == -1) {
+      //   continue;
+      // }
       let entity = {
         blockHeight,
         hash,
