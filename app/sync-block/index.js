@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-11-28 11:48:12
+ * @LastEditTime: 2022-12-05 16:26:19
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -176,6 +176,37 @@ async function saveTx(blockHash, blockHeight, src, events) {
     } catch (e) {
       console.error(e);
       console.log("error enx", enx);
+    }
+  }
+  //获取system events
+  let tmp = events.toHuman();
+  for (let i = 0; i < tmp.length; i++) {
+    let ev = tmp[i];
+    if (
+      ev.event?.method == "Transfer" &&
+      ev.event?.section == "balances" &&
+      ev.event?.data?.from &&
+      ev.event?.data?.to
+    ) {
+      let obj = {
+        from: ev.event.data.from,
+        to: ev.event.data.to,
+        amount: ev.event.data.amount.split(",").join(""),
+      };
+      console.log(obj);
+
+      let entity = {
+        blockHeight,
+        hash: blockHash + "_" + i,
+        isSigned: 1,
+        method: "Transfer",
+        section: "balances",
+        timestamp,
+        signer: obj.from,
+        destAccount: obj.to,
+        amount: obj.amount,
+      };
+      await dalTransaction.insert(entity);
     }
   }
   return timestamp;
