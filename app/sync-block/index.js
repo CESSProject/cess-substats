@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-12-05 16:26:19
+ * @LastEditTime: 2022-12-06 10:55:53
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -205,6 +205,7 @@ async function saveTx(blockHash, blockHeight, src, events) {
         signer: obj.from,
         destAccount: obj.to,
         amount: obj.amount,
+        status: "success",
       };
       await dalTransaction.insert(entity);
     }
