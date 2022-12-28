@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 11:21:36
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-10 15:46:29
+ * @LastEditTime: 2022-12-28 14:00:16
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -30,6 +30,7 @@ import AccountDetail from "./views/account/detail";
 import NavBar from "./components/NavBar";
 import MobileNavBar from "./components/mobile/NavBar";
 import SearchBar from "./components/SearchBar";
+import Statistics from "./views/statistics/list";
 import Demo from "./views/thTableDemo";
 import { isMobile } from "@utils";
 var isM = isMobile();
@@ -53,6 +54,7 @@ function App() {
 						<Route path="/miner/:q" element={<MinerDetail />} />
 						<Route path="/account/" element={<AccountList />} />
 						<Route path="/account/:q" element={<AccountDetail />} />
+						<Route path="/statistics" element={<Statistics />} />
 						<Route path="/demo" element={<Demo />} />
 					</Routes>
 				</div>

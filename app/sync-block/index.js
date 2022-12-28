@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-12 15:39:39
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-12-06 11:05:13
+ * @LastEditTime: 2022-12-06 11:09:01
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -149,7 +149,7 @@ async function saveTx(blockHash, blockHeight, src, events) {
       if (entity.method == "regnstk") {
         entity.amount = json.method.args.staking_val.split(",").join("");
       }
-      if (entity.method == "uploadFiller") {
+      if (entity.method == "uploadFiller" || entity.method == "setUncles") {
         continue;
       }
       showLog("dalTransaction.insert ", index);

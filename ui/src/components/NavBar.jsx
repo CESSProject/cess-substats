@@ -3,7 +3,7 @@
  * @Autor: fage
  * @Date: 2022-07-19 16:25:33
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-08-09 19:09:04
+ * @LastEditTime: 2022-12-28 14:00:19
  * @description: 描述信息
  * @author: chenbinfa
  */
@@ -77,7 +77,8 @@ const items = [
 		getItem("Transfers", "/transfer/"),
 		getItem("Miners", "/miner/"),
 		getItem("Accounts", "/account/")
-	])
+	]),
+	getItem("STORAGE", "storage", <img width={18} src={"/img/u18.svg"} />, [getItem("Statistics", "/statistics/")])
 ];
 
 function Header({ className }) {
@@ -102,6 +103,8 @@ function Header({ className }) {
 			p = "/miner/";
 		} else if (p.indexOf("/account/") == 0) {
 			p = "/account/";
+		} else if (p.indexOf("/statistics/") == 0) {
+			p = "/statistics/";
 		}
 		setSelKey(p);
 	}, [location]);

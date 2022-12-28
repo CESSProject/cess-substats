@@ -3,13 +3,13 @@
  * @Autor: fage
  * @Date: 2022-07-26 14:52:51
  * @LastEditors: chenbinfa
- * @LastEditTime: 2022-10-08 16:51:11
+ * @LastEditTime: 2022-12-28 13:45:34
  * @description: 描述信息
  * @author: chenbinfa
  */
 import React, { useState, useEffect } from "react";
-import { Button, Col, DatePicker, Table, Input, Row, Select, message, Modal } from "antd";
-import { SearchOutlined, RedoOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Button, Col, DatePicker, Table, Tabs, Input, Row, Select, message, Radio, Space, Modal } from "antd";
+import { SearchOutlined, RedoOutlined, LoadingOutlined, SyncOutlined } from "@ant-design/icons";
 import storageAJAX from "@services/storage";
 import _ from "lodash";
 import moment from "moment";
@@ -24,6 +24,12 @@ const SearchBar = ({ className }) => {
 	const [keyword, setKeyword] = useState();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [searchType, setSearchType] = useState("All");
+	const [priceType, setPriceType] = useState("Purchase");
+	const [unit, setUnit] = useState("g");
+	const [buySpaceNumber, setBuySpaceNumber] = useState();
+	const [buySpaceDay, setBuySpaceDay] = useState();
+	const [sumResult, setSumResult] = useState(0);
+
 	const [loading, setLoading] = useState(false);
 	const [space, setSpace] = useState({
 		used: 0,
@@ -55,12 +61,14 @@ const SearchBar = ({ className }) => {
 		if (ignore) return;
 		const total = used + idle;
 		const totalGiB = total / 1073741824;
+		const totalTiB = totalGiB / 1000;
 		console.log("totalGiB", totalGiB);
 		setSpace({
 			used,
 			idle,
 			total,
-			totalGiB
+			totalGiB,
+			totalTiB
 		});
 	}
 
@@ -124,82 +132,26 @@ const SearchBar = ({ className }) => {
 		return v.toFixed(2) + "  TCESS";
 	};
 
-	const columns = [
-		{
-			title: "Tier",
-			dataIndex: "key",
-			render: t => <span className="gray">{t}</span>
-		},
-		{
-			title: "Storage Scale",
-			dataIndex: "storage"
-		},
-		{
-			title: "Days",
-			dataIndex: "days"
-		},
-		{
-			title: "Frozen Days",
-			dataIndex: "frozen"
-		},
-		{
-			title: "Fee",
-			dataIndex: "fee",
-			render: (txt, record) => (
-				<div>{txt == "Free" ? <span className="green">Free</span> : txt == "/" ? <span className="gray">/</span> : <span>{getPrice(txt, 1)}</span>}</div>
-			)
-		},
-		{
-			title: "Estimated 1 GiB Pricing",
-			dataIndex: "estimated",
-			render: (txt, record) => (
-				<div>{txt == "Free" ? <span className="green">Free</span> : txt == "/" ? <span className="gray">/</span> : <span>{getPrice(txt, 2)}</span>}</div>
-			)
-		}
-	];
+	const onTabChange = e => {
+		setPriceType(e.target.value);
+	};
 
-	const dataSource = [
-		{
-			key: "1",
-			storage: "Less than 10 GiB",
-			days: 30,
-			frozen: 0,
-			fee: "Free",
-			estimated: "Free"
-		},
-		{
-			key: "2",
-			storage: "500 GiB",
-			days: 30,
-			frozen: 7,
-			fee: 500,
-			estimated: 500
-		},
-		{
-			key: "3",
-			storage: "1 TiB",
-			days: 30,
-			frozen: 14,
-			fee: 1024,
-			estimated: 1024
-		},
-		{
-			key: "4",
-			storage: "5 TiB",
-			days: 30,
-			frozen: 20,
-			fee: 5120,
-			estimated: 5120
-		},
-		{
-			key: "5",
-			storage: "Over 5 TiB",
-			days: 30,
-			frozen: 30,
-			fee: "/",
-			estimated: "/"
+	const onSubmit = () => {
+		// const [buySpaceNumber, setBuySpaceNumber] = useState();
+		// const [buySpaceDay, setBuySpaceDay] = useState();
+		// const [sumResult, setSumResult] = useState(0);
+		console.log("buySpaceNumber", buySpaceNumber);
+		console.log("buySpaceDay", buySpaceDay);
+		console.log("sumResult", sumResult);
+		let s = parseInt(buySpaceNumber);
+		if (unit == "t") {
+			s = s * 1000;
 		}
-	];
+		if (priceType != "Purchase") {
+			s = s * parseInt(buySpaceDay);
+		}
+		setSumResult(s);
+	};
 
 	return (
 		<div className={className}>
@@ -209,19 +161,92 @@ Storage Pricing Calculator"
 				visible={isModalOpen}
 				onCancel={() => setIsModalOpen(false)}
 				footer={null}
-				width="85%"
+				width="800px"
 				className="modal-price">
-				{loading ? (
-					<div className="tb-top-btn">
-						<LoadingOutlined /> Loading
+				<div>
+					<Radio.Group buttonStyle="solid" size="large" value={priceType} onChange={onTabChange}>
+						<Radio.Button value="Purchase">Purchase Space</Radio.Button>
+						<Radio.Button value="Upgrade">Upgrade Space Size</Radio.Button>
+						<Radio.Button value="Extend">Extend Storage Duration</Radio.Button>
+					</Radio.Group>
+				</div>
+
+				<div style={{ marginTop: "20px" }}>
+					<div className="top-line">
+						<Row>
+							<Col span={10}>Estimated 30 TCESS / GiB / 30 days</Col>
+							<Col span={5}>
+								<span>Storage Available Used</span>
+							</Col>
+							{unit == "g" ? <Col span={4}>{space.totalGiB.toFixed(2)} GiB</Col> : <Col span={4}>{space.totalTiB.toFixed(2)} TiB</Col>}
+							<Col span={3}>
+								{loading ? (
+									<div className="tb-top-btn">
+										<LoadingOutlined /> Loading
+									</div>
+								) : (
+									<div className="tb-top-btn" onClick={getStore}>
+										<RedoOutlined /> Refresh
+									</div>
+								)}
+							</Col>
+							<Col span={2}></Col>
+						</Row>
 					</div>
-				) : (
-					<div className="tb-top-btn" onClick={getStore}>
-						<RedoOutlined /> Refresh
+					<div style={{ marginTop: "20px" }}>
+						<Row>
+							<Col span={18}>
+								<Input
+									onChange={e => setBuySpaceNumber(e.target.value)}
+									size="large"
+									placeholder={priceType == "Purchase" ? "Storage Space" : priceType == "Upgrade" ? "Upgrade Storage Space Size" : "Your Storage Space"}
+								/>
+							</Col>
+							<Col span={6}>
+								<Select
+									defaultValue="g"
+									size="large"
+									onChange={e => setUnit(e)}
+									style={{ marginLeft: "10px" }}
+									options={[
+										{
+											value: "g",
+											label: "GiB / 30 days"
+										},
+										{
+											value: "t",
+											label: "TiB / 30 days"
+										}
+									]}
+								/>
+							</Col>
+						</Row>
 					</div>
-				)}
-				<Table className="tb-price" loading={loading} dataSource={dataSource} columns={columns} pagination={false} />
-				<div className="tb-bottom-txt">* Fee = 1000 + 10000 * Storage Scale (GiB) / Storage Power (GiB)</div>
+					{priceType == "Purchase" ? (
+						""
+					) : (
+						<div style={{ marginTop: "20px" }}>
+							<Row>
+								<Col span={18}>
+									<Input onChange={e => setBuySpaceDay(e.target.value)} size="large" placeholder={priceType == "Upgrade" ? "Available Space Days" : "Extend Storage Days"} />
+								</Col>
+								<Col span={6}>
+									<div style={{ lineHeight: "40px", paddingLeft: "10px" }}>Days</div>
+								</Col>
+							</Row>
+						</div>
+					)}
+				</div>
+				<div className="tb-bottom-txt" style={{ marginTop: "20px", paddingTop: "10px" }}>
+					<div style={{ float: "left" }}>
+						<span style={{ color: "#222" }}>Total</span>
+						<span style={{ fontSize: "30px", padding: "0 10px", fontWeight: "bold", color: "#000" }}>{sumResult}</span>
+						<span style={{ color: "#aaa" }}>TCESS</span>
+					</div>
+					<Button size="large" type="primary" onClick={onSubmit}>
+						Calculate
+					</Button>
+				</div>
 			</Modal>
 			<div className="big-title block">
 				<div className="big-title-txt block">Substats Blockchain Explorer</div>
